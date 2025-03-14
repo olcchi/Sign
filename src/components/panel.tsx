@@ -1,7 +1,7 @@
 "use client";
 import { PanelLeftClose } from "lucide-react";
 import { motion } from "motion/react";
-import { TextLoop } from "@/components/ui/text-loop";
+import { TextLoop } from "@/components/ui/textLoop";
 import { useState, useRef, useEffect } from "react";
 export default function Panel() {
   const [isOpen, setIsOpen] = useState(false);
