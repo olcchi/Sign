@@ -1,13 +1,38 @@
-import Image from "next/image";
+"use client";
+import Panel from "@/components/panel";
+import CanvasDots from "@/components/canvasDots";
+import AnimationText from "@/components/circularText";
 
+import { motion } from "motion/react";
+import { useRef } from "react";
 export default function Home() {
+  const dragContainer = useRef(null);
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] bg-amber-500 items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-dm-serif-text)] italic">
-      <div className="fixed top-2 left-2 gap-2 flex pointer-events-none">
-      <p className="">Soul Sign</p>
-      <span>|</span>
-      <p className="">喆是应援</p>
-      </div>
-    </div>
+    <main
+      ref={dragContainer}
+      className="relative w-screen h-screen overflow-clip font-[family-name:var(--font-dm-serif-text)] italic"
+    >
+      <Panel />
+      <main className="w-full h-full flex justify-center items-center">
+        <CanvasDots />
+        <motion.div
+          drag={true}
+          dragMomentum={false}
+          dragConstraints={dragContainer}
+          whileTap={{ scale: 0.9 }}
+          className="rounded-full"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 100 }}
+          transition={{ duration: 1 }}
+        >
+          <AnimationText
+            text="DT IN THE HOUSE !"
+            onHover="speedUp"
+            spinDuration={100}
+            className="w-100! h-100! text-5xl rounded-full"
+          />
+        </motion.div>
+      </main>
+    </main>
   );
 }
