@@ -48,9 +48,9 @@ export function TextLoop({
   }, [items.length, interval, onIndexChange, trigger]);
 
   const motionVariants: Variants = {
-    initial: { y: 20, opacity: 0 },
-    animate: { y: 0, opacity: 1 },
-    exit: { y: -20, opacity: 0 },
+    initial: { y: 20, opacity: 0,filter: "blur(4px)" },
+    animate: { y: 0, opacity: 1,filter: "blur(0px)"  },
+    exit: { y: -20, opacity: 0,filter: "blur(4px)"  },
   };
 
   return (
