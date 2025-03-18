@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { motion, useAnimation } from "motion/react";
 
 
-const getRotationTransition = (duration, from, loop = true) => ({
+const getRotationTransition = (duration: number, from: number, loop = true) => ({
   from: from,
   to: from + 360,
   ease: "linear",
@@ -11,7 +11,7 @@ const getRotationTransition = (duration, from, loop = true) => ({
   repeat: loop ? Infinity : 0,
 });
 
-const getTransition = (duration, from) => ({
+const getTransition = (duration: number, from: number) => ({
   rotate: getRotationTransition(duration, from),
   scale: {
     type: "spring",
