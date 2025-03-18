@@ -1,8 +1,7 @@
 import { Expand, Shrink } from "lucide-react";
-import { motion } from "motion/react";
 import { useFullScreenStore } from "@/components/stores/fullScreenStore";
-
-export default function FullScreen() {
+import { cn } from "@/lib/utils";
+export default function FullScreen({ className }: { className?: string }) {
   const { isFull, setIsFull } = useFullScreenStore();
 
   const toggleFullscreen = () => {
@@ -15,7 +14,7 @@ export default function FullScreen() {
   };
 
   return (
-    <div className="fixed top-2 right-2 z-999">
+    <div className={cn("z-998",className)}>
       {isFull ? (
         <Shrink onClick={toggleFullscreen} color="white" />
       ) : (
