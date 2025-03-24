@@ -1,4 +1,4 @@
-import { create } from 'zustand';
+import { create } from "zustand";
 
 type OrientationState = {
   isLandscape: boolean;
@@ -10,18 +10,17 @@ export const useOrientationStore = create<OrientationState>((set) => ({
   setIsLandscape: (value) => set({ isLandscape: value }),
 }));
 
-if (typeof window !== 'undefined') {
-  // 初始检查
+if (typeof window !== "undefined") {
   const checkOrientation = () => {
-    const isLandscape = window.matchMedia('(orientation: landscape)').matches;
+    const isLandscape = window.matchMedia("(orientation: landscape)").matches;
     useOrientationStore.getState().setIsLandscape(isLandscape);
   };
 
-  // 监听屏幕旋转
-  window.matchMedia('(orientation: landscape)').addEventListener('change', (e) => {
-    useOrientationStore.getState().setIsLandscape(e.matches);
-  });
+  window
+    .matchMedia("(orientation: landscape)")
+    .addEventListener("change", (e) => {
+      useOrientationStore.getState().setIsLandscape(e.matches);
+    });
 
-  // 初始化检查
   checkOrientation();
 }
