@@ -1,7 +1,7 @@
 
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/themeProvider";
-import { Geist, Geist_Mono, DM_Serif_Text } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Text,Kolker_Brush } from "next/font/google";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -19,6 +19,12 @@ const dmSerifText = DM_Serif_Text({
   variable: "--font-dm-serif-text",
   subsets: ["latin"],
 });
+ 
+const KolkerBrush = Kolker_Brush({
+  weight: "400",
+  variable: "--font-kolker-brush",
+  subsets: ["latin"],
+})
 
 export const metadata: Metadata = {
   title: "Soul Sign ",
@@ -36,7 +42,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} ${KolkerBrush.variable} antialiased`}
       >
         {" "}
         <ThemeProvider
