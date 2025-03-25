@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import useMeasure from "react-use-measure";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import useClickOutside from "@/components/ui/useClickOutside";
+import useClickOutside from "@/hooks/useClickOutside";
 import { MessageCircle, User } from "lucide-react";
 
 const transition = {
@@ -22,7 +22,7 @@ const ITEMS = [
       <div className="flex flex-col space-y-4">
         <div className="flex flex-col space-y-1 text-zinc-700">
           <div className="h-8 w-8 rounded-full bg-linear-to-br from-blue-500 to-blue-400" />
-          <span>Ibelick</span>
+          <span>Profile</span>
         </div>
         <button
           className="relative h-full w-full scale-100 select-none appearance-none items-center justify-center rounded-lg border border-zinc-950/10 px-2 text-sm text-zinc-500 transition-colors hover:bg-zinc-100 hover:text-zinc-800 focus-visible:ring-2 active:scale-[0.98]"
@@ -59,7 +59,13 @@ export default function ToolbarExpandable() {
   const [isOpen, setIsOpen] = useState(false);
   const [maxWidth, setMaxWidth] = useState(0);
 
-  useClickOutside(ref, () => {
+  // 为了避免类型错误，我们需要确保 ref 是一个有效的 HTMLElement
+  const validRef = useRef<HTMLElement | null>(null);
+  useEffect(() => {
+    validRef.current = ref.current;
+  }, [ref]);
+
+  useClickOutside(validRef as React.RefObject<HTMLElement>, () => {
     setIsOpen(false);
     setActive(null);
   });
