@@ -1,7 +1,0 @@
-.carousel__slide {
-  transition: opacity 0.2s ease-in-out;
-}
-.carousel__slide:not(.is-snapped) {
-  opacity: 0.1;
-  filter:blur(4px)
-}
