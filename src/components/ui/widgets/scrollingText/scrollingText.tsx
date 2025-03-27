@@ -24,31 +24,37 @@ export default function ScrollingText({
   onTextChange,
   editable = false,
 }: ScrollingTextProps) {
-  const [scrolling, setScrolling] = useState(false);
   const [textWidth, setTextWidth] = useState(0);
   const [containerWidth, setContainerWidth] = useState(0);
   const [editMode, setEditMode] = useState(false);
   const [editableText, setEditableText] = useState(text);
+  const [shouldScroll, setShouldScroll] = useState(false);
 
   const textRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLInputElement>(null);
 
-  // clac text width and container width
   const measureWidths = useCallback(() => {
     if (textRef.current && containerRef.current) {
       const textRect = textRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
 
+      // 计算文本和容器的位置关系
+      const textLeft = textRect.left;
+      const textRight = textRect.right;
+      const containerLeft = containerRect.left;
+      const containerRight = containerRect.right;
+
+      // 如果文本与容器的任意一侧发生交叉，则需要滚动
+      const needsScroll =
+        textLeft < containerLeft || textRight > containerRight;
+
       setTextWidth(textRect.width);
       setContainerWidth(containerRect.width);
-
-      // scroll trigger logic
-      setScrolling(textRect.width > containerRect.width);
+      setShouldScroll(needsScroll);
     }
   }, []);
 
-  // resize event listener
   useEffect(() => {
     measureWidths();
 
@@ -60,23 +66,19 @@ export default function ScrollingText({
     return () => window.removeEventListener("resize", handleResize);
   }, [measureWidths, editableText]);
 
-  // refresh text when text change
   useEffect(() => {
     setEditableText(text);
     measureWidths();
   }, [text, measureWidths]);
 
-  // edit text
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setEditableText(e.target.value);
     onTextChange?.(e.target.value);
   };
 
-  // edit mode
   const enterEditMode = () => {
     if (editable) {
       setEditMode(true);
-      // input select
       setTimeout(() => {
         textInputRef.current?.focus();
         textInputRef.current?.select();
@@ -84,79 +86,87 @@ export default function ScrollingText({
     }
   };
 
-  // exit edit mode
   const exitEditMode = () => {
     setEditMode(false);
+    setTimeout(measureWidths, 0);
   };
-
-  // clac animation duration
-  const animationDuration = textWidth > 0 ? textWidth / speed : 10;
+  const TEXT_GAP = 150;
+  const animationDuration = textWidth > 0 ? (textWidth + TEXT_GAP) / speed : 10;
 
   return (
     <div
       ref={containerRef}
-      className={`scrolling-text-container ${className}`}
-      style={{
-        width: "100%",
-        height: "100%",
-        overflow: "hidden",
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "center",
-      }}
+      className={`w-full h-full overflow-hidden flex items-center justify-center relative ${className}`}
       onDoubleClick={enterEditMode}
     >
-      {editMode && editable ? (
-        <input
-          ref={textInputRef}
-          type="text"
-          value={editableText}
-          onChange={handleTextChange}
-          onBlur={exitEditMode}
-          onKeyDown={(e) => e.key === "Enter" && exitEditMode()}
-          style={{
-            fontSize,
-            fontFamily,
-            color,
-            background: "transparent",
-            border: "none",
-            outline: "none",
-            textAlign: "center",
-            width: "100%",
-          }}
-          className="scrolling-text-input"
-        />
-      ) : (
-        <motion.div
-          ref={textRef}
-          style={{
-            fontSize,
-            fontFamily,
-            color,
-            whiteSpace: "nowrap",
-            display: "inline-block",
-          }}
-          animate={
-            scrolling
-              ? {
-                  x: [0, -textWidth + containerWidth],
-                }
-              : {}
-          }
-          transition={
-            scrolling
-              ? {
-                  x: {
-                    repeat: Infinity,
-                    repeatType: "reverse",
-                    duration: animationDuration,
-                    ease: "linear",
-                  },
-                }
-              : {}
-          }
-        >
-          {editableText}
+      <div className="relative w-full h-full overflow-hidden flex items-center">
+        {shouldScroll ? (
+          <motion.div
+            className={`flex whitespace-nowrap`}
+            style={{ gap: `${TEXT_GAP}px` }}
+            animate={{
+              x: [`0%`, `-${textWidth + TEXT_GAP}px`],
+            }}
+            transition={{
+              x: {
+                repeat: Infinity,
+                repeatType: "loop",
+                duration: animationDuration,
+                ease: "linear",
+              },
+            }}
+          >
+            <div
+              ref={textRef}
+              className="whitespace-nowrap inline-block"
+              style={{
+                fontSize,
+                fontFamily,
+                color,
+              }}
+            >
+              {editableText}
+            </div>
+            <div
+              className="whitespace-nowrap inline-block"
+              style={{
+                fontSize,
+                fontFamily,
+                color,
+              }}
+            >
+              {editableText}
+            </div>
+          </motion.div>
+        ) : (
+          <div
+            ref={textRef}
+            className="whitespace-nowrap inline-block mx-auto"
+            style={{
+              fontSize,
+              fontFamily,
+              color,
+            }}
+          >
+            {editableText}
+          </div>
+        )}
+      </div>
+      {editMode && editable && (
+        <motion.div className="absolute top-1/2 left-1/2 z-10 bg-black/80 p-4 rounded-lg shadow-lg min-w-[300px]">
+          <input
+            ref={textInputRef}
+            type="text"
+            value={editableText}
+            onChange={handleTextChange}
+            onBlur={exitEditMode}
+            onKeyDown={(e) => e.key === "Enter" && exitEditMode()}
+            className="w-full text-center bg-transparent border-none outline-none text-2xl"
+            style={{
+              fontFamily,
+              color,
+            }}
+          />
         </motion.div>
       )}
     </div>
