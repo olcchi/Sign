@@ -1,8 +1,18 @@
 "use client";
 import React, { useState, useRef, useEffect, useCallback } from "react";
-import { motion } from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 import "./scrollingText.css";
-
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import { Textarea } from "@/components/ui/textarea";
+import { Button } from "@/components/ui/button";
+import TextEditor from "@/components/ui/textEditor";
 export interface ScrollingTextProps {
   text: string;
   speed?: number;
@@ -25,10 +35,10 @@ export default function ScrollingText({
   editable = false,
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
-  const [containerWidth, setContainerWidth] = useState(0);
+  const [shouldScroll, setShouldScroll] = useState(false);
   const [editMode, setEditMode] = useState(false);
   const [editableText, setEditableText] = useState(text);
-  const [shouldScroll, setShouldScroll] = useState(false);
+  const [inputText, setInputText] = useState(text);
 
   const textRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
@@ -39,31 +49,16 @@ export default function ScrollingText({
       const textRect = textRef.current.getBoundingClientRect();
       const containerRect = containerRef.current.getBoundingClientRect();
 
-      // 计算文本和容器的位置关系
-      const textLeft = textRect.left;
-      const textRight = textRect.right;
-      const containerLeft = containerRect.left;
-      const containerRight = containerRect.right;
-
-      // 如果文本与容器的任意一侧发生交叉，则需要滚动
-      const needsScroll =
-        textLeft < containerLeft || textRight > containerRight;
-
+      const needsScroll = textRect.width > containerRect.width;
       setTextWidth(textRect.width);
-      setContainerWidth(containerRect.width);
       setShouldScroll(needsScroll);
     }
   }, []);
 
   useEffect(() => {
     measureWidths();
-
-    const handleResize = () => {
-      measureWidths();
-    };
-
-    window.addEventListener("resize", handleResize);
-    return () => window.removeEventListener("resize", handleResize);
+    window.addEventListener("resize", measureWidths);
+    return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, editableText]);
 
   useEffect(() => {
@@ -72,13 +67,13 @@ export default function ScrollingText({
   }, [text, measureWidths]);
 
   const handleTextChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEditableText(e.target.value);
-    onTextChange?.(e.target.value);
+    setInputText(e.target.value);
   };
 
   const enterEditMode = () => {
     if (editable) {
       setEditMode(true);
+      setInputText(editableText);
       setTimeout(() => {
         textInputRef.current?.focus();
         textInputRef.current?.select();
@@ -88,21 +83,32 @@ export default function ScrollingText({
 
   const exitEditMode = () => {
     setEditMode(false);
-    setTimeout(measureWidths, 0);
+    setEditableText(inputText);
+    onTextChange?.(inputText);
+    measureWidths();
   };
+
   const TEXT_GAP = 150;
   const animationDuration = textWidth > 0 ? (textWidth + TEXT_GAP) / speed : 10;
+
+  const textStyle = {
+    fontSize,
+    fontFamily,
+    color,
+  };
 
   return (
     <div
       ref={containerRef}
       className={`w-full h-full overflow-hidden flex items-center justify-center relative ${className}`}
-      onDoubleClick={enterEditMode}
     >
-      <div className="relative w-full h-full overflow-hidden flex items-center">
+      <div
+        onDoubleClick={enterEditMode}
+        className="relative w-full h-fit overflow-hidden flex items-center"
+      >
         {shouldScroll ? (
           <motion.div
-            className={`flex whitespace-nowrap`}
+            className="flex whitespace-nowrap"
             style={{ gap: `${TEXT_GAP}px` }}
             animate={{
               x: [`0%`, `-${textWidth + TEXT_GAP}px`],
@@ -118,22 +124,14 @@ export default function ScrollingText({
           >
             <div
               ref={textRef}
-              className="whitespace-nowrap inline-block"
-              style={{
-                fontSize,
-                fontFamily,
-                color,
-              }}
+              className="whitespace-nowrap inline-block select-none"
+              style={textStyle}
             >
               {editableText}
             </div>
             <div
-              className="whitespace-nowrap inline-block"
-              style={{
-                fontSize,
-                fontFamily,
-                color,
-              }}
+              className="whitespace-nowrap inline-block select-none"
+              style={textStyle}
             >
               {editableText}
             </div>
@@ -141,34 +139,23 @@ export default function ScrollingText({
         ) : (
           <div
             ref={textRef}
-            className="whitespace-nowrap inline-block mx-auto"
-            style={{
-              fontSize,
-              fontFamily,
-              color,
-            }}
+            className="whitespace-nowrap inline-block mx-auto select-none"
+            style={textStyle}
           >
             {editableText}
           </div>
         )}
       </div>
-      {editMode && editable && (
-        <motion.div className="absolute top-1/2 left-1/2 z-10 bg-black/80 p-4 rounded-lg shadow-lg min-w-[300px]">
-          <input
-            ref={textInputRef}
-            type="text"
-            value={editableText}
-            onChange={handleTextChange}
-            onBlur={exitEditMode}
-            onKeyDown={(e) => e.key === "Enter" && exitEditMode()}
-            className="w-full text-center bg-transparent border-none outline-none text-2xl"
-            style={{
-              fontFamily,
-              color,
-            }}
-          />
-        </motion.div>
-      )}
+      <TextEditor
+        show={editMode && editable}
+        text={inputText}
+        onTextChange={setInputText}
+        onClose={() => setEditMode(false)}
+        onSubmit={exitEditMode}
+        textInputRef={
+          textInputRef as unknown as React.RefObject<HTMLTextAreaElement>
+        }
+      />
     </div>
   );
 }
