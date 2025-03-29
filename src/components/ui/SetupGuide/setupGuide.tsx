@@ -1,21 +1,40 @@
 "use client";
-
+import { useState, useEffect, useCallback } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "motion/react";
 import { useFullScreenStore } from "@/stores/fullScreenStore";
 import { useOrientationStore } from "@/stores/orientationStore";
 import { SetupGuideContent } from "./setupGuideContent";
+import songsData from "@/components/songsData.json";
 export default function SetupGuide() {
+
+  const [randomSong, setRandomSong] = useState(songsData[0]);
   const router = useRouter();
   const pathname = usePathname();
   const { isFull } = useFullScreenStore();
   const { isLandscape } = useOrientationStore();
 
-  const showMask = pathname === "/soulsign" && (!isFull || !isLandscape);
+  // const showMask = pathname === "/soulsign" && (!isFull || !isLandscape);
+  const showMask = pathname === "/soulsign" && !isFull;
+  const getRandomSong = useCallback(() => {
+    const randomIndex = Math.floor(Math.random() * songsData.length);
+    setRandomSong(songsData[randomIndex]);
+  }, []);
 
+  useEffect(() => {
+    if (showMask) {
+      getRandomSong();
+    }
+  }, [showMask, getRandomSong]);
+
+  useEffect(() => {
+    if (showMask) {
+      getRandomSong();
+    }
+  }, [showMask, getRandomSong]);
   return (
     <AnimatePresence mode="wait">
-      {showMask ? ( 
+      {showMask ? (
         <motion.div
           key="mask-content"
           initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
@@ -36,6 +55,7 @@ export default function SetupGuide() {
             }}
           >
             <SetupGuideContent
+              songsLyrics={[randomSong]}
               isFull={isFull}
               isLandscape={isLandscape}
               router={router}
@@ -43,30 +63,27 @@ export default function SetupGuide() {
             />
           </motion.div>
         </motion.div>
-      ) : 
-      (
-        pathname === "/" ? (
-          <motion.div
-            key="home-content"
-            className="fixed inset-0 flex items-center justify-center"
-            initial={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
-            animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-            exit={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
-            transition={{
-              duration: 0.6,
-              ease: "easeInOut",
-            }}
-          >
-            <SetupGuideContent
-              isFull={isFull}
-              isLandscape={isLandscape}
-              router={router}
-              pathname={pathname}
-            />
-          </motion.div>
-        ):null
-      )
-      }
+      ) : pathname === "/" ? (
+        <motion.div
+          key="home-content"
+          className="fixed inset-0 flex items-center justify-center"
+          initial={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
+          animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
+          exit={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
+          transition={{
+            duration: 0.6,
+            ease: "easeInOut",
+          }}
+        >
+          <SetupGuideContent
+            songsLyrics={[randomSong]}
+            isFull={isFull}
+            isLandscape={isLandscape}
+            router={router}
+            pathname={pathname}
+          />
+        </motion.div>
+      ) : null}
     </AnimatePresence>
   );
 }

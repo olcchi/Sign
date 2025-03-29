@@ -7,6 +7,10 @@ import { Separator } from "@/components/ui/separator";
 import FullScreen from "@/components/ui/fullScreen";
 interface setupGuideContentType {
   isFull: boolean;
+  songsLyrics: {
+    song: string;
+    lyric: string;
+  }[];
   isLandscape: boolean;
   router: any;
   pathname: string;
@@ -15,12 +19,21 @@ interface setupGuideContentType {
 export function SetupGuideContent({
   isFull,
   isLandscape,
+  songsLyrics,
   router,
 }: setupGuideContentType) {
   return (
     <div className="flex flex-col gap-4 justify-center w-fit p-4 text-neutral-200 select-none">
       <LoopTextTittle />
       <Separator />
+      <section className="flex flex-col gap-2 ">
+        <p className="text-sm text-white/60 italic">
+         " {songsLyrics[0].lyric} "
+        </p>
+        <p className="text-lg text-end font-medium text-white/80">
+       - {songsLyrics[0].song}
+        </p>
+      </section>
       <section className="flex flex-col gap-6 w-full">
         <div className="flex flex-col gap-4">
           <div
@@ -50,7 +63,7 @@ export function SetupGuideContent({
               {!isFull && <FullScreen />}
             </div>
 
-            <div
+            {/* <div
               className={cn(
                 "flex items-center gap-3 p-3 rounded-lg transition-all flex-1 border-1 border-zinc-700",
                 isLandscape ? "bg-zinc-900/50 text-zinc-400" : "bg-zinc-900/40"
@@ -66,11 +79,11 @@ export function SetupGuideContent({
                 <p className="font-medium">横屏显示</p>
                 <p className="text-sm text-zinc-400">旋转设备以获得更好体验</p>
               </div>
-            </div>
+            </div> */}
           </div>
         </div>
         <AnimatePresence>
-          {isFull && isLandscape ? (
+          {isFull ? (
             <motion.button
               key="enter-button"
               onClick={() => router.push("/soulsign")}
