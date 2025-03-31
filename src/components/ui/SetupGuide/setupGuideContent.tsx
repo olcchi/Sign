@@ -2,7 +2,7 @@
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "motion/react";
-import LoopTextTittle from "@/components/ui/loopTextTItle/loopTextTittle";
+import LoopTextTittle from "@/components/ui/loopTextTittle";
 import { Separator } from "@/components/ui/separator";
 import FullScreen from "@/components/ui/fullScreen";
 interface setupGuideContentType {
@@ -26,12 +26,12 @@ export function SetupGuideContent({
     <div className="flex flex-col gap-4 justify-center w-fit p-4 text-neutral-200 select-none">
       <LoopTextTittle />
       <Separator />
-      <section className="flex flex-col gap-2 ">
-        <p className="text-sm text-white/60 italic">
-         " {songsLyrics[0].lyric} "
+      <section className="flex flex-col gap-2 text-sm">
+        <p className=" text-white/60 italic">
+         {songsLyrics[0].lyric}
         </p>
-        <p className="text-lg text-end font-medium text-white/80">
-       - {songsLyrics[0].song}
+        <p className=" text-end font-medium text-white/80">
+          - {songsLyrics[0].song}
         </p>
       </section>
       <section className="flex flex-col gap-6 w-full">
@@ -87,11 +87,11 @@ export function SetupGuideContent({
             <motion.button
               key="enter-button"
               onClick={() => router.push("/soulsign")}
-              initial={{ opacity: 0, y: 10, filter: "blur(10px)" }}
-              animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-              exit={{ opacity: 0, y: -10, filter: "blur(10px)" }}
+              initial={{ opacity: 0, filter: "blur(10px)" }}
+              animate={{ opacity: 1, filter: "blur(0px)" }}
+              exit={{ opacity: 0, filter: "blur(10px)" }}
               transition={{
-                duration: 1,
+                duration: 0.4,
               }}
               className="w-full flex justify-center items-center gap-2 bg-white/10 backdrop-blur-sm hover:bg-white/20 
                         text-white py-3 px-6 rounded-lg font-medium 
