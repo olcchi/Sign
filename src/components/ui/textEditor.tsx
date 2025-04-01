@@ -48,10 +48,10 @@ export default function TextEditor({
           initial={{ opacity: 0, y:5,filter: "blur(8px)" }}
           animate={{ opacity: 1, y:0,filter: "blur(0px)" }}
           exit={{ opacity: 0,y:-5, filter: "blur(8px)" }}
-          transition={{ duration: 0.4, ease: "easeIn" }}
+          transition={{ duration: 0.2, ease: "easeInOut" }}
           className="fixed inset-0 z-10 w-screen h-screen flex justify-center lg:items-center font-sans! bg-black"
         >
-          <Card className="mt-20 w-80 xl:w-100 h-fit">
+          <Card className=" w-80 xl:w-100 h-fit">
             <CardHeader>
               <CardTitle>编辑</CardTitle>
             </CardHeader>
@@ -72,7 +72,7 @@ export default function TextEditor({
                       onClick={() => onColorChange(color.value)}
                       className={`w-4 h-4 rounded-full ${
                         color.bg
-                      } border-2 flex items-center justify-center transition-all ${
+                      } border-1 flex items-center justify-center transition-all ${
                         textColor === color.value
                           ? "border-zinc-200 scale-110"
                           : "border-transparent"
