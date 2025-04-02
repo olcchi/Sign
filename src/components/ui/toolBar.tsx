@@ -34,17 +34,16 @@ export default function ToolBar() {
       <div className="fixed bottom-4 right-4 z-10" ref={menuRef}>
         <div
           className={cn(
-            "rounded-xl h-10 w-10 border border-zinc-700 backdrop-blur-sm shadow-lg",
-            isOpen ? "bg-zinc-900 text-zinc-100" : ""
+            "rounded-sm w-10 h-10 flex justify-center items-center border border-zinc-800 backdrop-blur-sm shadow-lg",
           )}
         >
-          <div className="flex space-x-2 p-2">
+          <div className="w-full h-full">
             {ITEMS.map((item) => (
               <button
                 key={item.id}
                 aria-label={item.label}
                 className={cn(
-                  "relative flex h-full w-full shrink-0 scale-100 select-none appearance-none items-center justify-center rounded-lg text-zinc-300 transition-colors hover:bg-zinc-700 hover:text-zinc-100 focus-visible:ring-2 active:scale-[0.98]"
+                  "w-full h-full relative flex select-none appearance-none items-center justify-center text-zinc-300"
                 )}
                 type="button"
                 onClick={() => setIsOpen(!isOpen)}
@@ -60,7 +59,7 @@ export default function ToolBar() {
         {isOpen && (
           <motion.div
             ref={cardRef}
-            className="fixed bottom-16 right-4 z-10 w-64 h-[60%] rounded-xl border border-zinc-700 bg-zinc-900/90 backdrop-blur-sm shadow-lg"
+            className="fixed landscape:bottom-4 landscape:right-16 bottom-16 right-4 z-10 w-64 landscape:w-[50%] landscape:h-[90%] h-[60%] rounded-sm border border-zinc-800 bg-black shadow-lg"
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: 10 }}
