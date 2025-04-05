@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "motion/react";
 import { useFullScreenStore } from "@/stores/fullScreenStore";
 import { useOrientationStore } from "@/stores/orientationStore";
 import { SetupGuideContent } from "./setupGuideContent";
-import songsData from "@/components/songsData.json";
+import songsData from "@/components/lyricData.json";
 export default function SetupGuide() {
 
   const [randomSong, setRandomSong] = useState(songsData[0]);
@@ -67,9 +67,9 @@ export default function SetupGuide() {
         <motion.div
           key="home-content"
           className="fixed inset-0 flex items-center justify-center"
-          initial={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
+          initial={{ opacity: 0, filter: "blur(12px)", scale: 1.1 }}
           animate={{ opacity: 1, filter: "blur(0px)", scale: 1 }}
-          exit={{ opacity: 0, filter: "blur(16px)", scale: 1.1 }}
+          exit={{ opacity: 0, filter: "blur(12px)", scale: 1.1 }}
           transition={{
             duration: 0.6,
             ease: "easeInOut",
