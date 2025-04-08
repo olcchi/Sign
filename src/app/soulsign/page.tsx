@@ -39,7 +39,8 @@ export default function Home() {
 
   const exitEditMode = () => {
     setEditMode(false);
-    setText(inputText);
+    const finalText = inputText === '' ? '请输入一些内容...' : inputText;
+    setText(finalText);
   };
 
   return (
