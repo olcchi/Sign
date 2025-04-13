@@ -95,25 +95,6 @@ export default function TextEditor({
                   placeholder="请输入文字内容..."
                   aria-label="编辑文本内容"
                 />
-                <div className="space-y-2">
-                  <div className="flex items-center justify-between">
-                    <h3 className="text-xs font-medium text-zinc-400">滚动速度</h3>
-                    <span className="text-xs text-zinc-500">{scrollSpeed}</span>
-                  </div>
-                  <Slider
-                    defaultValue={[scrollSpeed]}
-                    value={[scrollSpeed]}
-                    min={1}
-                    max={30}
-                    step={1}
-                    onValueChange={(values) => onScrollSpeedChange(values[0])}
-                    className="w-full"
-                  />
-                  <div className="flex justify-between text-[10px] text-zinc-500 px-1">
-                    <span>慢</span>
-                    <span>快</span>
-                  </div>
-                </div>
               </CardContent>
               <CardFooter className="flex justify-end gap-2 pt-2">
                 <Button 
