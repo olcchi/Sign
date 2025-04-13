@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@radix-ui/react-separator": "^1.1.2",
+    "@radix-ui/react-slider": "^1.2.4",
     "@radix-ui/react-slot": "^1.1.2",
     "@radix-ui/react-toggle": "^1.1.2",
     "@reactuses/core": "^6.0.1",
