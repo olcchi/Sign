@@ -1,47 +1,23 @@
 "use client";
-import CanvasDots from "@/components/ui/canvasDots";
-import CircularText from "@/components/ui/widgets/circularText";
 import FullScreen from "@/components/ui/fullScreen";
 import EnterPageContent from "@/components/ui/SetupGuide/setupGuide";
-import { EditWrapper } from "@/components/ui/widgets/editableWrapper/editableWrapper";
 import ToolBar from "@/components/ui/toolBar";
-import ShinyText from "@/components/ui/shinyText/shinyText";
-import '@/components/ui/shinyText/shinyText.css';
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
-import TextEditor from "@/components/ui/textEditor";
-import { useRef, useState } from "react";
+import { useRef, useState,useEffect } from "react"; 
+import { cn } from "@/lib/utils";
 
 export default function Home() {
   const dragContainer = useRef(null);
   const textRef = useRef<HTMLDivElement>(null);
-  const textInputRef = useRef<HTMLInputElement>(null);
   
-
-  // Text content state
+  // 状态
   const [text, setText] = useState('dt in the house');
-  // Text color state
   const [textColor, setTextColor] = useState('white');
-  // Editor visibility state
-  const [editMode, setEditMode] = useState(false);
-  // Text being edited
-  const [inputText, setInputText] = useState(text);
-
-
-  // Handle double-click to edit
-  const enterEditMode = () => {
-    setEditMode(true);
-    setInputText(text);
-    setTimeout(() => {
-      textInputRef.current?.focus();
-      textInputRef.current?.select();
-    }, 10);
-  };
-
-  const exitEditMode = () => {
-    setEditMode(false);
-    const finalText = inputText === '' ? '请输入一些内容...' : inputText;
-    setText(finalText);
-  };
+  const [fontFamily, setFontFamily] = useState('var(--font-dm-serif-text)');
+  const [scrollSpeed, setScrollSpeed] = useState(10); // 滚动速度
+  
+  // 计算动画持续时间：速度越大，持续时间越短
+  const animationDuration = 50 / scrollSpeed;
 
   return (
     <main
@@ -52,27 +28,23 @@ export default function Home() {
       <main className="w-full h-full flex justify-center items-center">
         <div className="relative w-full">
           <ScrollingText 
-            className="font-4xl" 
+            className={cn("font-4xl")}
+            fontFamily={fontFamily}
             speed={300} 
             text={text}
             color={textColor}
-            onDoubleClick={enterEditMode}
             textRef={textRef as React.RefObject<HTMLDivElement>}
-          />
-          <TextEditor
-            show={editMode}
-            text={inputText}
-            onTextChange={setInputText}
-            onClose={() => setEditMode(false)}
-            onSubmit={exitEditMode}
-            textColor={textColor}
-            onColorChange={setTextColor}
-            textInputRef={
-              textInputRef as unknown as React.RefObject<HTMLTextAreaElement>
-            }
+            animationDuration={animationDuration}
           />
         </div>
-        <ToolBar />
+        <ToolBar
+          initialText={text}
+          onTextChange={setText}
+          onColorChange={setTextColor}
+          onFontChange={setFontFamily}
+          scrollSpeed={scrollSpeed}
+          onScrollSpeedChange={setScrollSpeed}
+        />
         <FullScreen className="fixed top-4 right-4"/>
       </main>
     </main>
