@@ -2,19 +2,14 @@ import { AnimatePresence, motion } from "motion/react";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/cards/card";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Button } from "@/components/ui/button/button";
-import React, { useState } from "react";
-import { cn } from "@/lib/utils";
-import { X, Check, Type } from "lucide-react";
-import {
-  Slider,
-} from "@/components/ui/inputs/slider";
+import React from "react";
+import { X, Type } from "lucide-react";
 
 // 预设颜色选项
 const colorOptions = [
@@ -44,10 +39,8 @@ export default function TextEditor({
   onClose,
   onSubmit,
   textInputRef,
-  textColor = "",
-  onColorChange = () => {},
-  scrollSpeed = 10,
-  onScrollSpeedChange = () => {},
+  // textColor = "",
+  // onColorChange = () => {},
 }: TextEditorProps) {
 
   return (
