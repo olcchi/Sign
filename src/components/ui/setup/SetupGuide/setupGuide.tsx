@@ -41,7 +41,7 @@ export default function SetupGuide() {
           animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="fixed inset-0 z-50"
+          className="fixed inset-0 z-999"
         >
           <div className="absolute inset-0 bg-black/80" />
           <motion.div

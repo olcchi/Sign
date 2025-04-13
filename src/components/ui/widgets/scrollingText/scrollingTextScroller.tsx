@@ -21,6 +21,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   return (
     <motion.div
       className="flex whitespace-nowrap"
+      key={animationDuration}
       style={{ ...textStyle, gap: `${TEXT_GAP}px` }}
       animate={{
         x: [`0%`, `-${textWidth + TEXT_GAP}px`],

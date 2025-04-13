@@ -10,8 +10,8 @@ export interface ScrollingTextProps {
   fontFamily?: string;
   color?: string;
   className?: string;
-  onDoubleClick?: () => void;
   textRef?: React.RefObject<HTMLDivElement>;
+  scrollSpeed?: number;
 }
 
 export default function ScrollingText({
@@ -21,8 +21,8 @@ export default function ScrollingText({
   fontFamily = "var(--font-dm-serif-text)",
   color = "white",
   className = "",
-  onDoubleClick,
   textRef: externalTextRef,
+  scrollSpeed = 10,
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
   const [shouldScroll, setShouldScroll] = useState(false);
@@ -37,10 +37,15 @@ export default function ScrollingText({
       const containerRect = containerRef.current.getBoundingClientRect();
 
       const needsScroll = textRect.width > containerRect.width;
-      setTextWidth(textRect.width);
-      setShouldScroll(needsScroll);
+      
+      // 重置动画状态：先停止滚动，再根据新宽度重新开始
+      setShouldScroll(false); // 立即停止当前动画
+      setTimeout(() => {
+        setTextWidth(textRect.width); // 更新文本宽度
+        setShouldScroll(needsScroll); // 重新触发滚动（如果需要）
+      }, 0); // 下一帧执行，确保渲染完成
     }
-  }, [textRef]);
+  }, [textRef, fontFamily]);
 
   useEffect(() => {
     measureWidths();
@@ -48,8 +53,14 @@ export default function ScrollingText({
     return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, text]);
 
+  // 测量文本宽度变化 - 当文本或颜色改变时
+  useEffect(() => {
+    measureWidths();
+  }, [text, measureWidths]);
+
+
   const TEXT_GAP = 150;
-  const animationDuration = textWidth > 0 ? (textWidth + TEXT_GAP) / speed : 10;
+  const animationDuration = 100 / scrollSpeed;
 
   const textStyle = {
     fontSize,
@@ -66,8 +77,8 @@ export default function ScrollingText({
       )}
     >
       <div
-        onDoubleClick={onDoubleClick}
         className="relative w-full h-fit overflow-hidden flex items-center"
+        aria-label={`滚动文本: ${text}`}
       >
         {shouldScroll ? (
           <ScrollingTextScroller

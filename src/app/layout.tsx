@@ -1,6 +1,6 @@
 
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/ui/themeProvider";
+import { ThemeProvider } from "@/components/ui/layout/themeProvider";
 import { Geist, Geist_Mono, DM_Serif_Text,Kolker_Brush } from "next/font/google";
 import "./globals.css";
 

@@ -1,6 +1,6 @@
 "use client";
-import FullScreen from "@/components/ui/fullScreen";
-import EnterPageContent from "@/components/ui/SetupGuide/setupGuide";
+import FullScreen from "@/components/ui/layout/fullScreen";
+import EnterPageContent from "@/components/ui/setup/SetupGuide/setupGuide";
 import NoisyButterflyBackground from "@/components/ui/noisyButterflyBackground/noisyButterflyBackground";
 import { useRef } from "react";
 export default function Home() {

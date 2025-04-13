@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
 import { motion, AnimatePresence, Variants } from "motion/react";
 import LoopTextTittle from "@/components/ui/loopTextTittle";
-import { Separator } from "@/components/ui/separator";
-import FullScreen from "@/components/ui/fullScreen";
+import { Separator } from "@/components/ui/layout/separator";
+import FullScreen from "@/components/ui/layout/fullScreen";
 interface setupGuideContentType {
   isFull: boolean;
   songsLyrics: {

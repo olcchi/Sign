@@ -1,6 +1,6 @@
 "use client";
-import FullScreen from "@/components/ui/fullScreen";
-import EnterPageContent from "@/components/ui/SetupGuide/setupGuide";
+import FullScreen from "@/components/ui/layout/fullScreen";
+import EnterPageContent from "@/components/ui/setup/SetupGuide/setupGuide";
 import ToolBar from "@/components/ui/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
 import { useRef, useState,useEffect } from "react"; 
@@ -15,9 +15,7 @@ export default function Home() {
   const [textColor, setTextColor] = useState('white');
   const [fontFamily, setFontFamily] = useState('var(--font-dm-serif-text)');
   const [scrollSpeed, setScrollSpeed] = useState(10); // 滚动速度
-  
-  // 计算动画持续时间：速度越大，持续时间越短
-  const animationDuration = 50 / scrollSpeed;
+
 
   return (
     <main
@@ -34,7 +32,7 @@ export default function Home() {
             text={text}
             color={textColor}
             textRef={textRef as React.RefObject<HTMLDivElement>}
-            animationDuration={animationDuration}
+            scrollSpeed={scrollSpeed}
           />
         </div>
         <ToolBar
