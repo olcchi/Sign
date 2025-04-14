@@ -12,6 +12,7 @@ export interface ScrollingTextProps {
   className?: string;
   textRef?: React.RefObject<HTMLDivElement>;
   scrollSpeed?: number;
+  onScrollStateChange?: (isScrolling: boolean) => void;
 }
 
 export default function ScrollingText({
@@ -23,6 +24,7 @@ export default function ScrollingText({
   className = "",
   textRef: externalTextRef,
   scrollSpeed = 10,
+  onScrollStateChange,
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
   const [shouldScroll, setShouldScroll] = useState(false);
@@ -58,6 +60,12 @@ export default function ScrollingText({
     measureWidths();
   }, [text, measureWidths]);
 
+  // 当滚动状态变化时，触发回调
+  useEffect(() => {
+    if (onScrollStateChange) {
+      onScrollStateChange(shouldScroll);
+    }
+  }, [shouldScroll, onScrollStateChange]);
 
   const TEXT_GAP = 150;
   const animationDuration = 100 / scrollSpeed;
