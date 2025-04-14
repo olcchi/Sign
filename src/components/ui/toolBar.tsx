@@ -34,6 +34,7 @@ interface ToolBarProps {
   onFontChange?: (font: string) => void;
   scrollSpeed?: number;
   onScrollSpeedChange?: (speed: number) => void;
+  isTextScrolling?: boolean;
 }
 
 export default function ToolBar({
@@ -43,6 +44,7 @@ export default function ToolBar({
   onFontChange,
   scrollSpeed = 10,
   onScrollSpeedChange,
+  isTextScrolling = false,
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
@@ -80,7 +82,7 @@ export default function ToolBar({
 
   const closePanel = () => {
     setIsOpen(false);
-    setActiveTab(null); // 重置 activeTab
+    setActiveTab(null);
   };
   const enterEditMode = () => {
     setEditMode(true);
@@ -230,22 +232,16 @@ export default function ToolBar({
                       滚动速度
                     </h4>
                   </div>
-                  <div className="px-3 py-2 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="text-xs text-zinc-400">慢</span>
-                      <span className="text-xs text-zinc-400">{scrollSpeed}</span>
-                      <span className="text-xs text-zinc-400">快</span>
-                    </div>
-                    <Slider
-                      defaultValue={[scrollSpeed]}
-                      value={[scrollSpeed]}
-                      min={1}
-                      max={10}
-                      step={1}
-                      onValueChange={handleScrollSpeedChange}
-                      className="w-full"
-                    />
-                  </div>
+                  <Slider
+                    defaultValue={[scrollSpeed]}
+                    value={[scrollSpeed]}
+                    min={1}
+                    max={10}
+                    step={1}
+                    onValueChange={handleScrollSpeedChange}
+                    disabled={!isTextScrolling}
+                    className="w-full"
+                  />
                 </div>
               </div>
             </div>
