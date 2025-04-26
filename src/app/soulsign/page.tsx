@@ -15,6 +15,7 @@ export default function Home() {
   const [textColor, setTextColor] = useState('white');
   const [fontFamily, setFontFamily] = useState('var(--font-dm-serif-text)');
   const [scrollSpeed, setScrollSpeed] = useState(10); // 滚动速度
+  const [isTextScrolling, setIsTextScrolling] = useState(false);
 
 
   return (
@@ -33,6 +34,7 @@ export default function Home() {
             color={textColor}
             textRef={textRef as React.RefObject<HTMLDivElement>}
             scrollSpeed={scrollSpeed}
+            onScrollStateChange={setIsTextScrolling}
           />
         </div>
         <ToolBar
@@ -42,6 +44,7 @@ export default function Home() {
           onFontChange={setFontFamily}
           scrollSpeed={scrollSpeed}
           onScrollSpeedChange={setScrollSpeed}
+          isTextScrolling={isTextScrolling}
         />
         <FullScreen className="fixed top-4 right-4"/>
       </main>
