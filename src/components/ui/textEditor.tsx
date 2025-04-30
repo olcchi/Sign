@@ -1,15 +1,9 @@
 import { AnimatePresence, motion } from "motion/react";
-import {
-  Card,
-  CardContent,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/cards/card";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Button } from "@/components/ui/button/button";
+import { Separator } from "@/components/ui/layout/separator";
 import React from "react";
-import { X, Type } from "lucide-react";
+
 
 interface TextEditorProps {
   show: boolean;
@@ -49,7 +43,7 @@ export default function TextEditor({
             transition={{ duration: 0.15 }}
             className="relative w-full h-full flex items-center justify-center bg-black/80"
           >
-            <div className="absolute top-20 w-80 border-1 border-zinc-800 p-1 shadow-xl rounded-sm">
+            <div className="absolute top-20 w-80 border-1 border-zinc-800 p-2 shadow-xl rounded-lg">
               <div className=" flex gap-2">
                 <Textarea
                   ref={textInputRef}
@@ -62,10 +56,13 @@ export default function TextEditor({
                   placeholder="请输入文字内容..."
                   aria-label="编辑文本内容"
                 />
+                <div>
+                <Separator orientation='vertical'/>
+                </div>
                 <div className="flex gap-1">
                 <Button
                     onClick={onSubmit}
-                    size="sm"
+                    size='sm'
                     className="text-xs rounded-sm bg-zinc-100 hover:bg-white text-black"
                   >
                     保存
