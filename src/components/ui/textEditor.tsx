@@ -11,14 +11,6 @@ import { Button } from "@/components/ui/button/button";
 import React from "react";
 import { X, Type } from "lucide-react";
 
-// 预设颜色选项
-const colorOptions = [
-  { name: "默认", value: "#ffffff", bg: "bg-white" },
-  { name: "i'm ok 红", value: "#B41D25", bg: "bg-[#B41D25]" },
-  { name: "i'm ok 黄", value: "#FAE300", bg: "bg-[#FAE300]" },
-  { name: "蓝砖 蓝", value: "#04449C", bg: "bg-[#04449C]" },
-  { name: "黑色柳丁 橙", value: "#CB7F33", bg: "bg-[#CB7F33]" },
-];
 interface TextEditorProps {
   show: boolean;
   text: string;
@@ -39,10 +31,7 @@ export default function TextEditor({
   onClose,
   onSubmit,
   textInputRef,
-  // textColor = "",
-  // onColorChange = () => {},
 }: TextEditorProps) {
-
   return (
     <AnimatePresence>
       {show && (
@@ -51,62 +40,47 @@ export default function TextEditor({
           animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
           exit={{ opacity: 0, y: -5, filter: "blur(8px)" }}
           transition={{ duration: 0.2, ease: "easeInOut" }}
-          className="fixed inset-0 z-50 w-screen h-screen flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.95, opacity: 0 }}
             transition={{ duration: 0.15 }}
-            className="w-full max-w-md mx-auto"
+            className="relative w-full h-full flex items-center justify-center bg-black/80"
           >
-            <Card className="border-zinc-800 bg-black/90 shadow-xl">
-              <CardHeader className="pb-2">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-2">
-                    <Type className="h-4 w-4 text-zinc-400" />
-                    <CardTitle className="text-sm">编辑文本</CardTitle>
-                  </div>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="h-8 w-8 text-zinc-400 hover:text-zinc-100" 
-                    onClick={onClose}
-                  >
-                    <X className="h-4 w-4" />
-                    <span className="sr-only">关闭</span>
-                  </Button>
-                </div>
-              </CardHeader>
-              <CardContent className="space-y-4">
+            <div className="absolute top-20 w-80 border-1 border-zinc-800 p-1 shadow-xl rounded-sm">
+              <div className=" flex gap-2">
                 <Textarea
                   ref={textInputRef}
                   value={text}
                   onChange={(e) => onTextChange(e.target.value)}
-                  onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && onSubmit()}
-                  className="h-40 font-bold bg-zinc-900/50 border-zinc-800 focus:border-zinc-700 text-lg resize-none"
+                  onKeyDown={(e) =>
+                    e.ctrlKey && e.key === "Enter" && onSubmit()
+                  }
+                  className="h-fit flex-1 rounded-sm bg-zinc-900/50 border-zinc-800 focus:border-zinc-700 text-xs"
                   placeholder="请输入文字内容..."
                   aria-label="编辑文本内容"
                 />
-              </CardContent>
-              <CardFooter className="flex justify-end gap-2 pt-2">
-                <Button 
-                  variant="outline" 
-                  onClick={onClose}
-                  size="sm"
-                  className=" border-zinc-800 bg-transparent hover:bg-zinc-900 text-zinc-300"
-                >
-                  取消
-                </Button>
-                <Button 
-                  onClick={onSubmit}
-                  size="sm"
-                  className=" flex-1 bg-zinc-100 hover:bg-white text-black"
-                >
-                  保存
-                </Button>
-              </CardFooter>
-            </Card>
+                <div className="flex gap-1">
+                <Button
+                    onClick={onSubmit}
+                    size="sm"
+                    className="text-xs rounded-sm bg-zinc-100 hover:bg-white text-black"
+                  >
+                    保存
+                  </Button>
+                  <Button
+                    variant="outline"
+                    onClick={onClose}
+                    size="sm"
+                    className="text-xs rounded-sm border-zinc-800 bg-transparent hover:bg-zinc-900 text-zinc-300"
+                  >
+                    取消
+                  </Button>
+                </div>
+              </div>
+            </div>
           </motion.div>
         </motion.div>
       )}
