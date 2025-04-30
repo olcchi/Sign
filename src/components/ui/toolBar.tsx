@@ -3,15 +3,15 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Menu, Type, Palette, X, Clock } from "lucide-react";
+import { Menu, Type, Palette, X, Clock,Baseline } from "lucide-react";
 import TextEditor from "@/components/ui/textEditor";
 import { Slider } from "@/components/ui/inputs/slider";
-
+import { Button } from "@/components/ui/button/button";
 const colorOptions = [
-  { name: "默认", value: "#ffffff", bg: "bg-white" },
+  { name: "默认", value: "#ffffff", bg: "bg-white",textColor:'text-[#ffffff]' },
   // { name: "i'm ok 红", value: "#B41D25", bg: "bg-[#B41D25]" },
   // { name: "i'm ok 黄", value: "#FAE300", bg: "bg-[#FAE300]" },
-  { name: "蓝砖 蓝", value: "#04449C", bg: "bg-[#04449C]" },
+  { name: "蓝砖 蓝", value: "#04449C", bg: "bg-[#04449C]",textColor:'text-[#04449C]' },
   // { name: "黑色柳丁 橙", value: "#CB7F33", bg: "bg-[#CB7F33]" },
 ];
 
@@ -118,7 +118,7 @@ export default function ToolBar({
 
   return (
     <MotionConfig transition={transition}>
-      <div className="fixed bottom-4 right-4 z-10" ref={menuRef}>
+      <div className="fixed top-2 left-2 z-10" ref={menuRef}>
         <div className="flex space-x-2">
           {TOOLBAR_ITEMS.map((item) => (
             <div
@@ -146,14 +146,14 @@ export default function ToolBar({
         {isOpen && (
           <motion.div
             ref={cardRef}
-            className="fixed landscape:bottom-4 landscape:right-16 bottom-16 right-4 z-10 w-64 landscape:w-[400px] rounded-md border border-zinc-800 bg-black/90 backdrop-blur-md shadow-lg overflow-hidden"
-            initial={{ opacity: 0, y: 10 }}
+            className="fixed h-fit landscape:bottom-4 landscape:right-16 top-16 left-4 z-10 w-64 landscape:w-[400px] rounded-md border border-zinc-800 bg-black/90 backdrop-blur-md shadow-lg overflow-hidden"
+            initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: 10 }}
+            exit={{ opacity: 0, y: -10 }}
           >
             <div className="p-4">
               <div className="flex justify-between items-center mb-4">
-                <h3 className="text-zinc-200 font-medium select-none">设置</h3>
+                <p className="text-zinc-200 text-sm select-none">配置</p>
                 <button
                   onClick={closePanel}
                   className="text-zinc-400 hover:text-zinc-200 transition-colors"
@@ -186,19 +186,16 @@ export default function ToolBar({
                   </div>
                   <div className="flex flex-wrap gap-2 px-3 py-2">
                     {colorOptions.map((color) => (
-                      <button
+                      <Button
+                      size={'icon'}
                         key={color.value}
                         onClick={() => handleColorChange(color.value)}
-                        className={`w-6 h-6 rounded-full ${
-                          color.bg
-                        } border transition-all ${
-                          textColor === color.value
-                            ? "border-zinc-200 scale-110 shadow-md"
-                            : "border-transparent"
-                        }`}
+                        // className={cn(color.bg)}
                         title={color.name}
                         aria-label={color.name + " 颜色"}
-                      ></button>
+                      >
+                        <Baseline className={cn(color.textColor)} size='sm' />
+                      </Button>
                     ))}
                   </div>
                 </div>
