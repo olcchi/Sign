@@ -3,8 +3,9 @@ import FullScreen from "@/components/ui/layout/fullScreen";
 import EnterPageContent from "@/components/ui/setup/SetupGuide/setupGuide";
 import ToolBar from "@/components/ui/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
-import { useRef, useState,useEffect } from "react"; 
+import { useRef, useState } from "react"; 
 import { cn } from "@/lib/utils";
+import { Button } from "@/components/ui/button/button";
 
 export default function Home() {
   const dragContainer = useRef(null);
@@ -14,7 +15,8 @@ export default function Home() {
   const [text, setText] = useState('dt in the house');
   const [textColor, setTextColor] = useState('white');
   const [fontFamily, setFontFamily] = useState('var(--font-dm-serif-text)');
-  const [scrollSpeed, setScrollSpeed] = useState(10); // 滚动速度
+  const [fontSize, setFontSize] = useState("5rem");
+  const [scrollSpeed, setScrollSpeed] = useState(10);
   const [isTextScrolling, setIsTextScrolling] = useState(false);
 
 
@@ -27,10 +29,10 @@ export default function Home() {
       <main className="w-full h-full flex justify-center items-center">
         <div className="relative w-full">
           <ScrollingText 
-            className={cn("font-4xl")}
             fontFamily={fontFamily}
-            speed={300} 
+            speed={200} 
             text={text}
+            fontSize={fontSize}
             color={textColor}
             textRef={textRef as React.RefObject<HTMLDivElement>}
             scrollSpeed={scrollSpeed}
@@ -42,11 +44,15 @@ export default function Home() {
           onTextChange={setText}
           onColorChange={setTextColor}
           onFontChange={setFontFamily}
+          onFontSizeChange={setFontSize}
           scrollSpeed={scrollSpeed}
           onScrollSpeedChange={setScrollSpeed}
           isTextScrolling={isTextScrolling}
         />
-        <FullScreen className="fixed top-4 right-4"/>
+          <FullScreen
+          asButton={true}
+          className="fixed top-4 left-4"
+           />
       </main>
     </main>
   );
