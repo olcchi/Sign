@@ -40,14 +40,14 @@ export default function ScrollingText({
 
       const needsScroll = textRect.width > containerRect.width;
       
-      // 重置动画状态：先停止滚动，再根据新宽度重新开始
-      setShouldScroll(false); // 立即停止当前动画
+      // Reset animation state: Stop scrolling first, then restart if needed
+      setShouldScroll(false); // Immediately stop current animation
       setTimeout(() => {
-        setTextWidth(textRect.width); // 更新文本宽度
-        setShouldScroll(needsScroll); // 重新触发滚动（如果需要）
-      }, 0); // 下一帧执行，确保渲染完成
+        setTextWidth(textRect.width); // Update text width
+        setShouldScroll(needsScroll); // Restart scrolling if needed
+      }, 0); // Execute in the next frame to ensure rendering completes
     }
-  }, [textRef, fontFamily]);
+  }, [textRef, fontFamily, fontSize]);
 
   useEffect(() => {
     measureWidths();
@@ -55,12 +55,12 @@ export default function ScrollingText({
     return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, text]);
 
-  // 测量文本宽度变化 - 当文本或颜色改变时
+  // Measure text width changes when text or color updates
   useEffect(() => {
     measureWidths();
   }, [text, measureWidths]);
 
-  // 当滚动状态变化时，触发回调
+  // Trigger callback when scroll state changes
   useEffect(() => {
     if (onScrollStateChange) {
       onScrollStateChange(shouldScroll);
@@ -75,6 +75,7 @@ export default function ScrollingText({
     fontFamily,
     color,
   };
+  console.log(textStyle);
 
   return (
     <div
@@ -86,7 +87,7 @@ export default function ScrollingText({
     >
       <div
         className="relative w-full h-fit overflow-hidden flex items-center"
-        aria-label={`滚动文本: ${text}`}
+        aria-label={`Scrolling text: ${text}`}
       >
         {shouldScroll ? (
           <ScrollingTextScroller
