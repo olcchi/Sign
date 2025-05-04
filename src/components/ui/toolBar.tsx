@@ -25,7 +25,7 @@ const colorOptions = [
 const toolBarPosition = {
   sm: "w-fit top-16 right-4 h-fit",
   md: "md:top-4 md:right-16 md:h-[90vh]",
-  lg: "w-100 lg:top-16 lg:right-4 lg:h-fit",
+  lg: "lg:w-100 lg:top-16 lg:right-4 lg:h-fit",
 };
 const fontOptions = [
   { name: "等线", value: "sans-serif" },
