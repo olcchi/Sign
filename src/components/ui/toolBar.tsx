@@ -22,11 +22,15 @@ const colorOptions = [
     textColor: "text-[#04449C]",
   },
 ];
-
+const toolBarPosition = {
+  sm: "w-fit top-16 right-4 h-fit",
+  md: "md:top-4 md:right-16 md:h-[90vh]",
+  lg: "w-100 lg:top-16 lg:right-4 lg:h-fit",
+};
 const fontOptions = [
-  { name: "Serif", value: "sans-serif" },
-  { name: "KolKer Brush", value: "var(--font-kolker-brush)" },
-  { name: "DM SANS", value: "var(--font-dm-serif-text)" },
+  { name: "等线", value: "sans-serif" },
+  { name: "手写", value: "var(--font-kolker-brush)" },
+  { name: "衬线", value: "var(--font-dm-serif-text)" },
 ];
 
 const fontSizeOptions = [
@@ -163,13 +167,18 @@ export default function ToolBar({
         {isOpen && (
           <motion.div
             ref={cardRef}
-            className="fixed h-fit landscape:bottom-4 landscape:right-4 top-16 right-4 z-10 w-64 landscape:w-[400px] rounded-md border border-zinc-800 bg-black/90 backdrop-blur-md shadow-lg overflow-hidden"
+            className={cn(
+              toolBarPosition.sm,
+              toolBarPosition.md,
+              toolBarPosition.lg,
+              "fixed z-10 rounded-md border border-zinc-800 bg-black/90 backdrop-blur-md shadow-lg overflow-hidden landscape:overflow-y-auto"
+            )}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <div className="p-4">
-              <div className="flex justify-between items-center mb-4">
+            <div className="px-4 pb-4 select-none ">
+              <div className="flex justify-between items-center sticky top-0 bg-black pb-4 pt-4 border-b border-zinc-800">
                 <p className="text-zinc-200 text-sm select-none font-bold">
                   配置
                 </p>
@@ -180,7 +189,6 @@ export default function ToolBar({
                   <X size={16} />
                 </button>
               </div>
-              <Separator className="w-full" />
               <div className="space-y-4 mt-4">
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
@@ -201,7 +209,7 @@ export default function ToolBar({
                       尺寸
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2 px-3 py-2">
+                  <div className="flex flex-wrap gap-2 py-2">
                     {fontSizeOptions.map((size) => (
                       <Button
                         size="sm"
@@ -224,7 +232,7 @@ export default function ToolBar({
                       颜色
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2 px-3 py-2">
+                  <div className="flex flex-wrap gap-2 py-2">
                     {colorOptions.map((color) => (
                       <Button
                         size={"icon"}
@@ -249,7 +257,7 @@ export default function ToolBar({
                       字体样式
                     </p>
                   </div>
-                  <div className="flex flex-wrap gap-2 px-3 py-2">
+                  <div className="flex flex-wrap gap-2 py-2">
                     {fontOptions.map((font) => (
                       <Button
                         size="sm"
