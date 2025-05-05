@@ -18,7 +18,7 @@ export interface ScrollingTextProps {
 export default function ScrollingText({
   text,
   speed = 50,
-  fontSize = "5rem",
+  fontSize,
   fontFamily = "var(--font-dm-serif-text)",
   color = "white",
   className = "",
@@ -75,7 +75,6 @@ export default function ScrollingText({
     fontFamily,
     color,
   };
-  console.log(textStyle);
 
   return (
     <div
