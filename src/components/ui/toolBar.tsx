@@ -1,13 +1,23 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Menu, X, Baseline } from "lucide-react";
+import {
+  Menu,
+  X,
+  Baseline,
+  Image as ImageIcon,
+  EyeOff,
+  Eye,
+} from "lucide-react";
 import TextEditor from "@/components/ui/textEditor";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/button/button";
-import { Separator } from "@/components/ui/layout/separator";
+import { SettingItem } from "@/components/ui/settings/SettingItem";
+import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
+import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
+
 const colorOptions = [
   {
     name: "默认",
@@ -22,13 +32,15 @@ const colorOptions = [
     textColor: "text-[#04449C]",
   },
 ];
+
 const toolBarPosition = {
-  sm: "w-fit top-16 right-4 h-fit",
-  md: "md:top-4 md:right-16 md:h-[90vh]",
+  sm: "w-[80vw] top-16 right-4 h-fit max-h-[70vh]",
+  md: "md:w-[40vw] md:top-4 md:right-16 md:h-[90vh] md:max-h-[90dvh]",
   lg: "lg:w-100 lg:top-16 lg:right-4 lg:h-fit",
 };
+
 const fontOptions = [
-  { name: "等线", value: "sans-serif" },
+  { name: "等线", value: "var(--font-geist-sans)" },
   { name: "手写", value: "var(--font-kolker-brush)" },
   { name: "衬线", value: "var(--font-dm-serif-text)" },
 ];
@@ -46,70 +58,63 @@ const transition = {
 };
 
 interface ToolBarProps {
-  initialText?: string;
-  onTextChange?: (text: string) => void;
-  onColorChange?: (color: string) => void;
-  onFontChange?: (font: string) => void;
-  onFontSizeChange?: (size: string) => void;
-  scrollSpeed?: number;
-  onScrollSpeedChange?: (speed: number) => void;
-  isTextScrolling?: boolean;
+  text: string;
+  onTextChange: (text: string) => void;
+  textColor: string;
+  onColorChange: (color: string) => void;
+  fontFamily: string;
+  onFontChange: (font: string) => void;
+  fontSize: string;
+  onFontSizeChange: (size: string) => void;
+  scrollSpeed: number;
+  onScrollSpeedChange: (speed: number) => void;
+  isTextScrolling: boolean;
+  backgroundColor: string;
+  onBackgroundColorChange: (color: string) => void;
+  backgroundImage: string | null;
+  onBackgroundImageChange: (imageUrl: string | null) => void;
+  overlayEnabled: boolean;
+  onOverlayEnabledChange: (enabled: boolean) => void;
 }
 
 export default function ToolBar({
-  initialText = "dt in the house",
+  text,
   onTextChange,
+  textColor,
   onColorChange,
+  fontFamily,
   onFontChange,
+  fontSize,
   onFontSizeChange,
-  scrollSpeed = 10,
+  scrollSpeed,
   onScrollSpeedChange,
-  isTextScrolling = false,
+  isTextScrolling,
+  backgroundColor,
+  onBackgroundColorChange,
+  backgroundImage,
+  onBackgroundImageChange,
+  overlayEnabled,
+  onOverlayEnabledChange,
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
-
-  const [text, setText] = useState(initialText);
-  const [textColor, setTextColor] = useState("#ffffff");
-  const [fontFamily, setFontFamily] = useState("sans-serif");
   const [editMode, setEditMode] = useState(false);
   const [inputText, setInputText] = useState(text);
-  const [fontSize, setFontSize] = useState("text-base");
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
-  const textInputRef = useRef<HTMLTextAreaElement>(null);
+  const textInputRef = useRef<HTMLTextAreaElement | null>(null);
 
-  const handleTextChange = (newText: string) => {
-    setText(newText);
-    if (onTextChange) onTextChange(newText);
-  };
-
-  const handleColorChange = (newColor: string) => {
-    setTextColor(newColor);
-    if (onColorChange) onColorChange(newColor);
-  };
-
-  const handleFontChange = (newFont: string) => {
-    setFontFamily(newFont);
-    if (onFontChange) onFontChange(newFont);
-  };
-
-  const handleFontSizeChange = (newSize: string) => {
-    setFontSize(newSize);
-    if (onFontSizeChange) onFontSizeChange(newSize);
-  };
-
-  const handleScrollSpeedChange = (value: number[]) => {
-    if (onScrollSpeedChange) {
-      onScrollSpeedChange(value[0]);
-    }
-  };
+  useEffect(() => {
+    setInputText(text);
+  }, [text]);
 
   const closePanel = () => {
     setIsOpen(false);
     setActiveTab(null);
   };
+
   const enterEditMode = () => {
     setEditMode(true);
     setInputText(text);
@@ -123,7 +128,47 @@ export default function ToolBar({
   const exitEditMode = () => {
     setEditMode(false);
     const finalText = inputText.trim() === "" ? "请输入一些内容..." : inputText;
-    handleTextChange(finalText);
+    onTextChange(finalText);
+  };
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = (event) => {
+      if (event.target?.result) {
+        onBackgroundImageChange(event.target.result as string);
+      }
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const triggerFileUpload = () => {
+    fileInputRef.current?.click();
+  };
+
+  const removeBackgroundImage = () => {
+    onBackgroundImageChange(null);
+  };
+
+  // load preset
+  const loadPreset = (preset: Preset) => {
+    onTextChange(preset.text);
+    onColorChange(preset.textColor);
+    onFontChange(preset.fontFamily);
+    onFontSizeChange(preset.fontSize);
+    onScrollSpeedChange(preset.scrollSpeed);
+    // Add background settings to preset
+    // if (preset.backgroundColor) {
+    //   onBackgroundColorChange(preset.backgroundColor);
+    // }
+    if (preset.backgroundImage) {
+      onBackgroundImageChange(preset.backgroundImage);
+    }
+    if (preset.overlayEnabled !== undefined) {
+      onOverlayEnabledChange(preset.overlayEnabled);
+    }
   };
 
   const TOOLBAR_ITEMS = [
@@ -142,6 +187,163 @@ export default function ToolBar({
     },
   ];
 
+  // setting items
+  const settingItems = [
+    {
+      id: "content",
+      title: "内容",
+      component: (
+        <button
+          onClick={enterEditMode}
+          className="w-full text-left px-3 py-2 bg-zinc-800/50 hover:bg-zinc-800 rounded-md text-zinc-200 text-sm transition-colors"
+        >
+          {text.length > 30 ? text.substring(0, 30) + "..." : text}
+        </button>
+      ),
+    },
+    {
+      id: "fontSize",
+      title: "字体尺寸",
+      component: (
+        <OptionButtonGroup
+          options={fontSizeOptions}
+          selectedValue={fontSize}
+          onChange={onFontSizeChange}
+        />
+      ),
+    },
+    {
+      id: "textColor",
+      title: "字体颜色",
+      component: (
+        <OptionButtonGroup
+          options={colorOptions}
+          selectedValue={textColor}
+          onChange={onColorChange}
+          buttonSize="icon"
+          renderOption={(option) => (
+            <Baseline className={cn(option.textColor)} size="12" />
+          )}
+        />
+      ),
+    },
+    {
+      id: "fontFamily",
+      title: "字体样式",
+      component: (
+        <OptionButtonGroup
+          options={fontOptions}
+          selectedValue={fontFamily}
+          onChange={onFontChange}
+        />
+      ),
+    },
+    {
+      id: "scrollSpeed",
+      title: "滚动速度",
+      component: (
+        <div className="">
+          <Slider
+            defaultValue={[scrollSpeed]}
+            value={[scrollSpeed]}
+            min={1}
+            max={10}
+            step={1}
+            onValueChange={(value) => onScrollSpeedChange(value[0])}
+            disabled={!isTextScrolling}
+            className="w-full"
+          />
+        </div>
+      ),
+    },
+    // {
+    //   id: "backgroundColor",
+    //   title: "背景颜色",
+    //   component: (
+    //     <div className="space-y-2">
+    //       <OptionButtonGroup
+    //         options={colorOptions}
+    //         selectedValue={backgroundColor}
+    //         onChange={onBackgroundColorChange}
+    //         buttonSize="icon"
+    //         renderOption={(option) => (
+    //           <p className={cn(" rounded-full", option.bg)}></p>
+    //         )}
+    //       />
+    //     </div>
+    //   ),
+    // },
+    {
+      id: "backgroundImage",
+      title: "背景图片",
+      component: (
+        <div className="space-y-2">
+          <input
+            type="file"
+            ref={fileInputRef}
+            accept="image/*"
+            className="hidden"
+            onChange={handleFileChange}
+          />
+          <div className="flex gap-2">
+            <Button
+              onClick={triggerFileUpload}
+              className={cn(
+                backgroundImage
+                  ? "bg-zinc-800 text-zinc-100"
+                  : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300",
+                "bg-zinc-900 flex items-center gap-1 text-xs hover:bg-zinc-800"
+              )}
+              size="sm"
+            >
+              <ImageIcon size={14} />
+              上传图片
+            </Button>
+            {backgroundImage && (
+              <div className=" flex items-center justify-between  gap-2">
+                <Button
+                  variant="destructive"
+                  onClick={removeBackgroundImage}
+                  size="sm"
+                  className="text-xs hover:bg-red-400"
+                >
+                  移除图片
+                </Button>
+              </div>
+            )}
+          </div>
+          {backgroundImage && (
+            <>
+              <div className="mt-2 relative w-full h-20 rounded-md overflow-hidden">
+                <img
+                  src={backgroundImage}
+                  alt="背景预览"
+                  className="absolute w-full h-full object-cover"
+                />
+              </div>
+              <Button
+                size="sm"
+                className="bg-zinc-900 hover:bg-zinc-800 px-2 flex items-center gap-1 text-xs"
+                onClick={() => onOverlayEnabledChange(!overlayEnabled)}
+              >
+                {overlayEnabled ? (
+                  <>
+                    <Eye size={12} />
+                  </>
+                ) : (
+                  <>
+                    <EyeOff size={12} />
+                  </>
+                )}
+                弱化背景
+              </Button>
+            </>
+          )}
+        </div>
+      ),
+    },
+  ];
+
   return (
     <MotionConfig transition={transition}>
       <div className="fixed top-4 right-4 z-10" ref={menuRef}>
@@ -152,6 +354,7 @@ export default function ToolBar({
               className={cn("w-10 h-10 flex justify-center items-center")}
             >
               <Button
+                variant="ghost"
                 aria-label={item.label}
                 className="w-full h-full flex select-none appearance-none items-center justify-center text-zinc-300 hover:text-zinc-100 transition-colors"
                 type="button"
@@ -171,14 +374,14 @@ export default function ToolBar({
               toolBarPosition.sm,
               toolBarPosition.md,
               toolBarPosition.lg,
-              "fixed z-10 rounded-md border border-zinc-800 bg-black/90 backdrop-blur-md shadow-lg overflow-hidden landscape:overflow-y-auto"
+              "fixed z-10 rounded-md border border-zinc-800 bg-zinc-950 backdrop-blur-md shadow-lg overflow-hidden overflow-y-auto"
             )}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
             <div className="px-4 pb-4 select-none ">
-              <div className="flex justify-between items-center sticky top-0 bg-black pb-4 pt-4 border-b border-zinc-800">
+              <div className="w-full flex justify-between items-center sticky top-0 z-999 bg-zinc-950 pb-4 pt-4 border-b border-zinc-800">
                 <p className="text-zinc-200 text-sm select-none font-bold">
                   配置
                 </p>
@@ -190,107 +393,21 @@ export default function ToolBar({
                 </button>
               </div>
               <div className="space-y-4 mt-4">
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-zinc-300 text-sm font-medium select-none">
-                      内容
-                    </p>
-                  </div>
-                  <button
-                    onClick={enterEditMode}
-                    className="w-full text-left px-3 py-2 bg-zinc-800/50 hover:bg-zinc-800 rounded-md text-zinc-200 text-sm transition-colors"
-                  >
-                    {text.length > 30 ? text.substring(0, 30) + "..." : text}
-                  </button>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-zinc-300 text-sm font-medium select-none">
-                      尺寸
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 py-2">
-                    {fontSizeOptions.map((size) => (
-                      <Button
-                        size="sm"
-                        key={size.value}
-                        onClick={() => handleFontSizeChange(size.value)}
-                        className={`px-3 py-1 rounded-md text-xs font-sans transition-colors ${
-                          fontSize === size.value
-                            ? "bg-zinc-800 text-zinc-100"
-                            : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
-                        }`}
-                      >
-                        {size.name}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-zinc-300 text-sm font-medium select-none">
-                      颜色
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 py-2">
-                    {colorOptions.map((color) => (
-                      <Button
-                        size={"icon"}
-                        key={color.value}
-                        onClick={() => handleColorChange(color.value)}
-                        title={color.name}
-                        aria-label={color.name + " 颜色"}
-                        className={`px-3 py-1 rounded-md text-xs font-sans transition-colors ${
-                          textColor === color.value
-                            ? "bg-zinc-800 text-zinc-100"
-                            : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
-                        }`}
-                      >
-                        <Baseline className={cn(color.textColor)} size="12" />
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-zinc-300 text-sm font-medium select-none">
-                      字体样式
-                    </p>
-                  </div>
-                  <div className="flex flex-wrap gap-2 py-2">
-                    {fontOptions.map((font) => (
-                      <Button
-                        size="sm"
-                        key={font.value}
-                        onClick={() => handleFontChange(font.value)}
-                        className={`px-3 py-1 rounded-md text-xs font-sans transition-colors ${
-                          fontFamily === font.value
-                            ? "bg-zinc-800 text-zinc-100"
-                            : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
-                        }`}
-                      >
-                        {font.name}
-                      </Button>
-                    ))}
-                  </div>
-                </div>
-                <div className="space-y-2">
-                  <div className="flex items-center gap-2">
-                    <p className="text-zinc-300 text-sm font-medium select-none">
-                      滚动速度
-                    </p>
-                  </div>
-                  <Slider
-                    defaultValue={[scrollSpeed]}
-                    value={[scrollSpeed]}
-                    min={1}
-                    max={10}
-                    step={1}
-                    onValueChange={handleScrollSpeedChange}
-                    disabled={!isTextScrolling}
-                    className="w-full"
-                  />
-                </div>
+                {settingItems.map((item) => (
+                  <SettingItem key={item.id} title={item.title}>
+                    {item.component}
+                  </SettingItem>
+                ))}
+
+                <PresetManager
+                  text={text}
+                  textColor={textColor}
+                  fontFamily={fontFamily}
+                  fontSize={fontSize}
+                  scrollSpeed={scrollSpeed}
+                  backgroundImage={backgroundImage}
+                  onLoadPreset={loadPreset}
+                />
               </div>
             </div>
           </motion.div>
@@ -303,10 +420,8 @@ export default function ToolBar({
         onClose={() => setEditMode(false)}
         onSubmit={exitEditMode}
         textColor={textColor}
-        onColorChange={handleColorChange}
-        textInputRef={
-          textInputRef as unknown as React.RefObject<HTMLTextAreaElement>
-        }
+        onColorChange={onColorChange}
+        textInputRef={textInputRef as React.RefObject<HTMLTextAreaElement>}
         scrollSpeed={scrollSpeed}
         onScrollSpeedChange={onScrollSpeedChange}
       />
