@@ -32,7 +32,7 @@ export default function FullScreen({ className, asButton = false }: FullScreenPr
     <div className={cn("z-998", className)}>
       {asButton ? (
         <Button
-          size="icon"
+          variant="ghost"
           onClick={toggleFullscreen}
           aria-label={isFull ? "Exit fullscreen" : "Enter fullscreen"}
         >
