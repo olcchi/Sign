@@ -1,9 +1,7 @@
 import { AnimatePresence, motion } from "motion/react";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Button } from "@/components/ui/button/button";
-import { Separator } from "@/components/ui/layout/separator";
 import React from "react";
-
 
 interface TextEditorProps {
   show: boolean;
@@ -30,52 +28,54 @@ export default function TextEditor({
     <AnimatePresence>
       {show && (
         <motion.div
-          initial={{ opacity: 0, y: 5, filter: "blur(8px)" }}
-          animate={{ opacity: 1, y: 0, filter: "blur(0px)" }}
-          exit={{ opacity: 0, y: -5, filter: "blur(8px)" }}
-          transition={{ duration: 0.2, ease: "easeInOut" }}
+          initial={{ opacity: 0, backdropFilter: "blur(0px)" }}
+          animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
+          exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
+          transition={{ duration: 0.2 }}
           className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
+          onClick={onClose}
         >
           <motion.div
-            initial={{ scale: 0.95, opacity: 0 }}
-            animate={{ scale: 1, opacity: 1 }}
-            exit={{ scale: 0.95, opacity: 0 }}
-            transition={{ duration: 0.15 }}
-            className="relative w-full h-full flex items-center justify-center bg-black/80"
+            initial={{ scale: 0.95, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.95, opacity: 0, y: 20 }}
+            transition={{ duration: 0.15, type: "spring", bounce: 0.1 }}
+            className="max-w-md w-[90vw] md:w-96 mx-auto"
+            onClick={(e) => e.stopPropagation()}
           >
-            <div className="absolute top-20 w-80 border-1 border-zinc-800 p-2 shadow-xl rounded-lg">
-              <div className=" flex gap-2">
+            <div className="bg-black border  rounded-lg shadow-xl overflow-hidden">
+              <div className="px-4 py-3 border-b">
+                <p className="text-sm font-medium text-zinc-200">内容</p>
+              </div>
+
+              <div className="p-4">
                 <Textarea
                   ref={textInputRef}
                   value={text}
                   onChange={(e) => onTextChange(e.target.value)}
-                  onKeyDown={(e) =>
-                    e.ctrlKey && e.key === "Enter" && onSubmit()
-                  }
-                  className="h-fit flex-1 rounded-sm bg-zinc-900/50 border-zinc-800 focus:border-zinc-700 text-xs"
+                  onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && onSubmit()}
+                  className="h-32 w-full rounded-md bg-zinc-900/40 border-zinc-900/40 focus:border-zinc-700 text-sm text-zinc-200 resize-none"
                   placeholder="请输入文字内容..."
                   aria-label="编辑文本内容"
                 />
-                <div>
-                <Separator orientation='vertical'/>
-                </div>
-                <div className="flex gap-1">
+              </div>
+              
+              <div className="px-4 py-3 bg-black  flex gap-2 justify-end">
                 <Button
-                    onClick={onSubmit}
-                    size='sm'
-                    className="text-xs rounded-sm bg-zinc-100 hover:bg-white text-black"
-                  >
-                    保存
-                  </Button>
-                  <Button
-                    variant="outline"
-                    onClick={onClose}
-                    size="sm"
-                    className="text-xs rounded-sm border-zinc-800 bg-transparent hover:bg-zinc-900 text-zinc-300"
-                  >
-                    取消
-                  </Button>
-                </div>
+                  variant="outline"
+                  onClick={onClose}
+                  size="sm"
+                  className="text-xs rounded-md border-zinc-800 bg-transparent hover:bg-zinc-800 text-zinc-300 px-3"
+                >
+                  取消
+                </Button>
+                <Button
+                  onClick={onSubmit}
+                  size="sm"
+                  className="text-xs rounded-md bg-zinc-100 hover:bg-white text-black px-6 flex-grow md:flex-grow-0"
+                >
+                  提交
+                </Button>
               </div>
             </div>
           </motion.div>
