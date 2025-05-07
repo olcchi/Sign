@@ -15,8 +15,6 @@ export interface Preset {
   fontSize: string;
   scrollSpeed: number;
   // backgroundColor?: string;
-  backgroundImage?: string | null;
-  overlayEnabled?: boolean;
 }
 
 /**
@@ -77,7 +75,6 @@ export function PresetManager({
       fontSize,
       scrollSpeed,
       // backgroundColor,
-      backgroundImage,
     };
     
     const updatedPresets = [...presets, newPreset];
