@@ -19,6 +19,7 @@ export default function Home() {
   // Background settings
   const [backgroundColor, setBackgroundColor] = useState('#000000');
   const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
+  const [backgroundPosition, setBackgroundPosition] = useState({ x: 50, y: 50 });
   // Overlay settings
   const [overlayEnabled, setOverlayEnabled] = useState(true);
 
@@ -27,7 +28,7 @@ export default function Home() {
     backgroundColor,
     ...(backgroundImage && {
       backgroundImage: `url(${backgroundImage})`,
-      backgroundPosition: 'center',
+      backgroundPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`,
       backgroundSize: 'cover',
       backgroundRepeat: 'no-repeat'
     })
@@ -41,7 +42,7 @@ export default function Home() {
     >
       {/* Background overlay */}
       {backgroundImage && overlayEnabled && (
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-xs z-0"></div>
+        <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-0"></div>
       )}
       
       {/* <EnterPageContent /> */}
@@ -50,7 +51,7 @@ export default function Home() {
           <ScrollingText 
             fontFamily={fontFamily}
             speed={200} 
-            text={text}
+            text={text} 
             fontSize={fontSize}
             color={textColor}
             textRef={textRef as React.RefObject<HTMLDivElement>}
@@ -76,6 +77,8 @@ export default function Home() {
           onBackgroundImageChange={setBackgroundImage}
           overlayEnabled={overlayEnabled}
           onOverlayEnabledChange={setOverlayEnabled}
+          backgroundPosition={backgroundPosition}
+          onBackgroundPositionChange={setBackgroundPosition}
         />
         <FullScreen
           asButton={true}
