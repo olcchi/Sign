@@ -10,6 +10,8 @@ import {
   Image as ImageIcon,
   EyeOff,
   Eye,
+  MoveHorizontal,
+  MoveVertical,
 } from "lucide-react";
 import TextEditor from "@/components/ui/textEditor";
 import { Slider } from "@/components/ui/inputs/slider";
@@ -17,16 +19,17 @@ import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
 import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
 import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
+import Image from "next/image";
 
 const colorOptions = [
   {
-    name: "默认",
+    name: "Default",
     value: "#ffffff",
     bg: "bg-white",
     textColor: "text-[#ffffff]",
   },
   {
-    name: "蓝砖 蓝",
+    name: "Blue",
     value: "#04449C",
     bg: "bg-[#04449C]",
     textColor: "text-[#04449C]",
@@ -46,9 +49,10 @@ const fontOptions = [
 ];
 
 const fontSizeOptions = [
-  { name: "M", value: "5rem" },
-  { name: "L", value: "8rem" },
-  { name: "XL", value: "10rem" },
+  { name: "S", value: "5rem" },
+  { name: "M", value: "8rem" },
+  { name: "L", value: "10rem" },
+  { name: "XL", value: "16rem" },
 ];
 
 const transition = {
@@ -75,6 +79,8 @@ interface ToolBarProps {
   onBackgroundImageChange: (imageUrl: string | null) => void;
   overlayEnabled: boolean;
   onOverlayEnabledChange: (enabled: boolean) => void;
+  backgroundPosition?: { x: number; y: number };
+  onBackgroundPositionChange?: (position: { x: number; y: number }) => void;
 }
 
 export default function ToolBar({
@@ -95,20 +101,122 @@ export default function ToolBar({
   onBackgroundImageChange,
   overlayEnabled,
   onOverlayEnabledChange,
+  backgroundPosition = { x: 50, y: 50 },
+  onBackgroundPositionChange = () => {},
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
   const [editMode, setEditMode] = useState(false);
   const [inputText, setInputText] = useState(text);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const [isActive, setIsActive] = useState(true);
+  const [imageSize, setImageSize] = useState<{ width: number, height: number } | null>(null);
+  const [containerSize, setContainerSize] = useState<{ width: number, height: number } | null>(null);
+  const previewContainerRef = useRef<HTMLDivElement>(null);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
   const textInputRef = useRef<HTMLTextAreaElement | null>(null);
 
   useEffect(() => {
+    let timeoutId: ReturnType<typeof setTimeout>;
+
+    const handleUserInteraction = () => {
+      setIsActive(true);
+
+      clearTimeout(timeoutId);
+
+      if (isOpen || editMode) return;
+
+      timeoutId = setTimeout(() => {
+        setIsActive(false);
+      }, 3000);
+    };
+
+    handleUserInteraction();
+
+    const events = [
+      "mousedown",
+      "mousemove",
+      "keypress",
+      "scroll",
+      "touchstart",
+    ];
+    events.forEach((event) => {
+      window.addEventListener(event, handleUserInteraction);
+    });
+
+    return () => {
+      clearTimeout(timeoutId);
+      events.forEach((event) => {
+        window.removeEventListener(event, handleUserInteraction);
+      });
+    };
+  }, [isOpen, editMode]);
+
+  useEffect(() => {
     setInputText(text);
   }, [text]);
+
+  useEffect(() => {
+    if (backgroundImage) {
+      const img = new window.Image();
+      img.onload = () => {
+        setImageSize({
+          width: img.width,
+          height: img.height
+        });
+      };
+      img.src = backgroundImage;
+    } else {
+      setImageSize(null);
+    }
+  }, [backgroundImage]);
+
+  useEffect(() => {
+    if (previewContainerRef.current && backgroundImage) {
+      const updateContainerSize = () => {
+        const container = previewContainerRef.current;
+        if (container) {
+          setContainerSize({
+            width: container.clientWidth,
+            height: container.clientHeight
+          });
+        }
+      };
+
+      updateContainerSize();
+      window.addEventListener('resize', updateContainerSize);
+      
+      window.addEventListener('orientationchange', () => {
+        setTimeout(updateContainerSize, 100);
+      });
+      
+      return () => {
+        window.removeEventListener('resize', updateContainerSize);
+        window.removeEventListener('orientationchange', updateContainerSize);
+      };
+    }
+  }, [backgroundImage, isOpen]);
+
+  const getSliderDisabledState = () => {
+    if (!imageSize) return { x: false, y: false };
+    
+    // 考虑窗口的宽高，而不是预览容器
+    const windowWidth = window.innerWidth;
+    const windowHeight = window.innerHeight;
+    
+    const imageRatio = imageSize.width / imageSize.height;
+    const windowRatio = windowWidth / windowHeight;
+    
+    // 判断图片是否在某个方向上小于或等于窗口尺寸
+    return {
+      x: imageRatio <= windowRatio, // 高度方向溢出（左右可以滑动）
+      y: imageRatio >= windowRatio  // 宽度方向溢出（上下可以滑动）
+    };
+  };
+  
+  const sliderDisabled = getSliderDisabledState();
 
   const closePanel = () => {
     setIsOpen(false);
@@ -152,26 +260,21 @@ export default function ToolBar({
     onBackgroundImageChange(null);
   };
 
-  // load preset
   const loadPreset = (preset: Preset) => {
     onTextChange(preset.text);
     onColorChange(preset.textColor);
     onFontChange(preset.fontFamily);
     onFontSizeChange(preset.fontSize);
     onScrollSpeedChange(preset.scrollSpeed);
-    // Add background settings to preset
-    // if (preset.backgroundColor) {
-    //   onBackgroundColorChange(preset.backgroundColor);
-    // }
-    if (preset.backgroundImage) {
-      onBackgroundImageChange(preset.backgroundImage);
-    }
-    if (preset.overlayEnabled !== undefined) {
-      onOverlayEnabledChange(preset.overlayEnabled);
-    }
   };
 
-  const TOOLBAR_ITEMS = [
+  const handlePositionChange = (axis: 'x' | 'y', value: number[]) => {
+    const newPosition = { ...backgroundPosition };
+    newPosition[axis] = value[0];
+    onBackgroundPositionChange(newPosition);
+  };
+
+  const toolbarItems = [
     {
       id: "menu",
       label: "菜单",
@@ -187,7 +290,6 @@ export default function ToolBar({
     },
   ];
 
-  // setting items
   const settingItems = [
     {
       id: "content",
@@ -256,23 +358,6 @@ export default function ToolBar({
         </div>
       ),
     },
-    // {
-    //   id: "backgroundColor",
-    //   title: "背景颜色",
-    //   component: (
-    //     <div className="space-y-2">
-    //       <OptionButtonGroup
-    //         options={colorOptions}
-    //         selectedValue={backgroundColor}
-    //         onChange={onBackgroundColorChange}
-    //         buttonSize="icon"
-    //         renderOption={(option) => (
-    //           <p className={cn(" rounded-full", option.bg)}></p>
-    //         )}
-    //       />
-    //     </div>
-    //   ),
-    // },
     {
       id: "backgroundImage",
       title: "背景图片",
@@ -314,12 +399,49 @@ export default function ToolBar({
           </div>
           {backgroundImage && (
             <>
-              <div className="mt-2 relative w-full h-20 rounded-md overflow-hidden">
-                <img
+              <div 
+                className="mt-2 relative w-full h-20 rounded-md overflow-hidden"
+                ref={previewContainerRef}
+              >
+                <Image
                   src={backgroundImage}
+                  quality={80}
                   alt="背景预览"
-                  className="absolute w-full h-full object-cover"
+                  fill
+                  sizes="100px"
+                  style={{
+                    objectFit: "cover",
+                    // objectPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`
+                  }}
                 />
+              </div>
+              <div className="mt-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  <MoveHorizontal size={14} className={cn("text-zinc-400", sliderDisabled.x && "text-zinc-600")} />
+                  <Slider
+                    defaultValue={[backgroundPosition.x]}
+                    value={[backgroundPosition.x]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => handlePositionChange('x', value)}
+                    className="w-full"
+                    disabled={sliderDisabled.x}
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <MoveVertical size={14} className={cn("text-zinc-400", sliderDisabled.y && "text-zinc-600")} />
+                  <Slider
+                    defaultValue={[backgroundPosition.y]}
+                    value={[backgroundPosition.y]}
+                    min={0}
+                    max={100}
+                    step={1}
+                    onValueChange={(value) => handlePositionChange('y', value)}
+                    className="w-full"
+                    disabled={sliderDisabled.y}
+                  />
+                </div>
               </div>
               <Button
                 size="sm"
@@ -346,9 +468,16 @@ export default function ToolBar({
 
   return (
     <MotionConfig transition={transition}>
-      <div className="fixed top-4 right-4 z-10" ref={menuRef}>
+      <div
+        className={cn(
+          "fixed top-4 right-4 z-10",
+          "transition-opacity duration-300",
+          isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
+        )}
+        ref={menuRef}
+      >
         <div className="flex space-x-2">
-          {TOOLBAR_ITEMS.map((item) => (
+          {toolbarItems.map((item) => (
             <div
               key={item.id}
               className={cn("w-10 h-10 flex justify-center items-center")}
