@@ -55,6 +55,10 @@ const fontSizeOptions = [
   { name: "XL", value: "16rem" },
 ];
 
+// Image processing configuration
+const PREVIEW_IMAGE_QUALITY = 0.3;
+const BACKGROUND_IMAGE_QUALITY = 0.9;
+
 const transition = {
   type: "spring",
   bounce: 0.1,
@@ -113,6 +117,7 @@ export default function ToolBar({
   const [imageSize, setImageSize] = useState<{ width: number, height: number } | null>(null);
   const [containerSize, setContainerSize] = useState<{ width: number, height: number } | null>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
+  const [previewImage, setPreviewImage] = useState<string | null>(null);
 
   const menuRef = useRef<HTMLDivElement | null>(null);
   const cardRef = useRef<HTMLDivElement | null>(null);
@@ -200,19 +205,23 @@ export default function ToolBar({
   }, [backgroundImage, isOpen]);
 
   const getSliderDisabledState = () => {
-    if (!imageSize) return { x: false, y: false };
+    if (typeof window === 'undefined') {
+      // Default to disabled on the server
+      return { x: true, y: true };
+    }
+    if (!imageSize) return { x: false, y: false }; // Should be true if no image? Or this implies it won't be shown
     
-    // 考虑窗口的宽高，而不是预览容器
+    // Consider window dimensions instead of the preview container
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
     
     const imageRatio = imageSize.width / imageSize.height;
     const windowRatio = windowWidth / windowHeight;
     
-    // 判断图片是否在某个方向上小于或等于窗口尺寸
+    // Determine if the image is smaller than or equal to the window size in a particular direction
     return {
-      x: imageRatio <= windowRatio, // 高度方向溢出（左右可以滑动）
-      y: imageRatio >= windowRatio  // 宽度方向溢出（上下可以滑动）
+      x: imageRatio <= windowRatio, // Height overflow (can slide left-right)
+      y: imageRatio >= windowRatio  // Width overflow (can slide up-down)
     };
   };
   
@@ -235,7 +244,7 @@ export default function ToolBar({
 
   const exitEditMode = () => {
     setEditMode(false);
-    const finalText = inputText.trim() === "" ? "请输入一些内容..." : inputText;
+    const finalText = inputText.trim() === "" ? "Please enter some content..." : inputText;
     onTextChange(finalText);
   };
 
@@ -243,13 +252,56 @@ export default function ToolBar({
     const file = e.target.files?.[0];
     if (!file) return;
 
-    const reader = new FileReader();
-    reader.onload = (event) => {
-      if (event.target?.result) {
-        onBackgroundImageChange(event.target.result as string);
+    // Create object URL for the file
+    const objectUrl = URL.createObjectURL(file);
+    
+    // Load image to get dimensions and process it
+    const img = document.createElement('img');
+    img.onload = () => {
+      // Set image size for slider calculations
+      setImageSize({
+        width: img.width,
+        height: img.height
+      });
+      
+      // Create canvas to process images
+      const canvas = document.createElement('canvas');
+      const ctx = canvas.getContext('2d');
+      
+      if (ctx) {
+        // Set canvas dimensions to match image
+        canvas.width = img.width;
+        canvas.height = img.height;
+        
+        // Draw image to canvas
+        ctx.drawImage(img, 0, 0);
+        
+        // Convert to data URL with high quality for background
+        const backgroundDataUrl = canvas.toDataURL('image/jpeg', BACKGROUND_IMAGE_QUALITY);
+        
+        // Create a lower quality version for preview
+        const previewDataUrl = canvas.toDataURL('image/jpeg', PREVIEW_IMAGE_QUALITY);
+        
+        // Set the processed image for background
+        onBackgroundImageChange(backgroundDataUrl);
+        
+        // Store preview image URL in state for the preview component
+        setPreviewImage(previewDataUrl);
+      } else {
+        // Fallback if canvas context is not available
+        onBackgroundImageChange(objectUrl);
+        setPreviewImage(objectUrl);
       }
     };
-    reader.readAsDataURL(file);
+    
+    img.onerror = () => {
+      // Fallback for image loading error
+      console.error("Error loading image");
+      URL.revokeObjectURL(objectUrl);
+    };
+    
+    // Set src to start loading
+    img.src = objectUrl;
   };
 
   const triggerFileUpload = () => {
@@ -404,14 +456,13 @@ export default function ToolBar({
                 ref={previewContainerRef}
               >
                 <Image
-                  src={backgroundImage}
-                  quality={80}
-                  alt="背景预览"
+                  src={previewImage || backgroundImage}
+                  alt="Background preview"
                   fill
                   sizes="100px"
                   style={{
                     objectFit: "cover",
-                    // objectPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`
+                    objectPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`
                   }}
                 />
               </div>
