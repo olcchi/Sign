@@ -32,8 +32,8 @@ export default function TextEditor({
           animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-sm"
-          onClick={onClose}
+          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-2xl"
+          // onClick={onClose}
         >
           <motion.div
             initial={{ scale: 0.95, opacity: 0, y: 20 }}
@@ -43,7 +43,7 @@ export default function TextEditor({
             className="max-w-md w-[90vw] md:w-96 mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-black border  rounded-lg shadow-xl overflow-hidden">
+            <div className="bg-black/90 backdrop-blur-2xl border  rounded-lg shadow-xl overflow-hidden">
               <div className="px-4 py-3 border-b">
                 <p className="text-sm font-medium text-zinc-200">内容</p>
               </div>
@@ -55,8 +55,8 @@ export default function TextEditor({
                   onChange={(e) => onTextChange(e.target.value)}
                   onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && onSubmit()}
                   className="h-32 w-full rounded-md bg-zinc-900/40 border-zinc-900/40 focus:border-zinc-700 text-sm text-zinc-200 resize-none"
-                  placeholder="请输入文字内容..."
-                  aria-label="编辑文本内容"
+                  placeholder="Enter text content..."
+                  aria-label="Edit text content"
                 />
               </div>
               
@@ -72,7 +72,7 @@ export default function TextEditor({
                 <Button
                   onClick={onSubmit}
                   size="sm"
-                  className="text-xs rounded-md bg-zinc-100 hover:bg-white text-black px-6 flex-grow md:flex-grow-0"
+                  className="text-xs rounded-md bg-zinc-100 hover:bg-white text-black px-6 flex-grow md:flex-grow-0 flex-1!"
                 >
                   提交
                 </Button>
