@@ -5,7 +5,6 @@ import { ScrollingTextScroller } from "@/components/ui/widgets/scrollingText/scr
 
 export interface ScrollingTextProps {
   text: string;
-  speed?: number;
   fontSize?: string;
   fontFamily?: string;
   color?: string;
@@ -17,7 +16,6 @@ export interface ScrollingTextProps {
 
 export default function ScrollingText({
   text,
-  speed = 50,
   fontSize,
   fontFamily = "var(--font-dm-serif-text)",
   color = "white",
@@ -55,11 +53,6 @@ export default function ScrollingText({
     return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, text]);
 
-  // Measure text width changes when text or color updates
-  useEffect(() => {
-    measureWidths();
-  }, [text, measureWidths]);
-
   // Trigger callback when scroll state changes
   useEffect(() => {
     if (onScrollStateChange) {
@@ -68,7 +61,11 @@ export default function ScrollingText({
   }, [shouldScroll, onScrollStateChange]);
 
   const TEXT_GAP = 150;
-  const animationDuration = 100 / scrollSpeed;
+  // Adjust animation duration based on text width to maintain consistent visual speed across different text sizes
+  // Uses a fixed base width to normalize the speed
+  const BASE_WIDTH = 1000;
+  const widthFactor = textWidth / BASE_WIDTH;
+  const animationDuration = (widthFactor * 100) / scrollSpeed;
 
   const textStyle = {
     fontSize,
