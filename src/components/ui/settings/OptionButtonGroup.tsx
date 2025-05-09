@@ -55,7 +55,7 @@ export function OptionButtonGroup<T extends Option>({
             selectedValue === option.value
               ? "bg-zinc-800 text-zinc-100"
               : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
-          }`}
+          } ${className}`}
           title={option.name}
         >
           {renderOption ? renderOption(option) : option.name}
