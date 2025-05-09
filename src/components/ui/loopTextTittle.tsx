@@ -32,7 +32,7 @@ export default function loopTextTittle() {
       className="text-zinc-200 text-xl font-bold pointer-events-none select-none font-[family-name:var(--font-dm-serif-text)]"
     >
       <span>Soul Sign</span>
-      <span>喆式应援</span>
+      <span>赛博应援牌</span>
     </TextLoop>
   );
 }
