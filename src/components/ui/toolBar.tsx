@@ -3,36 +3,44 @@
 import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import {
-  Menu,
-  X,
-  Baseline,
-  Image as ImageIcon,
-  EyeOff,
-  Eye,
-  MoveHorizontal,
-  MoveVertical,
-} from "lucide-react";
+import { Menu, X } from "lucide-react";
 import TextEditor from "@/components/ui/textEditor";
-import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
-import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
+
 import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
-import Image from "next/image";
+import { getSettingItems } from "@/components/ui/settings/ToolBarSettings";
 
 const colorOptions = [
   {
-    name: "Default",
-    value: "#ffffff",
-    bg: "bg-white",
-    textColor: "text-[#ffffff]",
+    name: "GOFUN",
+    value: "#FFFFFB",
+    bg: "bg-[#FFFFFB]",
+    textColor: "text-[#FFFFFB]",
   },
   {
-    name: "Blue",
-    value: "#04449C",
-    bg: "bg-[#04449C]",
-    textColor: "text-[#04449C]",
+    name: "RURIKON",
+    value: "#0B346E",
+    bg: "bg-[#0B346E]",
+    textColor: "text-[#0B346E]",
+  },
+  {
+    name: "KOHAKU",
+    value: "#CA7A2C",
+    bg: "bg-[#CA7A2C]",
+    textColor: "text-[#CA7A2C]",
+  },
+  {
+    name: "FUJI",
+    value: "#8B81C3",
+    bg: "bg-[#8B81C3]",
+    textColor: "text-[#8B81C3]",
+  },
+  {
+    name: "SYOJYOHI",
+    value: "#CC543A",
+    bg: "bg-[#CC543A]",
+    textColor: "text-[#CC543A]",
   },
 ];
 
@@ -43,9 +51,21 @@ const toolBarPosition = {
 };
 
 const fontOptions = [
-  { name: "等线", value: "var(--font-geist-sans)" },
-  { name: "手写", value: "var(--font-kolker-brush)" },
-  { name: "衬线", value: "var(--font-dm-serif-text)" },
+  {
+    name: "Sans",
+    value: "var(--font-geist-sans)",
+    fontFamily: "text-[var(--font-geist-sans)]",
+  },
+  // {
+  //   name: "Brush",
+  //   value: "var(--font-kolker-brush)",
+  //   fontFamily: "text-[var(--font-kolker-brush)]",
+  // },
+  {
+    name: "Serif",
+    value: "var(--font-dm-serif-text)",
+    fontFamily: "text-[var(--font-dm-serif-text)]",
+  },
 ];
 
 const fontSizeOptions = [
@@ -85,6 +105,12 @@ interface ToolBarProps {
   onOverlayEnabledChange: (enabled: boolean) => void;
   backgroundPosition?: { x: number; y: number };
   onBackgroundPositionChange?: (position: { x: number; y: number }) => void;
+  backgroundZoom?: number;
+  onBackgroundZoomChange?: (zoom: number) => void;
+  edgeBlurEnabled?: boolean;
+  onEdgeBlurEnabledChange?: (enabled: boolean) => void;
+  edgeBlurIntensity?: number;
+  onEdgeBlurIntensityChange?: (intensity: number) => void;
 }
 
 export default function ToolBar({
@@ -107,6 +133,12 @@ export default function ToolBar({
   onOverlayEnabledChange,
   backgroundPosition = { x: 50, y: 50 },
   onBackgroundPositionChange = () => {},
+  backgroundZoom = 1,
+  onBackgroundZoomChange = () => {},
+  edgeBlurEnabled = false,
+  onEdgeBlurEnabledChange = () => {},
+  edgeBlurIntensity = 5,
+  onEdgeBlurIntensityChange = () => {},
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
@@ -114,8 +146,14 @@ export default function ToolBar({
   const [inputText, setInputText] = useState(text);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const [isActive, setIsActive] = useState(true);
-  const [imageSize, setImageSize] = useState<{ width: number, height: number } | null>(null);
-  const [containerSize, setContainerSize] = useState<{ width: number, height: number } | null>(null);
+  const [imageSize, setImageSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
+  const [containerSize, setContainerSize] = useState<{
+    width: number;
+    height: number;
+  } | null>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const [previewImage, setPreviewImage] = useState<string | null>(null);
 
@@ -169,7 +207,7 @@ export default function ToolBar({
       img.onload = () => {
         setImageSize({
           width: img.width,
-          height: img.height
+          height: img.height,
         });
       };
       img.src = backgroundImage;
@@ -185,46 +223,46 @@ export default function ToolBar({
         if (container) {
           setContainerSize({
             width: container.clientWidth,
-            height: container.clientHeight
+            height: container.clientHeight,
           });
         }
       };
 
       updateContainerSize();
-      window.addEventListener('resize', updateContainerSize);
-      
-      window.addEventListener('orientationchange', () => {
+      window.addEventListener("resize", updateContainerSize);
+
+      window.addEventListener("orientationchange", () => {
         setTimeout(updateContainerSize, 100);
       });
-      
+
       return () => {
-        window.removeEventListener('resize', updateContainerSize);
-        window.removeEventListener('orientationchange', updateContainerSize);
+        window.removeEventListener("resize", updateContainerSize);
+        window.removeEventListener("orientationchange", updateContainerSize);
       };
     }
   }, [backgroundImage, isOpen]);
 
   const getSliderDisabledState = () => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       // Default to disabled on the server
       return { x: true, y: true };
     }
     if (!imageSize) return { x: false, y: false }; // Should be true if no image? Or this implies it won't be shown
-    
+
     // Consider window dimensions instead of the preview container
     const windowWidth = window.innerWidth;
     const windowHeight = window.innerHeight;
-    
+
     const imageRatio = imageSize.width / imageSize.height;
     const windowRatio = windowWidth / windowHeight;
-    
+
     // Determine if the image is smaller than or equal to the window size in a particular direction
     return {
       x: imageRatio <= windowRatio, // Height overflow (can slide left-right)
-      y: imageRatio >= windowRatio  // Width overflow (can slide up-down)
+      y: imageRatio >= windowRatio, // Width overflow (can slide up-down)
     };
   };
-  
+
   const sliderDisabled = getSliderDisabledState();
 
   const closePanel = () => {
@@ -244,7 +282,8 @@ export default function ToolBar({
 
   const exitEditMode = () => {
     setEditMode(false);
-    const finalText = inputText.trim() === "" ? "Please enter some content..." : inputText;
+    const finalText =
+      inputText.trim() === "" ? "Please enter some content..." : inputText;
     onTextChange(finalText);
   };
 
@@ -254,37 +293,43 @@ export default function ToolBar({
 
     // Create object URL for the file
     const objectUrl = URL.createObjectURL(file);
-    
+
     // Load image to get dimensions and process it
-    const img = document.createElement('img');
+    const img = document.createElement("img");
     img.onload = () => {
       // Set image size for slider calculations
       setImageSize({
         width: img.width,
-        height: img.height
+        height: img.height,
       });
-      
+
       // Create canvas to process images
-      const canvas = document.createElement('canvas');
-      const ctx = canvas.getContext('2d');
-      
+      const canvas = document.createElement("canvas");
+      const ctx = canvas.getContext("2d");
+
       if (ctx) {
         // Set canvas dimensions to match image
         canvas.width = img.width;
         canvas.height = img.height;
-        
+
         // Draw image to canvas
         ctx.drawImage(img, 0, 0);
-        
+
         // Convert to data URL with high quality for background
-        const backgroundDataUrl = canvas.toDataURL('image/jpeg', BACKGROUND_IMAGE_QUALITY);
-        
+        const backgroundDataUrl = canvas.toDataURL(
+          "image/jpeg",
+          BACKGROUND_IMAGE_QUALITY
+        );
+
         // Create a lower quality version for preview
-        const previewDataUrl = canvas.toDataURL('image/jpeg', PREVIEW_IMAGE_QUALITY);
-        
+        const previewDataUrl = canvas.toDataURL(
+          "image/jpeg",
+          PREVIEW_IMAGE_QUALITY
+        );
+
         // Set the processed image for background
         onBackgroundImageChange(backgroundDataUrl);
-        
+
         // Store preview image URL in state for the preview component
         setPreviewImage(previewDataUrl);
       } else {
@@ -293,13 +338,13 @@ export default function ToolBar({
         setPreviewImage(objectUrl);
       }
     };
-    
+
     img.onerror = () => {
       // Fallback for image loading error
       console.error("Error loading image");
       URL.revokeObjectURL(objectUrl);
     };
-    
+
     // Set src to start loading
     img.src = objectUrl;
   };
@@ -320,7 +365,7 @@ export default function ToolBar({
     onScrollSpeedChange(preset.scrollSpeed);
   };
 
-  const handlePositionChange = (axis: 'x' | 'y', value: number[]) => {
+  const handlePositionChange = (axis: "x" | "y", value: number[]) => {
     const newPosition = { ...backgroundPosition };
     newPosition[axis] = value[0];
     onBackgroundPositionChange(newPosition);
@@ -342,180 +387,39 @@ export default function ToolBar({
     },
   ];
 
-  const settingItems = [
-    {
-      id: "content",
-      title: "内容",
-      component: (
-        <button
-          onClick={enterEditMode}
-          className="w-full text-left px-3 py-2 bg-zinc-800/50 hover:bg-zinc-800 rounded-md text-zinc-200 text-sm transition-colors"
-        >
-          {text.length > 30 ? text.substring(0, 30) + "..." : text}
-        </button>
-      ),
-    },
-    {
-      id: "fontSize",
-      title: "字体尺寸",
-      component: (
-        <OptionButtonGroup
-          options={fontSizeOptions}
-          selectedValue={fontSize}
-          onChange={onFontSizeChange}
-        />
-      ),
-    },
-    {
-      id: "textColor",
-      title: "字体颜色",
-      component: (
-        <OptionButtonGroup
-          options={colorOptions}
-          selectedValue={textColor}
-          onChange={onColorChange}
-          buttonSize="icon"
-          renderOption={(option) => (
-            <Baseline className={cn(option.textColor)} size="12" />
-          )}
-        />
-      ),
-    },
-    {
-      id: "fontFamily",
-      title: "字体样式",
-      component: (
-        <OptionButtonGroup
-          options={fontOptions}
-          selectedValue={fontFamily}
-          onChange={onFontChange}
-        />
-      ),
-    },
-    {
-      id: "scrollSpeed",
-      title: "滚动速度",
-      component: (
-        <div className="">
-          <Slider
-            defaultValue={[scrollSpeed]}
-            value={[scrollSpeed]}
-            min={1}
-            max={10}
-            step={1}
-            onValueChange={(value) => onScrollSpeedChange(value[0])}
-            disabled={!isTextScrolling}
-            className="w-full"
-          />
-        </div>
-      ),
-    },
-    {
-      id: "backgroundImage",
-      title: "背景图片",
-      component: (
-        <div className="space-y-2">
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-          <div className="flex gap-2">
-            <Button
-              onClick={triggerFileUpload}
-              className={cn(
-                backgroundImage
-                  ? "bg-zinc-800 text-zinc-100"
-                  : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300",
-                "bg-zinc-900 flex items-center gap-1 text-xs hover:bg-zinc-800"
-              )}
-              size="sm"
-            >
-              <ImageIcon size={14} />
-              上传图片
-            </Button>
-            {backgroundImage && (
-              <div className=" flex items-center justify-between  gap-2">
-                <Button
-                  variant="destructive"
-                  onClick={removeBackgroundImage}
-                  size="sm"
-                  className="text-xs hover:bg-red-400"
-                >
-                  移除图片
-                </Button>
-              </div>
-            )}
-          </div>
-          {backgroundImage && (
-            <>
-              <div 
-                className="mt-2 relative w-full h-20 rounded-md overflow-hidden"
-                ref={previewContainerRef}
-              >
-                <Image
-                  src={previewImage || backgroundImage}
-                  alt="Background preview"
-                  fill
-                  sizes="100px"
-                  style={{
-                    objectFit: "cover",
-                    objectPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`
-                  }}
-                />
-              </div>
-              <div className="mt-2 space-y-2">
-                <div className="flex items-center gap-2">
-                  <MoveHorizontal size={14} className={cn("text-zinc-400", sliderDisabled.x && "text-zinc-600")} />
-                  <Slider
-                    defaultValue={[backgroundPosition.x]}
-                    value={[backgroundPosition.x]}
-                    min={0}
-                    max={100}
-                    step={1}
-                    onValueChange={(value) => handlePositionChange('x', value)}
-                    className="w-full"
-                    disabled={sliderDisabled.x}
-                  />
-                </div>
-                <div className="flex items-center gap-2">
-                  <MoveVertical size={14} className={cn("text-zinc-400", sliderDisabled.y && "text-zinc-600")} />
-                  <Slider
-                    defaultValue={[backgroundPosition.y]}
-                    value={[backgroundPosition.y]}
-                    min={0}
-                    max={100}
-                    step={1}
-                    onValueChange={(value) => handlePositionChange('y', value)}
-                    className="w-full"
-                    disabled={sliderDisabled.y}
-                  />
-                </div>
-              </div>
-              <Button
-                size="sm"
-                className="bg-zinc-900 hover:bg-zinc-800 px-2 flex items-center gap-1 text-xs"
-                onClick={() => onOverlayEnabledChange(!overlayEnabled)}
-              >
-                {overlayEnabled ? (
-                  <>
-                    <Eye size={12} />
-                  </>
-                ) : (
-                  <>
-                    <EyeOff size={12} />
-                  </>
-                )}
-                弱化背景
-              </Button>
-            </>
-          )}
-        </div>
-      ),
-    },
-  ];
+  const settingItems = getSettingItems({
+    text,
+    enterEditMode,
+    fontSize,
+    onFontSizeChange,
+    textColor,
+    onColorChange,
+    fontFamily,
+    onFontChange,
+    scrollSpeed,
+    onScrollSpeedChange,
+    backgroundImage,
+    triggerFileUpload,
+    removeBackgroundImage,
+    previewImage,
+    previewContainerRef,
+    backgroundPosition,
+    handlePositionChange,
+    sliderDisabled,
+    backgroundZoom,
+    onBackgroundZoomChange,
+    overlayEnabled,
+    onOverlayEnabledChange,
+    edgeBlurEnabled,
+    onEdgeBlurEnabledChange,
+    edgeBlurIntensity,
+    onEdgeBlurIntensityChange,
+    fileInputRef,
+    handleFileChange,
+    colorOptions,
+    fontOptions,
+    fontSizeOptions,
+  });
 
   return (
     <MotionConfig transition={transition}>
@@ -554,14 +458,14 @@ export default function ToolBar({
               toolBarPosition.sm,
               toolBarPosition.md,
               toolBarPosition.lg,
-              "fixed z-10 rounded-md border border-zinc-800 bg-zinc-950 backdrop-blur-md shadow-lg overflow-hidden overflow-y-auto"
+              "fixed z-10 rounded-md border border-zinc-800 bg-zinc-950/80 backdrop-blur-xl shadow-lg overflow-hidden overflow-y-auto custom-scrollbar"
             )}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <div className="px-4 pb-4 select-none ">
-              <div className="w-full flex justify-between items-center sticky top-0 z-999 bg-zinc-950 pb-4 pt-4 border-b border-zinc-800">
+            <div className="sticky top-0 z-50 w-full bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-800">
+              <div className="px-4 py-4 flex justify-between items-center">
                 <p className="text-zinc-200 text-sm select-none font-bold">
                   配置
                 </p>
@@ -572,6 +476,8 @@ export default function ToolBar({
                   <X size={16} />
                 </button>
               </div>
+            </div>
+            <div className="px-4 pb-4 select-none">
               <div className="space-y-4 mt-4">
                 {settingItems.map((item) => (
                   <SettingItem key={item.id} title={item.title}>
