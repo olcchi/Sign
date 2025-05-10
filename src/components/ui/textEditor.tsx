@@ -32,7 +32,7 @@ export default function TextEditor({
           animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70 backdrop-blur-2xl"
+          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-2xl"
           // onClick={onClose}
         >
           <motion.div
@@ -43,24 +43,29 @@ export default function TextEditor({
             className="max-w-md w-[90vw] md:w-96 mx-auto"
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="bg-black/90 backdrop-blur-2xl border  rounded-lg shadow-xl overflow-hidden">
+            <div className="bg-black/90 backdrop-blur-2xl border rounded-lg shadow-xl overflow-hidden">
               <div className="px-4 py-3 border-b">
                 <p className="text-sm font-medium text-zinc-200">内容</p>
               </div>
 
-              <div className="p-4">
-                <Textarea
-                  ref={textInputRef}
-                  value={text}
-                  onChange={(e) => onTextChange(e.target.value)}
-                  onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && onSubmit()}
-                  className="h-32 w-full rounded-md bg-zinc-900/40 border-zinc-900/40 focus:border-zinc-700 text-sm text-zinc-200 resize-none"
-                  placeholder="Enter text content..."
-                  aria-label="Edit text content"
-                />
+              <div className="p-3">
+                <div className="h-32 w-full rounded-md bg-zinc-900/40 border border-zinc-900/40 focus-within:border-zinc-700 overflow-y-auto custom-scrollbar">
+                  <Textarea
+                    ref={textInputRef}
+                    value={text}
+                    onChange={(e) => onTextChange(e.target.value)}
+                    onKeyDown={(e) => e.ctrlKey && e.key === "Enter" && onSubmit()}
+                    className="h-auto w-full bg-transparent border-0 text-sm text-zinc-200 overflow-hidden resize-none"
+                    placeholder="Enter text content..."
+                    aria-label="Edit text content"
+                    style={{
+                      overflowY: 'hidden',
+                    }}
+                  />
+                </div>
               </div>
               
-              <div className="px-4 py-3 bg-black  flex gap-2 justify-end">
+              <div className="px-4 pb-3 bg-black flex gap-2 justify-end">
                 <Button
                   variant="outline"
                   onClick={onClose}
