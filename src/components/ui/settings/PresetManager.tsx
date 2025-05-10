@@ -2,8 +2,14 @@ import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button/button";
 import { Save, Download, Trash2, ChevronDown, RefreshCw } from "lucide-react";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { cn } from "@/lib/utils";
+import { styles } from "@/lib/styles";
 
 /**
  * Preset interface defining the structure of saved presets
@@ -17,6 +23,12 @@ export interface Preset {
   fontSize: string;
   scrollSpeed: number;
   // backgroundColor?: string;
+  edgeBlurEnabled: boolean;
+  edgeBlurIntensity: number;
+  shinyTextEnabled: boolean;
+  noiseEnabled?: boolean;
+  noiseOpacity?: number;
+  noiseDensity?: number;
 }
 
 /**
@@ -30,6 +42,12 @@ interface PresetManagerProps {
   scrollSpeed: number;
   // backgroundColor?: string;
   backgroundImage?: string | null;
+  edgeBlurEnabled: boolean;
+  edgeBlurIntensity: number;
+  shinyTextEnabled: boolean;
+  noiseEnabled?: boolean;
+  noiseOpacity?: number;
+  noiseDensity?: number;
   onLoadPreset: (preset: Preset) => void;
 }
 
@@ -45,6 +63,12 @@ export function PresetManager({
   scrollSpeed,
   // backgroundColor,
   backgroundImage,
+  edgeBlurEnabled,
+  edgeBlurIntensity,
+  shinyTextEnabled,
+  noiseEnabled,
+  noiseOpacity,
+  noiseDensity,
   onLoadPreset,
 }: PresetManagerProps) {
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -55,30 +79,40 @@ export function PresetManager({
 
   // 值到标签的映射
   const getFontSizeLabel = (size: string) => {
-    switch(size) {
-      case "5rem": return "S";
-      case "8rem": return "M";
-      case "10rem": return "L";
-      case "16rem": return "XL";
-      default: return size;
+    switch (size) {
+      case "5rem":
+        return "S";
+      case "8rem":
+        return "M";
+      case "10rem":
+        return "L";
+      case "16rem":
+        return "XL";
+      default:
+        return size;
     }
   };
-  
+
   const getScrollSpeedLabel = (speed: number) => {
-    switch(speed) {
-      case 3: return "0.3x";
-      case 5: return "0.5x";
-      case 10: return "1x";
-      case 15: return "1.5x";
-      case 20: return "2x";
+    switch (speed) {
+      case 3:
+        return "0.3x";
+      case 5:
+        return "0.5x";
+      case 10:
+        return "1x";
+      case 15:
+        return "1.5x";
+      case 20:
+        return "2x";
     }
   };
-  
+
   const getFontFamilyLabel = (font: string) => {
     if (font.includes("sans")) return "Sans";
     if (font.includes("serif")) return "Serif";
   };
-  
+
   const getFontColorLabel = (color: string) => {
     return color;
   };
@@ -88,7 +122,36 @@ export function PresetManager({
     const savedPresets = localStorage.getItem("soulsign-presets");
     if (savedPresets) {
       try {
-        setPresets(JSON.parse(savedPresets));
+        // 处理旧的预设格式，为缺少的新属性提供默认值
+        const parsedPresets = JSON.parse(savedPresets);
+        const updatedPresets = parsedPresets.map((preset: any) => ({
+          ...preset,
+          edgeBlurEnabled:
+            preset.edgeBlurEnabled !== undefined
+              ? preset.edgeBlurEnabled
+              : false,
+          edgeBlurIntensity:
+            preset.edgeBlurIntensity !== undefined
+              ? preset.edgeBlurIntensity
+              : 10,
+          shinyTextEnabled:
+            preset.shinyTextEnabled !== undefined
+              ? preset.shinyTextEnabled
+              : false,
+          noiseEnabled:
+            preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
+          noiseOpacity:
+            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
+          noiseDensity:
+            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+        }));
+
+        setPresets(updatedPresets);
+        // 同时更新localStorage中的数据
+        localStorage.setItem(
+          "soulsign-presets",
+          JSON.stringify(updatedPresets)
+        );
       } catch (e) {
         console.error("Failed to parse saved presets", e);
       }
@@ -98,23 +161,43 @@ export function PresetManager({
   // Check if current settings match the active preset
   useEffect(() => {
     if (!activePresetId) return;
-    
+
     // Check if settings changed for active preset
-    const activePreset = presets.find(p => p.id === activePresetId);
+    const activePreset = presets.find((p) => p.id === activePresetId);
     if (activePreset) {
-      const settingsChanged = 
+      const settingsChanged =
         activePreset.text !== text ||
         activePreset.textColor !== textColor ||
         activePreset.fontFamily !== fontFamily ||
         activePreset.fontSize !== fontSize ||
-        activePreset.scrollSpeed !== scrollSpeed;
+        activePreset.scrollSpeed !== scrollSpeed ||
+        activePreset.edgeBlurEnabled !== edgeBlurEnabled ||
+        activePreset.edgeBlurIntensity !== edgeBlurIntensity ||
+        activePreset.shinyTextEnabled !== shinyTextEnabled ||
+        activePreset.noiseEnabled !== noiseEnabled ||
+        activePreset.noiseOpacity !== noiseOpacity ||
+        activePreset.noiseDensity !== noiseDensity;
     }
-  }, [activePresetId, text, textColor, fontFamily, fontSize, scrollSpeed, presets]);
+  }, [
+    activePresetId,
+    text,
+    textColor,
+    fontFamily,
+    fontSize,
+    scrollSpeed,
+    edgeBlurEnabled,
+    edgeBlurIntensity,
+    shinyTextEnabled,
+    noiseEnabled,
+    noiseOpacity,
+    noiseDensity,
+    presets,
+  ]);
 
   // Save preset to localStorage
   const savePreset = () => {
     if (!presetName.trim()) return;
-    
+
     const newPreset: Preset = {
       id: Date.now().toString(),
       name: presetName,
@@ -124,12 +207,18 @@ export function PresetManager({
       fontSize,
       scrollSpeed,
       // backgroundColor,
+      edgeBlurEnabled,
+      edgeBlurIntensity,
+      shinyTextEnabled,
+      noiseEnabled,
+      noiseOpacity,
+      noiseDensity,
     };
-    
+
     const updatedPresets = [newPreset, ...presets];
     setPresets(updatedPresets);
     localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
-    
+
     setPresetName("");
     setShowPresetInput(false);
     setActivePresetId(newPreset.id);
@@ -137,7 +226,7 @@ export function PresetManager({
 
   // Update a specific preset with current settings
   const updatePreset = (presetId: string) => {
-    const updatedPresets = presets.map(preset => {
+    const updatedPresets = presets.map((preset) => {
       if (preset.id === presetId) {
         return {
           ...preset,
@@ -146,11 +235,17 @@ export function PresetManager({
           fontFamily,
           fontSize,
           scrollSpeed,
+          edgeBlurEnabled,
+          edgeBlurIntensity,
+          shinyTextEnabled,
+          noiseEnabled,
+          noiseOpacity,
+          noiseDensity,
         };
       }
       return preset;
     });
-    
+
     setPresets(updatedPresets);
     localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
   };
@@ -158,10 +253,10 @@ export function PresetManager({
   // Delete preset
   const deletePreset = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
-    const updatedPresets = presets.filter(preset => preset.id !== id);
+    const updatedPresets = presets.filter((preset) => preset.id !== id);
     setPresets(updatedPresets);
     localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
-    
+
     // Clear active preset if deleted
     if (activePresetId === id) {
       setActivePresetId(null);
@@ -196,7 +291,7 @@ export function PresetManager({
       </div>
       <AnimatePresence>
         {showPresetInput && (
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
@@ -234,19 +329,28 @@ export function PresetManager({
         <div className="mt-2 max-h-[180px] overflow-y-auto pr-1 custom-scrollbar">
           <Accordion type="multiple" className="w-full">
             {presets.map((preset) => (
-              <AccordionItem key={preset.id} value={preset.id} className="border-b-0 mb-2">
-                <div className="flex w-full items-center gap-1">
+              <AccordionItem
+                key={preset.id}
+                value={preset.id}
+                className="border-b-0 mb-2"
+              >
+                <div
+                  className={cn(
+                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900",
+                  )}
+                >
                   <div className="flex-1">
-                    <AccordionTrigger 
+                    <AccordionTrigger
                       className={cn(
-                        "py-2 px-3 w-full bg-zinc-800/50 hover:bg-zinc-800 rounded-md text-zinc-200 text-sm transition-colors hover:no-underline",
-                        activePresetId === preset.id && "border border-zinc-700"
+                        " w-full text-zinc-200 text-sm transition-colors hover:no-underline"
                       )}
                     >
                       <div className="flex items-center gap-1 w-full">
-                        <p className="max-w-40">
+                        <p className="max-w-40 font-sans">
                           {activePresetId === preset.id && (
-                            <span className="pr-2 text-zinc-400 text-xs">当前</span>
+                            <span className="pr-2 text-zinc-400 text-xs">
+                              当前
+                            </span>
                           )}
                           {preset.name}
                         </p>
@@ -255,6 +359,7 @@ export function PresetManager({
                   </div>
                   {activePresetId === preset.id ? (
                     <Button
+                      size="sm"
                       onClick={(e) => {
                         e.stopPropagation();
                         updatePreset(preset.id);
@@ -266,6 +371,7 @@ export function PresetManager({
                     </Button>
                   ) : (
                     <Button
+                      size="sm" 
                       onClick={(e) => {
                         e.stopPropagation();
                         handleLoadPreset(preset);
@@ -277,6 +383,7 @@ export function PresetManager({
                     </Button>
                   )}
                   <Button
+                    size="sm"
                     onClick={(e) => {
                       e.stopPropagation();
                       deletePreset(preset.id, e);
@@ -289,11 +396,17 @@ export function PresetManager({
                 </div>
                 <AccordionContent className="bg-zinc-900/50 rounded-md mt-1 p-2">
                   <div className="text-xs text-zinc-400 space-y-1">
-                    <p>文字内容: {preset.text.substring(0, 30)}{preset.text.length > 30 ? "..." : ""}</p>
+                    <p>
+                      文字内容: {preset.text.substring(0, 30)}
+                      {preset.text.length > 30 ? "..." : ""}
+                    </p>
                     <p>字体: {getFontFamilyLabel(preset.fontFamily)}</p>
                     <p>颜色: {getFontColorLabel(preset.textColor)}</p>
                     <p>字号: {getFontSizeLabel(preset.fontSize)}</p>
                     <p>滚动速度: {getScrollSpeedLabel(preset.scrollSpeed)}</p>
+                    <p>聚焦: {preset.edgeBlurEnabled ? "开启" : "关闭"}</p>
+                    <p>闪光: {preset.shinyTextEnabled ? "开启" : "关闭"}</p>
+                    <p>噪点: {preset.noiseEnabled ? "开启" : "关闭"}</p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -303,4 +416,4 @@ export function PresetManager({
       )}
     </div>
   );
-} 
+}
