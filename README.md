@@ -1,2 +1,30 @@
-# Soul Sign
-Create support signs for DT 
+### Soul Sign
+
+Aesthetic digital support sign generator
+
+## Introduction
+
+[Soul Sign](https://soulsign.vercel.app) is an application for quickly creating aesthetically pleasing digital support signs, You can use it to create personalized support signs.
+
+
+### ***CLI Commands***  
+
+> 📦 This project uses pnpm for management
+
+
+1.Install dependencies
+```
+$ pnpm i
+```
+2.Run the website on a local or network development server
+```
+$ pnpm run dev
+```
+3.Build a website
+```
+$ pnpm run build
+```
+
+## License
+ The website source code follows the [ Apache License 2.0](./LICENSE) license,  
+ articles, images, and audio on the website follows the [CC BY-NC-SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0/) license.
