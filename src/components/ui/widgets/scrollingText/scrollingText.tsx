@@ -2,6 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ScrollingTextScroller } from "@/components/ui/widgets/scrollingText/scrollingTextScroller";
+import "@/components/ui/widgets/shinyText/shinyText.css"
 
 export interface ScrollingTextProps {
   text: string;
@@ -12,6 +13,7 @@ export interface ScrollingTextProps {
   textRef?: React.RefObject<HTMLDivElement>;
   scrollSpeed?: number;
   onScrollStateChange?: (isScrolling: boolean) => void;
+  shinyTextEnabled?: boolean;
 }
 
 export default function ScrollingText({
@@ -23,6 +25,7 @@ export default function ScrollingText({
   textRef: externalTextRef,
   scrollSpeed = 10,
   onScrollStateChange,
+  shinyTextEnabled = false,
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
   const [shouldScroll, setShouldScroll] = useState(false);
@@ -73,6 +76,17 @@ export default function ScrollingText({
     color,
   };
 
+  // 检测是否为白色文本 (白色文本需要不同的闪光效果)
+  const isWhiteText = color.toLowerCase() === '#ffffff' || 
+                     color.toLowerCase() === 'white' ||
+                     color.toLowerCase() === 'rgb(255, 255, 255)';
+
+  // Determine text classes based on shiny effect being enabled
+  const textClasses = cn(
+    "whitespace-nowrap inline-block mx-auto select-none",
+    shinyTextEnabled && "shiny-text"
+  );
+
   return (
     <div
       ref={containerRef}
@@ -93,14 +107,20 @@ export default function ScrollingText({
             textStyle={textStyle}
             editableText={text}
             textRef={textRef as React.RefObject<HTMLDivElement>}
+            shinyTextEnabled={shinyTextEnabled}
+            textColor={color}
           />
         ) : (
           <div
             ref={textRef}
-            className={cn("whitespace-nowrap inline-block mx-auto select-none")}
+            className={textClasses}
             style={textStyle}
+            data-text={text}
+            data-white-text={isWhiteText.toString()}
           >
+            <p>
             {text}
+            </p>
           </div>
         )}
       </div>
