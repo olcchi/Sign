@@ -1,6 +1,8 @@
 import React from "react";
 import { motion } from "motion/react";
 import "./scrollingTextScroller.css";
+import { cn } from "@/lib/utils";
+
 interface ScrollingTextScrollerProps {
   textWidth: number;
   TEXT_GAP: number;
@@ -8,6 +10,8 @@ interface ScrollingTextScrollerProps {
   textStyle: React.CSSProperties;
   editableText: string;
   textRef: React.RefObject<HTMLDivElement>;
+  shinyTextEnabled?: boolean;
+  textColor: string;
 }
 
 export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
@@ -17,7 +21,20 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textStyle,
   editableText,
   textRef,
+  shinyTextEnabled = false,
+  textColor,
 }) => {
+  // Determine text classes based on shiny effect being enabled
+  const textClasses = cn(
+    "whitespace-nowrap inline-block select-none",
+    shinyTextEnabled && "shiny-text"
+  );
+
+  // check if the text is white
+  const isWhiteText = textColor.toLowerCase() === '#ffffff' || 
+                     textColor.toLowerCase() === 'white' ||
+                     textColor.toLowerCase() === 'rgb(255, 255, 255)';
+
   return (
     <motion.div
       className="flex whitespace-nowrap"
@@ -37,11 +54,17 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
     >
       <div
         ref={textRef}
-        className="whitespace-nowrap inline-block select-none"
+        className={textClasses}
+        data-text={editableText}
+        data-white-text={isWhiteText.toString()}
       >
         {editableText}
       </div>
-      <div className="whitespace-nowrap inline-block select-none">
+      <div 
+        className={textClasses}
+        data-text={editableText}
+        data-white-text={isWhiteText.toString()}
+      >
         {editableText}
       </div>
     </motion.div>
