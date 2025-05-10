@@ -111,6 +111,14 @@ interface ToolBarProps {
   onEdgeBlurEnabledChange?: (enabled: boolean) => void;
   edgeBlurIntensity?: number;
   onEdgeBlurIntensityChange?: (intensity: number) => void;
+  shinyTextEnabled?: boolean;
+  onShinyTextEnabledChange?: (enabled: boolean) => void;
+  noiseEnabled?: boolean;
+  onNoiseEnabledChange?: (enabled: boolean) => void;
+  noiseOpacity?: number;
+  onNoiseOpacityChange?: (opacity: number) => void;
+  noiseDensity?: number;
+  onNoiseDensityChange?: (density: number) => void;
 }
 
 export default function ToolBar({
@@ -139,6 +147,14 @@ export default function ToolBar({
   onEdgeBlurEnabledChange = () => {},
   edgeBlurIntensity = 5,
   onEdgeBlurIntensityChange = () => {},
+  shinyTextEnabled = false,
+  onShinyTextEnabledChange = () => {},
+  noiseEnabled = false,
+  onNoiseEnabledChange = () => {},
+  noiseOpacity = 0.5,
+  onNoiseOpacityChange = () => {},
+  noiseDensity = 0.5,
+  onNoiseDensityChange = () => {},
 }: ToolBarProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
@@ -363,6 +379,20 @@ export default function ToolBar({
     onFontChange(preset.fontFamily);
     onFontSizeChange(preset.fontSize);
     onScrollSpeedChange(preset.scrollSpeed);
+    onEdgeBlurEnabledChange(preset.edgeBlurEnabled);
+    onEdgeBlurIntensityChange(preset.edgeBlurIntensity);
+    onShinyTextEnabledChange(preset.shinyTextEnabled);
+    
+    // 处理噪点效果相关设置
+    if (preset.noiseEnabled !== undefined) {
+      onNoiseEnabledChange(preset.noiseEnabled);
+    }
+    if (preset.noiseOpacity !== undefined) {
+      onNoiseOpacityChange(preset.noiseOpacity);
+    }
+    if (preset.noiseDensity !== undefined) {
+      onNoiseDensityChange(preset.noiseDensity);
+    }
   };
 
   const handlePositionChange = (axis: "x" | "y", value: number[]) => {
@@ -414,21 +444,30 @@ export default function ToolBar({
     onEdgeBlurEnabledChange,
     edgeBlurIntensity,
     onEdgeBlurIntensityChange,
+    shinyTextEnabled,
+    onShinyTextEnabledChange,
     fileInputRef,
     handleFileChange,
     colorOptions,
     fontOptions,
     fontSizeOptions,
+    noiseEnabled,
+    onNoiseEnabledChange,
+    noiseOpacity,
+    onNoiseOpacityChange,
+    noiseDensity,
+    onNoiseDensityChange,
   });
 
   return (
     <MotionConfig transition={transition}>
       <div
         className={cn(
-          "fixed top-4 right-4 z-10",
+          "fixed top-4 right-4",
           "transition-opacity duration-300",
           isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
         )}
+        style={{ zIndex: 999 }}
         ref={menuRef}
       >
         <div className="flex space-x-2">
@@ -458,13 +497,14 @@ export default function ToolBar({
               toolBarPosition.sm,
               toolBarPosition.md,
               toolBarPosition.lg,
-              "fixed z-10 rounded-md border border-zinc-800 bg-zinc-950/80 backdrop-blur-xl shadow-lg overflow-hidden overflow-y-auto custom-scrollbar"
+              "fixed rounded-md border border-zinc-800 bg-zinc-950/80 backdrop-blur-2xl shadow-lg overflow-hidden overflow-y-auto custom-scrollbar"
             )}
+            style={{ zIndex: 999 }}
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
           >
-            <div className="sticky top-0 z-50 w-full bg-zinc-950/90 backdrop-blur-sm border-b border-zinc-800">
+            <div className="sticky top-0 z-888 w-full bg-zinc-950/90 backdrop-blur-xs border-b border-zinc-800">
               <div className="px-4 py-4 flex justify-between items-center">
                 <p className="text-zinc-200 text-sm select-none font-bold">
                   配置
@@ -492,6 +532,12 @@ export default function ToolBar({
                   fontSize={fontSize}
                   scrollSpeed={scrollSpeed}
                   backgroundImage={backgroundImage}
+                  edgeBlurEnabled={edgeBlurEnabled}
+                  edgeBlurIntensity={edgeBlurIntensity}
+                  shinyTextEnabled={shinyTextEnabled}
+                  noiseEnabled={noiseEnabled}
+                  noiseOpacity={noiseOpacity}
+                  noiseDensity={noiseDensity}
                   onLoadPreset={loadPreset}
                 />
               </div>
