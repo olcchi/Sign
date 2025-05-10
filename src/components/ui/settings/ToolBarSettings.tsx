@@ -1,7 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
-import { cn } from '@/lib/utils';
+import React from "react";
+import { cn } from "@/lib/utils";
+import { styles } from "@/lib/styles";
 import {
   Baseline,
   Image as ImageIcon,
@@ -9,11 +10,12 @@ import {
   Eye,
   MoveHorizontal,
   MoveVertical,
-} from 'lucide-react';
-import { Slider } from '@/components/ui/inputs/slider';
-import { Button } from '@/components/ui/button/button';
-import { OptionButtonGroup } from '@/components/ui/settings/OptionButtonGroup';
-import Image from 'next/image';
+  Wand,
+} from "lucide-react";
+import { Slider } from "@/components/ui/inputs/slider";
+import { Button } from "@/components/ui/button/button";
+import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
+import Image from "next/image";
 
 // Interface for toolbar settings parameters
 export interface ToolBarSettingsProps {
@@ -43,6 +45,14 @@ export interface ToolBarSettingsProps {
   onEdgeBlurEnabledChange: (enabled: boolean) => void;
   edgeBlurIntensity: number;
   onEdgeBlurIntensityChange: (intensity: number) => void;
+  shinyTextEnabled: boolean;
+  onShinyTextEnabledChange: (enabled: boolean) => void;
+  noiseEnabled: boolean;
+  onNoiseEnabledChange: (enabled: boolean) => void;
+  noiseOpacity: number;
+  onNoiseOpacityChange: (opacity: number) => void;
+  noiseDensity: number;
+  onNoiseDensityChange: (density: number) => void;
   fileInputRef: React.RefObject<HTMLInputElement | null>;
   handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   colorOptions: Array<{
@@ -90,6 +100,14 @@ export function getSettingItems({
   onEdgeBlurEnabledChange,
   edgeBlurIntensity,
   onEdgeBlurIntensityChange,
+  shinyTextEnabled,
+  onShinyTextEnabledChange,
+  noiseEnabled,
+  onNoiseEnabledChange,
+  noiseOpacity,
+  onNoiseOpacityChange,
+  noiseDensity,
+  onNoiseDensityChange,
   fileInputRef,
   handleFileChange,
   colorOptions,
@@ -103,7 +121,13 @@ export function getSettingItems({
       component: (
         <button
           onClick={enterEditMode}
-          className="w-full text-left px-3 py-2 bg-zinc-800/50 hover:bg-zinc-800 rounded-md text-zinc-200 text-sm font-sans transition-colors"
+          className={cn(
+            "w-full text-left px-3 py-2",
+            styles.bg.default,
+            styles.bg.hover,
+            styles.text.default,
+            "text-sm font-sans transition-colors rounded-md"
+          )}
         >
           {text.length > 30 ? text.substring(0, 30) + "..." : text}
         </button>
@@ -182,10 +206,11 @@ export function getSettingItems({
             <Button
               onClick={triggerFileUpload}
               className={cn(
-                backgroundImage
-                  ? "bg-zinc-800 text-zinc-100"
-                  : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300",
-                "bg-zinc-900 flex items-center gap-1 text-xs hover:bg-zinc-800"
+                backgroundImage ? styles.bg.active : styles.bg.default,
+                backgroundImage ? styles.text.default : styles.text.muted,
+                styles.bg.hover,
+                "flex items-center gap-1",
+                styles.button.base
               )}
               size="sm"
             >
@@ -198,7 +223,7 @@ export function getSettingItems({
                   variant="destructive"
                   onClick={removeBackgroundImage}
                   size="sm"
-                  className="text-xs hover:bg-red-400"
+                  className={cn(styles.button.base, "hover:bg-red-400")}
                 >
                   移除图片
                 </Button>
@@ -229,8 +254,8 @@ export function getSettingItems({
                   <MoveHorizontal
                     size={14}
                     className={cn(
-                      "text-zinc-400",
-                      sliderDisabled.x && "text-zinc-600"
+                      styles.text.icon,
+                      sliderDisabled.x && styles.text.disabled
                     )}
                   />
                   <Slider
@@ -248,8 +273,8 @@ export function getSettingItems({
                   <MoveVertical
                     size={14}
                     className={cn(
-                      "text-zinc-400",
-                      sliderDisabled.y && "text-zinc-600"
+                      styles.text.icon,
+                      sliderDisabled.y && styles.text.disabled
                     )}
                   />
                   <Slider
@@ -273,7 +298,7 @@ export function getSettingItems({
                     fill="none"
                     strokeLinecap="round"
                     strokeLinejoin="round"
-                    className="text-zinc-400"
+                    className={styles.text.icon}
                   >
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
@@ -293,18 +318,16 @@ export function getSettingItems({
               </div>
               <Button
                 size="sm"
-                className="bg-zinc-900 hover:bg-zinc-800 px-2 flex items-center gap-1 text-xs"
+                className={cn(
+                  styles.bg.darker,
+                  styles.bg.hover,
+                  styles.button.small,
+                  "flex items-center gap-1",
+                  styles.button.base
+                )}
                 onClick={() => onOverlayEnabledChange(!overlayEnabled)}
               >
-                {overlayEnabled ? (
-                  <>
-                    <Eye size={12} />
-                  </>
-                ) : (
-                  <>
-                    <EyeOff size={12} />
-                  </>
-                )}
+                {overlayEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
                 弱化背景
               </Button>
             </>
@@ -316,58 +339,132 @@ export function getSettingItems({
       id: "edgeBlurEffect",
       title: "特效",
       component: (
-        <div className="space-y-2">
-          <div className="flex items-center justify-between">
-            <span className="text-sm text-zinc-300">聚焦</span>
+        <div className={cn("rounded-md flex flex-col gap-2")}>
+          <div
+            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
+          >
+            <div className="flex items-center justify-between">
+              <span className={cn("text-xs", styles.text.muted)}>聚焦</span>
+              <Button
+                size="sm"
+                className={cn(
+                  styles.bg.darker,
+                  styles.bg.hover,
+                  styles.button.small,
+                  "flex items-center gap-1",
+                  styles.button.base
+                )}
+                onClick={() => onEdgeBlurEnabledChange(!edgeBlurEnabled)}
+              >
+                {edgeBlurEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+                {edgeBlurEnabled ? "开启" : "关闭"}
+              </Button>
+            </div>
+
+            {edgeBlurEnabled && (
+              <div className="py-2">
+                <div className="flex items-center gap-2">
+                  <Wand size={14} className={styles.text.icon} />
+                  <Slider
+                    defaultValue={[edgeBlurIntensity]}
+                    value={[edgeBlurIntensity]}
+                    min={1}
+                    max={20}
+                    step={1}
+                    onValueChange={(value) =>
+                      onEdgeBlurIntensityChange(value[0])
+                    }
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
+          >
+            <div className="flex items-center justify-between">
+              <span className={cn("text-xs", styles.text.muted)}>噪点</span>
+              <Button
+                size="sm"
+                className={cn(
+                  styles.bg.darker,
+                  styles.bg.hover,
+                  styles.button.small,
+                  "flex items-center gap-1",
+                  styles.button.base
+                )}
+                onClick={() => onNoiseEnabledChange(!noiseEnabled)}
+              >
+                {noiseEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+                {noiseEnabled ? "开启" : "关闭"}
+              </Button>
+            </div>
+
+            {noiseEnabled && (
+              <div className="py-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className={cn("text-xs whitespace-nowrap", styles.text.muted)}>
+                    不透明度
+                  </span>
+                  <Slider
+                    defaultValue={[noiseOpacity]}
+                    value={[noiseOpacity]}
+                    min={0.01}
+                    max={0.3}
+                    step={0.01}
+                    onValueChange={(value) => onNoiseOpacityChange(value[0])}
+                    className="w-full"
+                  />
+                </div>
+                <div className="flex items-center gap-2">
+                  <span
+                    className={cn(
+                      "text-xs whitespace-nowrap",
+                      styles.text.muted
+                    )}
+                  >
+                    密度
+                  </span>
+                  <Slider
+                    defaultValue={[noiseDensity]}
+                    value={[noiseDensity]}
+                    min={0.1}
+                    max={0.6}
+                    step={0.05}
+                    onValueChange={(value) => onNoiseDensityChange(value[0])}
+                    className="w-full"
+                  />
+                </div>
+              </div>
+            )}
+          </div>
+
+          <div
+            className={cn(
+              "flex items-center justify-between px-2 py-1 rounded-md",
+              styles.bg.default
+            )}
+          >
+            <span className={cn("text-xs", styles.text.muted)}>闪光</span>
             <Button
               size="sm"
-              className="bg-zinc-900 hover:bg-zinc-800 px-2 flex items-center gap-1 text-xs"
-              onClick={() => onEdgeBlurEnabledChange(!edgeBlurEnabled)}
-            >
-              {edgeBlurEnabled ? (
-                <>
-                  <Eye size={12} />
-                </>
-              ) : (
-                <>
-                  <EyeOff size={12} />
-                </>
+              className={cn(
+                styles.bg.darker,
+                styles.bg.hover,
+                styles.button.small,
+                "flex items-center gap-1",
+                styles.button.base
               )}
-              {edgeBlurEnabled ? "开启" : "关闭"}
+              onClick={() => onShinyTextEnabledChange(!shinyTextEnabled)}
+            >
+              {shinyTextEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
+              {shinyTextEnabled ? "开启" : "关闭"}
             </Button>
           </div>
-          
-          {edgeBlurEnabled && (
-            <div className="mt-2 space-y-2">
-              <div className="flex items-center gap-2">
-                <svg
-                  viewBox="0 0 24 24"
-                  width="14"
-                  height="14"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  className="text-zinc-400"
-                >
-                  <circle cx="11" cy="11" r="8"></circle>
-                  <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <Slider
-                  defaultValue={[edgeBlurIntensity]}
-                  value={[edgeBlurIntensity]}
-                  min={1}
-                  max={20}
-                  step={1}
-                  onValueChange={(value) => onEdgeBlurIntensityChange(value[0])}
-                  className="w-full"
-                />
-              </div>
-            </div>
-          )}
         </div>
       ),
     },
   ];
-} 
+}
