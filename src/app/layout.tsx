@@ -1,9 +1,9 @@
-
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/themeProvider";
-import { Geist, Geist_Mono, DM_Serif_Text,Kolker_Brush } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Text, Kolker_Brush } from "next/font/google";
 import "./globals.css";
 
+// Font configurations with CSS variable assignments for consistent typography
 const geistSans = Geist({
   variable: "--font-geist-sans",
   subsets: ["latin"],
@@ -26,6 +26,7 @@ const KolkerBrush = Kolker_Brush({
   subsets: ["latin"],
 })
 
+// SEO and site metadata configuration
 export const metadata: Metadata = {
   title: "Soul Sign ",
   icons: {
@@ -34,6 +35,7 @@ export const metadata: Metadata = {
   description: "Generate your electronic cheering sign",
 };
 
+// Root layout component that wraps all pages with common configuration
 export default function RootLayout({
   children,
 }: Readonly<{
