@@ -10,7 +10,7 @@ interface EdgeBlurEffectProps {
   className?: string;
 }
 
-// Creates a vignette-like blur effect on the left and right edges to focus attention on central content
+// Creates vignette-like blur effect on edges to focus attention on center content
 export function EdgeBlurEffect({
   enabled = false,
   intensity = 8,
@@ -18,13 +18,13 @@ export function EdgeBlurEffect({
 }: EdgeBlurEffectProps) {
   if (!enabled) return null;
   
-  // Calculate optimal number of blur layers and intensity based on user setting
+  // Calculate optimal blur configuration based on user intensity setting
   const blurLayers = Math.max(2, Math.min(12, Math.floor(intensity / 1.5)));
   const blurIntensity = intensity * 0.1;
   
   return (
     <div className={cn('pointer-events-none fixed inset-0 z-30', className)}>
-      {/* Left edge blur - progressive blur from left to right */}
+      {/* Left edge blur with progressive intensity */}
       <div className="absolute left-0 top-0 bottom-0 w-[35%]">
         <ProgressiveBlur
           direction="left"
@@ -34,7 +34,7 @@ export function EdgeBlurEffect({
         />
       </div>
       
-      {/* Right edge blur - progressive blur from right to left */}
+      {/* Right edge blur with progressive intensity */}
       <div className="absolute right-0 top-0 bottom-0 w-[35%]">
         <ProgressiveBlur
           direction="right"
