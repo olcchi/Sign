@@ -7,7 +7,7 @@ import {
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/ui/accordion";
+} from "@/components/ui/layout/accordion";
 import { cn } from "@/lib/utils";
 import { styles } from "@/lib/styles";
 
@@ -29,6 +29,10 @@ export interface Preset {
   noiseEnabled?: boolean;
   noiseOpacity?: number;
   noiseDensity?: number;
+  textStrokeEnabled?: boolean;
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
 }
 
 /**
@@ -48,6 +52,10 @@ interface PresetManagerProps {
   noiseEnabled?: boolean;
   noiseOpacity?: number;
   noiseDensity?: number;
+  textStrokeEnabled?: boolean;
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
   onLoadPreset: (preset: Preset) => void;
 }
 
@@ -69,6 +77,10 @@ export function PresetManager({
   noiseEnabled,
   noiseOpacity,
   noiseDensity,
+  textStrokeEnabled,
+  textStrokeWidth,
+  textStrokeColor,
+  textFillEnabled,
   onLoadPreset,
 }: PresetManagerProps) {
   const [presets, setPresets] = useState<Preset[]>([]);
@@ -144,6 +156,14 @@ export function PresetManager({
             preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
           noiseDensity:
             preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+          textStrokeEnabled:
+            preset.textStrokeEnabled !== undefined ? preset.textStrokeEnabled : true,
+          textStrokeWidth:
+            preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
+          textStrokeColor:
+            preset.textStrokeColor !== undefined ? preset.textStrokeColor : "#000000",
+          textFillEnabled:
+            preset.textFillEnabled !== undefined ? preset.textFillEnabled : true,
         }));
 
         setPresets(updatedPresets);
@@ -176,7 +196,11 @@ export function PresetManager({
         activePreset.shinyTextEnabled !== shinyTextEnabled ||
         activePreset.noiseEnabled !== noiseEnabled ||
         activePreset.noiseOpacity !== noiseOpacity ||
-        activePreset.noiseDensity !== noiseDensity;
+        activePreset.noiseDensity !== noiseDensity ||
+        activePreset.textStrokeEnabled !== textStrokeEnabled ||
+        activePreset.textStrokeWidth !== textStrokeWidth ||
+        activePreset.textStrokeColor !== textStrokeColor ||
+        activePreset.textFillEnabled !== textFillEnabled;
     }
   }, [
     activePresetId,
@@ -191,6 +215,10 @@ export function PresetManager({
     noiseEnabled,
     noiseOpacity,
     noiseDensity,
+    textStrokeEnabled,
+    textStrokeWidth,
+    textStrokeColor,
+    textFillEnabled,
     presets,
   ]);
 
@@ -213,6 +241,10 @@ export function PresetManager({
       noiseEnabled,
       noiseOpacity,
       noiseDensity,
+      textStrokeEnabled,
+      textStrokeWidth,
+      textStrokeColor,
+      textFillEnabled,
     };
 
     const updatedPresets = [newPreset, ...presets];
@@ -241,6 +273,10 @@ export function PresetManager({
           noiseEnabled,
           noiseOpacity,
           noiseDensity,
+          textStrokeEnabled,
+          textStrokeWidth,
+          textStrokeColor,
+          textFillEnabled,
         };
       }
       return preset;
@@ -336,7 +372,7 @@ export function PresetManager({
               >
                 <div
                   className={cn(
-                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900",
+                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm",
                   )}
                 >
                   <div className="flex-1">

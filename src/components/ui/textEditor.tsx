@@ -32,7 +32,7 @@ export default function TextEditor({
           animate={{ opacity: 1, backdropFilter: "blur(4px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
           transition={{ duration: 0.2 }}
-          className="fixed inset-0 z-[999] flex items-center justify-center bg-black/70 backdrop-blur-2xl"
+          className="fixed inset-0 z-[2001] flex items-center justify-center bg-black/70 backdrop-blur-2xl"
           // onClick={onClose}
         >
           <motion.div
