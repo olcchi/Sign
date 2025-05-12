@@ -24,6 +24,6 @@
       "@/stores":["./src/stores"],
     }
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "src/experimental/page.disabled"],
   "exclude": ["node_modules"]
 }
