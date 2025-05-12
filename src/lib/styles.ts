@@ -1,4 +1,4 @@
-// 全局样式变量
+// Global style variables for consistent theming across the application
 export const styles = {
   bg: {
     default: "bg-zinc-800/50",
