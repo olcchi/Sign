@@ -14,8 +14,13 @@ export interface ScrollingTextProps {
   scrollSpeed?: number;
   onScrollStateChange?: (isScrolling: boolean) => void;
   shinyTextEnabled?: boolean;
+  textStrokeEnabled?: boolean;
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
 }
 
+// Displays text with automatic horizontal scrolling when content exceeds container width
 export default function ScrollingText({
   text,
   fontSize,
@@ -26,6 +31,10 @@ export default function ScrollingText({
   scrollSpeed = 10,
   onScrollStateChange,
   shinyTextEnabled = false,
+  textStrokeEnabled = true,
+  textStrokeWidth = 1,
+  textStrokeColor = "#000000",
+  textFillEnabled = true,
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
   const [shouldScroll, setShouldScroll] = useState(false);
@@ -34,6 +43,7 @@ export default function ScrollingText({
   const textRef = externalTextRef || internalTextRef;
   const containerRef = useRef<HTMLDivElement>(null);
 
+  // Determines scroll necessity by comparing text width to container width
   const measureWidths = useCallback(() => {
     if (textRef.current && containerRef.current) {
       const textRect = textRef.current.getBoundingClientRect();
@@ -41,47 +51,55 @@ export default function ScrollingText({
 
       const needsScroll = textRect.width > containerRect.width;
       
-      // Reset animation state: Stop scrolling first, then restart if needed
-      setShouldScroll(false); // Immediately stop current animation
+      // Reset animation state to prevent visual glitches during transitions
+      setShouldScroll(false);
       setTimeout(() => {
-        setTextWidth(textRect.width); // Update text width
-        setShouldScroll(needsScroll); // Restart scrolling if needed
-      }, 0); // Execute in the next frame to ensure rendering completes
+        setTextWidth(textRect.width);
+        setShouldScroll(needsScroll);
+      }, 0);
     }
   }, [textRef, fontFamily, fontSize]);
 
+  // Measure on mount, text change, and window resize
   useEffect(() => {
     measureWidths();
     window.addEventListener("resize", measureWidths);
     return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, text]);
 
-  // Trigger callback when scroll state changes
   useEffect(() => {
     if (onScrollStateChange) {
       onScrollStateChange(shouldScroll);
     }
   }, [shouldScroll, onScrollStateChange]);
 
+  // Spacing between repeated text instances
   const TEXT_GAP = 150;
-  // Adjust animation duration based on text width to maintain consistent visual speed across different text sizes
-  // Uses a fixed base width to normalize the speed
+  
+  // Adjust animation speed based on text width for consistent visual effect
   const BASE_WIDTH = 1000;
   const widthFactor = textWidth / BASE_WIDTH;
   const animationDuration = (widthFactor * 100) / scrollSpeed;
 
+  // Ensure at least one text styling option is active
+  const ensuredTextFillEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textFillEnabled;
+  const ensuredTextStrokeEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textStrokeEnabled;
+
   const textStyle = {
     fontSize,
     fontFamily,
-    color,
+    color: ensuredTextFillEnabled ? color : 'transparent',
+    ...(ensuredTextStrokeEnabled && {
+      WebkitTextStroke: `${textStrokeWidth}px ${textStrokeColor}`,
+      textStroke: `${textStrokeWidth}px ${textStrokeColor}`,
+    }),
   };
 
-  // 检测是否为白色文本 (白色文本需要不同的闪光效果)
+  // Detect white text for appropriate shiny effect variation
   const isWhiteText = color.toLowerCase() === '#ffffff' || 
                      color.toLowerCase() === 'white' ||
                      color.toLowerCase() === 'rgb(255, 255, 255)';
 
-  // Determine text classes based on shiny effect being enabled
   const textClasses = cn(
     "whitespace-nowrap inline-block mx-auto select-none",
     shinyTextEnabled && "shiny-text"
@@ -100,6 +118,7 @@ export default function ScrollingText({
         aria-label={`Scrolling text: ${text}`}
       >
         {shouldScroll ? (
+          // Use scroller for continuous animation when text is wider than container
           <ScrollingTextScroller
             textWidth={textWidth}
             TEXT_GAP={TEXT_GAP}
@@ -109,8 +128,13 @@ export default function ScrollingText({
             textRef={textRef as React.RefObject<HTMLDivElement>}
             shinyTextEnabled={shinyTextEnabled}
             textColor={color}
+            textStrokeEnabled={textStrokeEnabled}
+            textStrokeWidth={textStrokeWidth}
+            textStrokeColor={textStrokeColor}
+            textFillEnabled={textFillEnabled}
           />
         ) : (
+          // Display static centered text when it fits within container
           <div
             ref={textRef}
             className={textClasses}
