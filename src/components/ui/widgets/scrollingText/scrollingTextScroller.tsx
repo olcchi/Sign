@@ -12,8 +12,13 @@ interface ScrollingTextScrollerProps {
   textRef: React.RefObject<HTMLDivElement>;
   shinyTextEnabled?: boolean;
   textColor: string;
+  textStrokeEnabled?: boolean;
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
 }
 
+// Implements the infinite scrolling animation for text that exceeds container width
 export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textWidth,
   TEXT_GAP,
@@ -23,14 +28,24 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textRef,
   shinyTextEnabled = false,
   textColor,
+  textStrokeEnabled = true,
+  textStrokeWidth = 1,
+  textStrokeColor = "#000000",
+  textFillEnabled = true,
 }) => {
-  // Determine text classes based on shiny effect being enabled
+  // 确保文字填充和描边至少有一个是启用的
+  const combinedTextStyle = {
+    ...textStyle,
+    gap: `${TEXT_GAP}px`,
+  };
+
+  // Apply shiny text effect when enabled
   const textClasses = cn(
     "whitespace-nowrap inline-block select-none",
     shinyTextEnabled && "shiny-text"
   );
 
-  // check if the text is white
+  // Detect white text to apply the appropriate shiny effect variant
   const isWhiteText = textColor.toLowerCase() === '#ffffff' || 
                      textColor.toLowerCase() === 'white' ||
                      textColor.toLowerCase() === 'rgb(255, 255, 255)';
@@ -39,7 +54,8 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
     <motion.div
       className="flex whitespace-nowrap"
       key={animationDuration}
-      style={{ ...textStyle, gap: `${TEXT_GAP}px` }}
+      style={combinedTextStyle}
+      // Create horizontal scrolling animation that continuously moves from right to left
       animate={{
         x: [`0%`, `-${textWidth + TEXT_GAP}px`],
       }}
@@ -52,16 +68,20 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
         },
       }}
     >
+      {/* First instance of text, initially visible */}
       <div
         ref={textRef}
         className={textClasses}
+        style={textStyle}
         data-text={editableText}
         data-white-text={isWhiteText.toString()}
       >
         {editableText}
       </div>
+      {/* Duplicate text instance to create seamless looping effect */}
       <div 
         className={textClasses}
+        style={textStyle}
         data-text={editableText}
         data-white-text={isWhiteText.toString()}
       >
