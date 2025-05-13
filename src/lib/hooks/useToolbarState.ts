@@ -19,7 +19,10 @@ export interface ToolbarState {
 }
 
 /**
- * 工具栏状态管理钩子
+ * Hook for managing toolbar visibility, edit modes, and media handling
+ * 
+ * Centralizes all toolbar interaction states and provides methods for
+ * panel visibility, text editing, and image processing.
  */
 export const useToolbarState = (): ToolbarState => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,7 +30,7 @@ export const useToolbarState = (): ToolbarState => {
   const [editMode, setEditMode] = useState(false);
   const [isActive, setIsActive] = useState(true);
 
-  // 自动隐藏工具栏逻辑
+  // Auto-hide toolbar after inactivity unless in edit mode
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
 
@@ -63,40 +66,40 @@ export const useToolbarState = (): ToolbarState => {
     };
   }, [isOpen, editMode]);
 
-  // 打开面板
+  // Show panel with menu tab active
   const openPanel = () => {
     setIsOpen(true);
     setActiveTab("menu");
   };
 
-  // 关闭面板
+  // Hide panel and reset active tab
   const closePanel = () => {
     setIsOpen(false);
     setActiveTab(null);
   };
 
-  // 进入编辑模式
+  // Enable text editing mode and prepare textarea
   const enterEditMode = (text: string, textInputRef: RefObject<HTMLTextAreaElement>) => {
     setEditMode(true);
     closePanel();
     
-    // 聚焦并选中文本输入框
+    // Focus and select text for immediate editing
     setTimeout(() => {
       textInputRef.current?.focus();
       textInputRef.current?.select();
     }, 10);
   };
 
-  // 退出编辑模式
+  // Complete editing and update content
   const exitEditMode = (inputText: string, onTextChange: (text: string) => void) => {
     setEditMode(false);
     
-    // 确保文本不为空
+    // Prevent empty content by using default placeholder
     const finalText = inputText.trim() === "" ? "Please enter some content..." : inputText;
     onTextChange(finalText);
   };
 
-  // 处理图像更改
+  // Process and optimize image uploads
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     onImageChange: (url: string | null) => void,
@@ -107,14 +110,14 @@ export const useToolbarState = (): ToolbarState => {
     if (!file) return;
 
     try {
-      // 处理图像文件
+      // Convert file to optimized image data
       const { backgroundImage, previewImage } = await processImageFile(file);
       
-      // 更新状态
+      // Update state with processed image
       onImageChange(backgroundImage);
       setPreviewImage(previewImage);
       
-      // 获取图像尺寸
+      // Get dimensions for positioning controls
       const img = new Image();
       img.onload = () => {
         setImageSize({
