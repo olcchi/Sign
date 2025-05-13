@@ -122,7 +122,7 @@
   }
 }
 
-/* 自定义滚动条样式 */
+/* custom scrollbar */
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
