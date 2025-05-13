@@ -18,7 +18,7 @@ interface ScrollingTextScrollerProps {
   textFillEnabled?: boolean;
 }
 
-// Implements the infinite scrolling animation for text that exceeds container width
+// Creates seamless infinite text scrolling with duplicated content
 export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textWidth,
   TEXT_GAP,
@@ -33,7 +33,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textStrokeColor = "#000000",
   textFillEnabled = true,
 }) => {
-  // 确保文字填充和描边至少有一个是启用的
+  // Add gap spacing to prevent visually abrupt transitions
   const combinedTextStyle = {
     ...textStyle,
     gap: `${TEXT_GAP}px`,
@@ -45,7 +45,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
     shinyTextEnabled && "shiny-text"
   );
 
-  // Detect white text to apply the appropriate shiny effect variant
+  // Flag for white text to select appropriate visual effects
   const isWhiteText = textColor.toLowerCase() === '#ffffff' || 
                      textColor.toLowerCase() === 'white' ||
                      textColor.toLowerCase() === 'rgb(255, 255, 255)';
@@ -55,7 +55,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
       className="flex whitespace-nowrap"
       key={animationDuration}
       style={combinedTextStyle}
-      // Create horizontal scrolling animation that continuously moves from right to left
+      // Infinite loop animation with precise positioning
       animate={{
         x: [`0%`, `-${textWidth + TEXT_GAP}px`],
       }}
@@ -68,7 +68,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
         },
       }}
     >
-      {/* First instance of text, initially visible */}
+      {/* Referenced instance for width measurement */}
       <div
         ref={textRef}
         className={textClasses}
@@ -78,7 +78,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
       >
         {editableText}
       </div>
-      {/* Duplicate text instance to create seamless looping effect */}
+      {/* Duplicate for seamless looping */}
       <div 
         className={textClasses}
         style={textStyle}
