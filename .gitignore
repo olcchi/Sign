@@ -3,6 +3,10 @@
 # cursor rules
 /.cursor
 
+# experimental
+src/experimental
+
+
 # dependencies
 /node_modules
 /.pnp
