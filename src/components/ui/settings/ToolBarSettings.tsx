@@ -10,7 +10,6 @@ import {
   Eye,
   MoveHorizontal,
   MoveVertical,
-  Wand,
 } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/button/button";
@@ -81,7 +80,7 @@ export interface ToolBarSettingsProps {
 }
 
 // Generate and export settings items list function
-export function getSettingItems({
+export function ToolBarSettings({
   text,
   enterEditMode,
   fontSize,
@@ -156,6 +155,7 @@ export function getSettingItems({
         <OptionButtonGroup
           options={fontSizeOptions}
           selectedValue={fontSize}
+          buttonSize="icon"
           onChange={onFontSizeChange}
         />
       ),
@@ -179,21 +179,20 @@ export function getSettingItems({
       id: "textRendering",
       title: "字体渲染",
       component: (
-        <div className={cn("rounded-md flex flex-col gap-2")}>
-          <div
-            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
-          >
+        <div className={cn("flex flex-col gap-2")}>
+          <div className={cn("space-y-2 px-2 py-1", styles.border.default)}>
             <div className="flex items-center justify-between">
               <span className={cn("text-xs", styles.text.muted)}>文字填充</span>
               <Button
                 size="sm"
-                className={cn(
-                  styles.bg.darker,
-                  styles.bg.hover,
-                  styles.button.small,
-                  "flex items-center gap-1",
-                  styles.button.base
-                )}
+                variant="ghost"
+                // className={cn(
+                //   styles.bg.darker,
+                //   styles.bg.hover,
+                //   styles.button.small,
+                //   "flex items-center gap-1",
+                //   styles.button.base
+                // )}
                 onClick={() => {
                   if (textFillEnabled && !textStrokeEnabled) {
                     onTextStrokeEnabledChange(true);
@@ -208,20 +207,19 @@ export function getSettingItems({
             </div>
           </div>
 
-          <div
-            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
-          >
+          <div className={cn("space-y-2 px-2 py-1", styles.border.default)}>
             <div className="flex items-center justify-between">
               <span className={cn("text-xs", styles.text.muted)}>文字描边</span>
               <Button
                 size="sm"
-                className={cn(
-                  styles.bg.darker,
-                  styles.bg.hover,
-                  styles.button.small,
-                  "flex items-center gap-1",
-                  styles.button.base
-                )}
+                variant={"ghost"}
+                // className={cn(
+                //   styles.bg.darker,
+                //   styles.bg.hover,
+                //   styles.button.small,
+                //   "flex items-center gap-1",
+                //   styles.button.base
+                // )}
                 onClick={() => {
                   if (textStrokeEnabled && !textFillEnabled) {
                     onTextFillEnabledChange(true);
@@ -236,23 +234,33 @@ export function getSettingItems({
             </div>
 
             {textStrokeEnabled && (
-              <div className="py-2 space-y-2">
+              <div className="pt-2 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className={cn("text-xs whitespace-nowrap", styles.text.muted)}>
+                  <span
+                    className={cn(
+                      "text-xs whitespace-nowrap",
+                      styles.text.muted
+                    )}
+                  >
                     边框粗细
                   </span>
                   <Slider
                     defaultValue={[textStrokeWidth]}
                     value={[textStrokeWidth]}
-                    min={0.5}
-                    max={5}
+                    min={1}
+                    max={3}
                     step={0.5}
                     onValueChange={(value) => onTextStrokeWidthChange(value[0])}
                     className="w-full"
                   />
                 </div>
-                <div className="flex items-center gap-2">
-                  <span className={cn("text-xs whitespace-nowrap", styles.text.muted)}>
+                <div className="flex items-center gap-2 py-1">
+                  <span
+                    className={cn(
+                      "text-xs whitespace-nowrap",
+                      styles.text.muted
+                    )}
+                  >
                     边框颜色
                   </span>
                   <OptionButtonGroup
@@ -304,7 +312,7 @@ export function getSettingItems({
     },
     {
       id: "backgroundImage",
-      title: "背景图片",
+      title: "背景",
       component: (
         <div className="space-y-2">
           <input
@@ -451,21 +459,20 @@ export function getSettingItems({
       id: "edgeBlurEffect",
       title: "特效",
       component: (
-        <div className={cn("rounded-md flex flex-col gap-2")}>
-          <div
-            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
-          >
+        <div className={cn("flex flex-col gap-2")}>
+          <div className={cn("px-2 py-1", styles.border.default)}>
             <div className="flex items-center justify-between">
               <span className={cn("text-xs", styles.text.muted)}>聚焦</span>
               <Button
                 size="sm"
-                className={cn(
-                  styles.bg.darker,
-                  styles.bg.hover,
-                  styles.button.small,
-                  "flex items-center gap-1",
-                  styles.button.base
-                )}
+                variant={"ghost"}
+                // className={cn(
+                //   styles.bg.darker,
+                //   styles.bg.hover,
+                //   styles.button.small,
+                //   "flex items-center gap-1",
+                //   styles.button.base
+                // )}
                 onClick={() => onEdgeBlurEnabledChange(!edgeBlurEnabled)}
               >
                 {edgeBlurEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
@@ -476,7 +483,14 @@ export function getSettingItems({
             {edgeBlurEnabled && (
               <div className="py-2">
                 <div className="flex items-center gap-2">
-                 <p className={cn("text-xs whitespace-nowrap", styles.text.muted)}>强度</p>
+                  <p
+                    className={cn(
+                      "text-xs whitespace-nowrap",
+                      styles.text.muted
+                    )}
+                  >
+                    强度
+                  </p>
                   <Slider
                     defaultValue={[edgeBlurIntensity]}
                     value={[edgeBlurIntensity]}
@@ -493,20 +507,19 @@ export function getSettingItems({
             )}
           </div>
 
-          <div
-            className={cn("space-y-2 px-2 py-1 rounded-md", styles.bg.default)}
-          >
+          <div className={cn("px-2 py-1", styles.border.default)}>
             <div className="flex items-center justify-between">
               <span className={cn("text-xs", styles.text.muted)}>噪点</span>
               <Button
                 size="sm"
-                className={cn(
-                  styles.bg.darker,
-                  styles.bg.hover,
-                  styles.button.small,
-                  "flex items-center gap-1",
-                  styles.button.base
-                )}
+                variant={"ghost"}
+                // className={cn(
+                //   styles.bg.darker,
+                //   styles.bg.hover,
+                //   styles.button.small,
+                //   "flex items-center gap-1",
+                //   styles.button.base
+                // )}
                 onClick={() => onNoiseEnabledChange(!noiseEnabled)}
               >
                 {noiseEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
@@ -517,8 +530,13 @@ export function getSettingItems({
             {noiseEnabled && (
               <div className="py-2 space-y-2">
                 <div className="flex items-center gap-2">
-                  <span className={cn("text-xs whitespace-nowrap", styles.text.muted)}>
-                    不透明度
+                  <span
+                    className={cn(
+                      "text-xs whitespace-nowrap",
+                      styles.text.muted
+                    )}
+                  >
+                    亮度
                   </span>
                   <Slider
                     defaultValue={[noiseOpacity]}
@@ -555,20 +573,21 @@ export function getSettingItems({
 
           <div
             className={cn(
-              "flex items-center justify-between px-2 py-1 rounded-md",
-              styles.bg.default
+              "flex items-center justify-between px-2 py-1",
+              styles.border.default
             )}
           >
             <span className={cn("text-xs", styles.text.muted)}>闪光</span>
             <Button
               size="sm"
-              className={cn(
-                styles.bg.darker,
-                styles.bg.hover,
-                styles.button.small,
-                "flex items-center gap-1",
-                styles.button.base
-              )}
+              variant={"ghost"}
+              // className={cn(
+              //   styles.bg.darker,
+              //   styles.bg.hover,
+              //   styles.button.small,
+              //   "flex items-center gap-1",
+              //   styles.button.base
+              // )}
               onClick={() => onShinyTextEnabledChange(!shinyTextEnabled)}
             >
               {shinyTextEnabled ? <Eye size={12} /> : <EyeOff size={12} />}
