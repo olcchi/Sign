@@ -8,7 +8,7 @@ import TextEditor from "@/components/ui/textEditor";
 import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
 import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
-import { getSettingItems } from "@/components/ui/settings/ToolBarSettings";
+import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
 import { PanelHeader } from "@/components/ui/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
@@ -207,7 +207,7 @@ export default function ToolBar({
   ];
 
   // Get setting items
-  const settingItems = getSettingItems({
+  const settingItems = ToolBarSettings({
     text,
     enterEditMode,
     fontSize,
@@ -256,7 +256,6 @@ export default function ToolBar({
     textFillEnabled,
     onTextFillEnabledChange,
   });
-
   return (
     <MotionConfig transition={transition}>
       <div className="z-[1000] relative">
@@ -324,7 +323,6 @@ export default function ToolBar({
                 fontFamily={fontFamily}
                 fontSize={fontSize}
                 scrollSpeed={scrollSpeed}
-                backgroundImage={backgroundImage}
                 edgeBlurEnabled={edgeBlurEnabled}
                 edgeBlurIntensity={edgeBlurIntensity}
                 shinyTextEnabled={shinyTextEnabled}
