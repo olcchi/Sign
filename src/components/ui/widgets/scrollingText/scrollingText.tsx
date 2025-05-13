@@ -20,12 +20,12 @@ export interface ScrollingTextProps {
   textFillEnabled?: boolean;
 }
 
-// Displays text with automatic horizontal scrolling when content exceeds container width
+// Responsive text component that automatically scrolls when content exceeds container
 export default function ScrollingText({
   text,
   fontSize,
   fontFamily = "var(--font-dm-serif-text)",
-  color = "white",
+  color = "#FFFFFB",
   className = "",
   textRef: externalTextRef,
   scrollSpeed = 10,
@@ -43,7 +43,7 @@ export default function ScrollingText({
   const textRef = externalTextRef || internalTextRef;
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Determines scroll necessity by comparing text width to container width
+  // Compare text and container widths to determine if scrolling is needed
   const measureWidths = useCallback(() => {
     if (textRef.current && containerRef.current) {
       const textRect = textRef.current.getBoundingClientRect();
@@ -51,7 +51,7 @@ export default function ScrollingText({
 
       const needsScroll = textRect.width > containerRect.width;
       
-      // Reset animation state to prevent visual glitches during transitions
+      // Reset before updating to prevent animation flicker
       setShouldScroll(false);
       setTimeout(() => {
         setTextWidth(textRect.width);
@@ -60,28 +60,29 @@ export default function ScrollingText({
     }
   }, [textRef, fontFamily, fontSize]);
 
-  // Measure on mount, text change, and window resize
+  // Re-measure when text or container size might change
   useEffect(() => {
     measureWidths();
     window.addEventListener("resize", measureWidths);
     return () => window.removeEventListener("resize", measureWidths);
   }, [measureWidths, text]);
 
+  // Notify parent component about scrolling state changes
   useEffect(() => {
     if (onScrollStateChange) {
       onScrollStateChange(shouldScroll);
     }
   }, [shouldScroll, onScrollStateChange]);
 
-  // Spacing between repeated text instances
+  // Space between repeated texts for smooth loop transition
   const TEXT_GAP = 150;
   
-  // Adjust animation speed based on text width for consistent visual effect
+  // Adjust animation speed relative to text length for consistent visual pace
   const BASE_WIDTH = 1000;
   const widthFactor = textWidth / BASE_WIDTH;
   const animationDuration = (widthFactor * 100) / scrollSpeed;
 
-  // Ensure at least one text styling option is active
+  // Ensure text remains visible even if contradictory props are provided
   const ensuredTextFillEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textFillEnabled;
   const ensuredTextStrokeEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textStrokeEnabled;
 
@@ -93,12 +94,13 @@ export default function ScrollingText({
       WebkitTextStroke: `${textStrokeWidth}px ${textStrokeColor}`,
       textStroke: `${textStrokeWidth}px ${textStrokeColor}`,
     }),
+    WebkitFontSmoothing: 'antialiased',
+    MozOsxFontSmoothing: 'grayscale',
+    textRendering: 'optimizeLegibility' as const,
   };
 
-  // Detect white text for appropriate shiny effect variation
-  const isWhiteText = color.toLowerCase() === '#ffffff' || 
-                     color.toLowerCase() === 'white' ||
-                     color.toLowerCase() === 'rgb(255, 255, 255)';
+  // White text requires different shiny effect parameters
+  const isWhiteText = color.toLowerCase() === '#fffffb'
 
   const textClasses = cn(
     "whitespace-nowrap inline-block mx-auto select-none",
@@ -118,7 +120,7 @@ export default function ScrollingText({
         aria-label={`Scrolling text: ${text}`}
       >
         {shouldScroll ? (
-          // Use scroller for continuous animation when text is wider than container
+          // Continuous scrolling for overflow text
           <ScrollingTextScroller
             textWidth={textWidth}
             TEXT_GAP={TEXT_GAP}
@@ -134,7 +136,7 @@ export default function ScrollingText({
             textFillEnabled={textFillEnabled}
           />
         ) : (
-          // Display static centered text when it fits within container
+          // Static display when text fits container
           <div
             ref={textRef}
             className={textClasses}
