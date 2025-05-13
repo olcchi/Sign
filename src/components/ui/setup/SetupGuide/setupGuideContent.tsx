@@ -62,24 +62,6 @@ export function SetupGuideContent({
               </div>
               {!isFull && <FullScreen />}
             </div>
-
-            {/* <div
-              className={cn(
-                "flex items-center gap-3 p-3 rounded-lg transition-all flex-1 border-1 border-zinc-700",
-                isLandscape ? "bg-zinc-900/50 text-zinc-400" : "bg-zinc-900/40"
-              )}
-            >
-              <div
-                className={cn(
-                  "w-4 h-4 rounded-full border-2 flex items-center justify-center",
-                  isLandscape ? "border-green-500" : "border-zinc-500"
-                )}
-              ></div>
-              <div className="flex-1">
-                <p className="font-medium">横屏显示</p>
-                <p className="text-sm text-zinc-400">旋转设备以获得更好体验</p>
-              </div>
-            </div> */}
           </div>
         </div>
         <AnimatePresence>
