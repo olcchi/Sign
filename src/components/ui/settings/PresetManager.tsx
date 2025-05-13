@@ -9,7 +9,6 @@ import {
   AccordionContent,
 } from "@/components/ui/layout/accordion";
 import { cn } from "@/lib/utils";
-import { styles } from "@/lib/styles";
 
 /**
  * Preset interface defining the structure of saved presets
@@ -44,8 +43,6 @@ interface PresetManagerProps {
   fontFamily: string;
   fontSize: string;
   scrollSpeed: number;
-  // backgroundColor?: string;
-  backgroundImage?: string | null;
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;
   shinyTextEnabled: boolean;
@@ -69,8 +66,6 @@ export function PresetManager({
   fontFamily,
   fontSize,
   scrollSpeed,
-  // backgroundColor,
-  backgroundImage,
   edgeBlurEnabled,
   edgeBlurIntensity,
   shinyTextEnabled,
@@ -89,7 +84,7 @@ export function PresetManager({
   const [activePresetId, setActivePresetId] = useState<string | null>(null);
   const presetInputRef = useRef<HTMLInputElement>(null);
 
-  // 值到标签的映射
+  // value to label
   const getFontSizeLabel = (size: string) => {
     switch (size) {
       case "5rem":
@@ -134,7 +129,6 @@ export function PresetManager({
     const savedPresets = localStorage.getItem("soulsign-presets");
     if (savedPresets) {
       try {
-        // 处理旧的预设格式，为缺少的新属性提供默认值
         const parsedPresets = JSON.parse(savedPresets);
         const updatedPresets = parsedPresets.map((preset: any) => ({
           ...preset,
@@ -157,17 +151,23 @@ export function PresetManager({
           noiseDensity:
             preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
           textStrokeEnabled:
-            preset.textStrokeEnabled !== undefined ? preset.textStrokeEnabled : true,
+            preset.textStrokeEnabled !== undefined
+              ? preset.textStrokeEnabled
+              : true,
           textStrokeWidth:
             preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
           textStrokeColor:
-            preset.textStrokeColor !== undefined ? preset.textStrokeColor : "#000000",
+            preset.textStrokeColor !== undefined
+              ? preset.textStrokeColor
+              : "#000000",
           textFillEnabled:
-            preset.textFillEnabled !== undefined ? preset.textFillEnabled : true,
+            preset.textFillEnabled !== undefined
+              ? preset.textFillEnabled
+              : true,
         }));
 
         setPresets(updatedPresets);
-        // 同时更新localStorage中的数据
+        // update
         localStorage.setItem(
           "soulsign-presets",
           JSON.stringify(updatedPresets)
@@ -234,7 +234,6 @@ export function PresetManager({
       fontFamily,
       fontSize,
       scrollSpeed,
-      // backgroundColor,
       edgeBlurEnabled,
       edgeBlurIntensity,
       shinyTextEnabled,
@@ -305,25 +304,30 @@ export function PresetManager({
     setActivePresetId(preset.id);
   };
 
+  // get rendering status text
+  const getRenderingStatusText = (isEnabled?: boolean) => {
+    return isEnabled ? "开启" : "关闭";
+  };
+
   return (
-    <div className="space-y-2 pt-2 border-t border-zinc-800">
-      <div className="flex items-center justify-between">
+    <div className="space-y-2">
+      <div className="flex items-center justify-between py-1">
         <p className="text-zinc-300 text-sm font-medium select-none">
           预设管理
         </p>
-        <div className="flex gap-2">
-          <Button
-            size="sm"
-            onClick={() => {
-              setShowPresetInput(true);
-              setTimeout(() => presetInputRef.current?.focus(), 10);
-            }}
-            className="px-2 py-1 rounded-md text-xs font-sans bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 transition-colors"
-          >
-            <Save size={14} />
-            保存
-          </Button>
-        </div>
+
+        <Button
+          size="sm"
+          variant={"ghost"}
+          onClick={() => {
+            setShowPresetInput(true);
+            setTimeout(() => presetInputRef.current?.focus(), 10);
+          }}
+          // className=" px-2 py-1 rounded-md text-xs font-sans bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 transition-colors"
+        >
+          <Save size={14} className="mr-1" />
+          保存
+        </Button>
       </div>
       <AnimatePresence>
         {showPresetInput && (
@@ -331,7 +335,7 @@ export function PresetManager({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex gap-2 mt-2"
+            className="flex gap-2 px-2 mt-2"
           >
             <input
               ref={presetInputRef}
@@ -360,7 +364,7 @@ export function PresetManager({
         )}
       </AnimatePresence>
       {presets.length === 0 ? (
-        <p className="text-zinc-500 text-xs italic">暂无保存的预设</p>
+        <p className="text-zinc-500 text-xs italic px-2 py-1">暂无保存的预设</p>
       ) : (
         <div className="mt-2 max-h-[180px] overflow-y-auto pr-1 custom-scrollbar">
           <Accordion type="multiple" className="w-full">
@@ -372,17 +376,17 @@ export function PresetManager({
               >
                 <div
                   className={cn(
-                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm",
+                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm"
                   )}
                 >
                   <div className="flex-1">
                     <AccordionTrigger
                       className={cn(
-                        " w-full text-zinc-200 text-sm transition-colors hover:no-underline"
+                        "w-full text-zinc-200 text-sm flex items-center transition-colors hover:no-underline"
                       )}
                     >
-                      <div className="flex items-center gap-1 w-full">
-                        <p className="max-w-40 font-sans">
+                      <div className="flex py-1 items-center gap-1 w-full">
+                        <p className="max-w-40 font-sans text-xs">
                           {activePresetId === preset.id && (
                             <span className="pr-2 text-zinc-400 text-xs">
                               当前
@@ -393,44 +397,49 @@ export function PresetManager({
                       </div>
                     </AccordionTrigger>
                   </div>
-                  {activePresetId === preset.id ? (
+                  <div className="flex">
+                    {activePresetId === preset.id ? (
+                      <Button
+                        size="sm"
+                        variant={"ghost"}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          updatePreset(preset.id);
+                        }}
+                        // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
+                        title="更新预设"
+                      >
+                        <RefreshCw size={14} />
+                      </Button>
+                    ) : (
+                      <Button
+                        size="sm"
+                        variant={"ghost"}
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleLoadPreset(preset);
+                        }}
+                        // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
+                        title="载入预设"
+                      >
+                        <Download size={14} />
+                      </Button>
+                    )}
                     <Button
                       size="sm"
+                      variant={"ghost"}
                       onClick={(e) => {
                         e.stopPropagation();
-                        updatePreset(preset.id);
+                        deletePreset(preset.id, e);
                       }}
-                      className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                      title="更新预设"
+                      // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
+                      title="删除预设"
                     >
-                      <RefreshCw size={14} />
+                      <Trash2 size={14} />
                     </Button>
-                  ) : (
-                    <Button
-                      size="sm" 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleLoadPreset(preset);
-                      }}
-                      className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                      title="载入预设"
-                    >
-                      <Download size={14} />
-                    </Button>
-                  )}
-                  <Button
-                    size="sm"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      deletePreset(preset.id, e);
-                    }}
-                    className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                    title="删除预设"
-                  >
-                    <Trash2 size={14} />
-                  </Button>
+                  </div>
                 </div>
-                <AccordionContent className="bg-zinc-900/50 rounded-md mt-1 p-2">
+                <AccordionContent className="bg-zinc-900/50 rounded-md mt-1 p-3">
                   <div className="text-xs text-zinc-400 space-y-1">
                     <p>
                       文字内容: {preset.text.substring(0, 30)}
@@ -443,6 +452,12 @@ export function PresetManager({
                     <p>聚焦: {preset.edgeBlurEnabled ? "开启" : "关闭"}</p>
                     <p>闪光: {preset.shinyTextEnabled ? "开启" : "关闭"}</p>
                     <p>噪点: {preset.noiseEnabled ? "开启" : "关闭"}</p>
+                    <p>
+                      填充: {getRenderingStatusText(preset.textFillEnabled)}
+                    </p>
+                    <p>
+                      描边: {getRenderingStatusText(preset.textStrokeEnabled)}
+                    </p>
                   </div>
                 </AccordionContent>
               </AccordionItem>
