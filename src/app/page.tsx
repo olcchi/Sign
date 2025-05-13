@@ -40,7 +40,7 @@ export default function SoulSignPage() {
   
   // Text styling effects
   const [textStrokeEnabled, setTextStrokeEnabled] = useState(true);
-  const [textStrokeWidth, setTextStrokeWidth] = useState(1);
+  const [textStrokeWidth, setTextStrokeWidth] = useState(2);
   const [textStrokeColor, setTextStrokeColor] = useState("#FFFFFB");
   const [textFillEnabled, setTextFillEnabled] = useState(false);
 
