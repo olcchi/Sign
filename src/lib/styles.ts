@@ -18,4 +18,8 @@ export const styles = {
     rounded: "rounded-md",
     small: "px-2 py-1",
   },
+  border: {
+    default: "border-b border-zinc-800",
+    active: "border-zinc-500",
+  },
 }; 
