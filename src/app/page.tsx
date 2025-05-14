@@ -4,48 +4,25 @@ import ToolBar from "@/components/ui/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
 import { EdgeBlurEffect } from "@/components/ui/EdgeBlurEffect";
 import { Olcchi } from "@/components/ui/olcchi";
-import { useRef, useState } from "react";
+import { useRef } from "react";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/noisyButterflyBackground/noise";
+import { SettingsProvider, useSettings } from "@/lib/contexts/SettingsContext";
 
-export default function SoulSignPage() {
+// Internal component using Context to access global settings
+function SoulSignContent() {
   const textRef = useRef<HTMLDivElement>(null);
-
-  // Main display configuration state
-  const [text, setText] = useState("Soul Sign");
-  const [textColor, setTextColor] = useState("#FFFFFB");
-  const [fontFamily, setFontFamily] = useState("var(--font-geist-sans)");
-  const [fontSize, setFontSize] = useState("10rem");
-  const [scrollSpeed, setScrollSpeed] = useState(10);
-  const [isTextScrolling, setIsTextScrolling] = useState(false);
-  
-  // Background configuration
-  const [backgroundColor, setBackgroundColor] = useState("#000000");
-  const [backgroundImage, setBackgroundImage] = useState<string | null>(null);
-  const [backgroundPosition, setBackgroundPosition] = useState({
-    x: 50,
-    y: 50,
-  });
-  const [backgroundZoom, setBackgroundZoom] = useState(1);
-  const [overlayEnabled, setOverlayEnabled] = useState(true);
-  
-  // Visual effects configuration
-  const [edgeBlurEnabled, setEdgeBlurEnabled] = useState(false);
-  const [edgeBlurIntensity, setEdgeBlurIntensity] = useState(10);
-  const [shinyTextEnabled, setShinyTextEnabled] = useState(true);
-  const [noiseEnabled, setNoiseEnabled] = useState(false);
-  const [noiseOpacity, setNoiseOpacity] = useState(0.1);
-  const [noiseDensity, setNoiseDensity] = useState(0.3);
-  
-  // Text styling effects
-  const [textStrokeEnabled, setTextStrokeEnabled] = useState(true);
-  const [textStrokeWidth, setTextStrokeWidth] = useState(2);
-  const [textStrokeColor, setTextStrokeColor] = useState("#FFFFFB");
-  const [textFillEnabled, setTextFillEnabled] = useState(false);
+  const {
+    textSettings,
+    backgroundSettings,
+    effectsSettings,
+    isTextScrolling,
+    setIsTextScrolling
+  } = useSettings();
 
   const backgroundStyle = {
-    backgroundColor,
+    backgroundColor: backgroundSettings.backgroundColor,
   };
 
   return (
@@ -53,99 +30,75 @@ export default function SoulSignPage() {
       className="relative w-screen h-[100dvh] overflow-hidden font-[family-name:var(--font-dm-serif-text)]"
       style={backgroundStyle}
     >
-      {backgroundImage && (
+      {backgroundSettings.backgroundImage && (
         <div className="absolute inset-0 z-0">
           <Image
-            src={backgroundImage}
+            src={backgroundSettings.backgroundImage}
             alt="Background"
             fill
             priority
             sizes="100vw"
             style={{
               objectFit: "cover",
-              objectPosition: `${backgroundPosition.x}% ${backgroundPosition.y}%`,
-              transform: `scale(${backgroundZoom})`,
-              transformOrigin: `${backgroundPosition.x}% ${backgroundPosition.y}%`,
+              objectPosition: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
+              transform: `scale(${backgroundSettings.backgroundZoom})`,
+              transformOrigin: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
             }}
           />
         </div>
       )}
 
       {/* Semi-transparent overlay improves text readability over images */}
-      {backgroundImage && overlayEnabled && (
+      {backgroundSettings.backgroundImage && backgroundSettings.overlayEnabled && (
         <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1"></div>
       )}
 
-      {/* Noise texture adds visual interest and depth */}
-      {noiseEnabled && (
-        <Noise opacity={noiseOpacity} density={noiseDensity} color="#ffffff" className="z-20 mix-blend-overlay" />
+      {/* Noise texture adds visual depth and dimension */}
+      {effectsSettings.noiseEnabled && (
+        <Noise 
+          opacity={effectsSettings.noiseOpacity} 
+          density={effectsSettings.noiseDensity} 
+          color="#ffffff" 
+          className="z-20 mix-blend-overlay" 
+        />
       )}
 
       <div className="w-full h-full flex justify-center items-center relative z-10">
         <div className="relative w-full">
           <ScrollingText
-            fontFamily={fontFamily}
-            text={text}
-            fontSize={fontSize}
-            color={textColor}
+            fontFamily={textSettings.fontFamily}
+            text={textSettings.text}
+            fontSize={textSettings.fontSize}
+            color={textSettings.textColor}
             textRef={textRef as React.RefObject<HTMLDivElement>}
-            scrollSpeed={scrollSpeed}
+            scrollSpeed={textSettings.scrollSpeed}
             onScrollStateChange={setIsTextScrolling}
-            shinyTextEnabled={shinyTextEnabled}
-            textStrokeEnabled={textStrokeEnabled}
-            textStrokeWidth={textStrokeWidth}
-            textStrokeColor={textStrokeColor}
-            textFillEnabled={textFillEnabled}
+            shinyTextEnabled={effectsSettings.shinyTextEnabled}
+            textStrokeEnabled={textSettings.textStrokeEnabled}
+            textStrokeWidth={textSettings.textStrokeWidth}
+            textStrokeColor={textSettings.textStrokeColor}
+            textFillEnabled={textSettings.textFillEnabled}
           />
         </div>
       </div>
 
-      <EdgeBlurEffect enabled={edgeBlurEnabled} intensity={edgeBlurIntensity} />
-      <ToolBar
-        text={text}
-        onTextChange={setText}
-        textColor={textColor}
-        onColorChange={setTextColor}
-        fontFamily={fontFamily}
-        onFontChange={setFontFamily}
-        fontSize={fontSize}
-        onFontSizeChange={setFontSize}
-        scrollSpeed={scrollSpeed}
-        onScrollSpeedChange={setScrollSpeed}
-        isTextScrolling={isTextScrolling}
-        backgroundColor={backgroundColor}
-        onBackgroundColorChange={setBackgroundColor}
-        backgroundImage={backgroundImage}
-        onBackgroundImageChange={setBackgroundImage}
-        overlayEnabled={overlayEnabled}
-        onOverlayEnabledChange={setOverlayEnabled}
-        backgroundPosition={backgroundPosition}
-        onBackgroundPositionChange={setBackgroundPosition}
-        backgroundZoom={backgroundZoom}
-        onBackgroundZoomChange={setBackgroundZoom}
-        edgeBlurEnabled={edgeBlurEnabled}
-        onEdgeBlurEnabledChange={setEdgeBlurEnabled}
-        edgeBlurIntensity={edgeBlurIntensity}
-        onEdgeBlurIntensityChange={setEdgeBlurIntensity}
-        shinyTextEnabled={shinyTextEnabled}
-        onShinyTextEnabledChange={setShinyTextEnabled}
-        noiseEnabled={noiseEnabled}
-        onNoiseEnabledChange={setNoiseEnabled}
-        noiseOpacity={noiseOpacity}
-        onNoiseOpacityChange={setNoiseOpacity}
-        noiseDensity={noiseDensity}
-        onNoiseDensityChange={setNoiseDensity}
-        textStrokeEnabled={textStrokeEnabled}
-        onTextStrokeEnabledChange={setTextStrokeEnabled}
-        textStrokeWidth={textStrokeWidth}
-        onTextStrokeWidthChange={setTextStrokeWidth}
-        textStrokeColor={textStrokeColor}
-        onTextStrokeColorChange={setTextStrokeColor}
-        textFillEnabled={textFillEnabled}
-        onTextFillEnabledChange={setTextFillEnabled}
+      <EdgeBlurEffect 
+        enabled={effectsSettings.edgeBlurEnabled} 
+        intensity={effectsSettings.edgeBlurIntensity} 
       />
+      
+      <ToolBar />
 
       <FullScreen asButton={true} className="fixed top-4 left-4" />
     </main>
+  );
+}
+
+// Main page component wraps with SettingsProvider to ensure global state availability
+export default function SoulSignPage() {
+  return (
+    <SettingsProvider>
+      <SoulSignContent />
+    </SettingsProvider>
   );
 }
