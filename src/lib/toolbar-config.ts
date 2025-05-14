@@ -66,8 +66,8 @@ export const fontSizeOptions = [
 ];
 
 // Image processing configuration
-export const PREVIEW_IMAGE_QUALITY = 0.3;
-export const BACKGROUND_IMAGE_QUALITY = 0.9;
+export const PREVIEW_IMAGE_QUALITY = 0.2;
+export const BACKGROUND_IMAGE_QUALITY = 0.6;
 
 // Animation configuration for toolbar transitions
 export const transition = {

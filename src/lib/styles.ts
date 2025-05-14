@@ -19,7 +19,7 @@ export const styles = {
     small: "px-2 py-1",
   },
   border: {
-    default: "border-b border-zinc-800",
+    default: "border-b  border-zinc-800",
     active: "border-zinc-500",
   },
 }; 
