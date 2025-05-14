@@ -2,11 +2,11 @@ import React, { ReactNode } from "react";
 
 /**
  * Props for the SettingItem component
- * @property {string} title - The title of the setting
+ * @property {ReactNode} title - The title of the setting
  * @property {ReactNode} children - The content to render inside the setting item
  */
 interface SettingItemProps {
-  title: string;
+  title: ReactNode;
   children: ReactNode;
 }
 
@@ -18,9 +18,9 @@ export function SettingItem({ title, children }: SettingItemProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <p className="text-zinc-300 text-sm font-medium select-none">
+        <div className="text-zinc-300 text-sm font-bold select-none w-full">
           {title}
-        </p>
+        </div>
       </div>
       {children}
     </div>
