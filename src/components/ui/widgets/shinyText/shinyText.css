@@ -16,18 +16,18 @@
   background: linear-gradient(
     120deg,
     rgba(50, 50, 50, 0) 0%,
-    rgba(50, 50, 50, 0) 5%,
-    rgba(50, 50, 50, 0.2) 10%,
-    rgba(120, 120, 120, 0.6) 20%,
-    rgba(50, 50, 50, 0.2) 30%,
-    rgba(50, 50, 50, 0) 35%,
-    rgba(50, 50, 50, 0) 40%
+    rgba(50, 50, 50, 0) 10%,
+    rgba(50, 50, 50, 0.2) 15%,
+    rgba(120, 120, 120, 0.6) 25%,
+    rgba(50, 50, 50, 0.2) 35%,
+    rgba(50, 50, 50, 0) 40%,
+    rgba(50, 50, 50, 0) 100%
   );
-  background-size: 300% 100%;
+  background-size: 400% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 5s linear infinite;
+  animation: shine 10s linear infinite;
   filter: brightness(0.9) contrast(1.4);
   mix-blend-mode: multiply;
 }
@@ -44,18 +44,18 @@
   background: linear-gradient(
     120deg,
     rgba(255, 255, 255, 0) 0%,
-    rgba(255, 255, 255, 0) 5%,
-    rgba(255, 255, 255, 0.2) 10%,
-    rgba(255, 255, 255, 0.8) 20%,
-    rgba(255, 255, 255, 0.2) 30%,
-    rgba(255, 255, 255, 0) 35%,
-    rgba(255, 255, 255, 0) 40%
+    rgba(255, 255, 255, 0) 10%,
+    rgba(255, 255, 255, 0.2) 15%,
+    rgba(255, 255, 255, 0.8) 25%,
+    rgba(255, 255, 255, 0.2) 35%,
+    rgba(255, 255, 255, 0) 40%,
+    rgba(255, 255, 255, 0) 100%
   );
-  background-size: 300% 100%;
+  background-size: 400% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: shine 5s linear infinite;
+  animation: shine 10s linear infinite;
   filter: brightness(1.5) contrast(1.2);
   mix-blend-mode: overlay;
 }
@@ -71,7 +71,7 @@
 
 @keyframes shine {
   0% {
-    background-position: 300% 0;
+    background-position: 400% 0;
   }
   100% {
     background-position: 0% 0;
