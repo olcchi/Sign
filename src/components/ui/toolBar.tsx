@@ -4,7 +4,6 @@ import React, { useRef } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
-import TextEditor from "@/components/ui/textEditor";
 import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
 import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
@@ -19,103 +18,26 @@ import {
   toolBarPosition,
   transition
 } from "@/lib/toolbar-config";
+import Petal from "@/components/ui/Petal";
 import { useBackgroundImage } from "@/lib/hooks/useBackgroundImage";
 import { useTextState } from "@/lib/hooks/useTextState";
 import { applyPreset } from "@/lib/preset-utils";
+import { useSettings } from "@/lib/contexts/SettingsContext";
 
-// Props interface with comprehensive customization options
-interface ToolBarProps {
-  text: string;
-  onTextChange: (text: string) => void;
-  textColor: string;
-  onColorChange: (color: string) => void;
-  fontFamily: string;
-  onFontChange: (font: string) => void;
-  fontSize: string;
-  onFontSizeChange: (size: string) => void;
-  scrollSpeed: number;
-  onScrollSpeedChange: (speed: number) => void;
-  isTextScrolling: boolean;
-  backgroundColor: string;
-  onBackgroundColorChange: (color: string) => void;
-  backgroundImage: string | null;
-  onBackgroundImageChange: (imageUrl: string | null) => void;
-  overlayEnabled: boolean;
-  onOverlayEnabledChange: (enabled: boolean) => void;
-  backgroundPosition?: { x: number; y: number };
-  onBackgroundPositionChange?: (position: { x: number; y: number }) => void;
-  backgroundZoom?: number;
-  onBackgroundZoomChange?: (zoom: number) => void;
-  edgeBlurEnabled?: boolean;
-  onEdgeBlurEnabledChange?: (enabled: boolean) => void;
-  edgeBlurIntensity?: number;
-  onEdgeBlurIntensityChange?: (intensity: number) => void;
-  shinyTextEnabled?: boolean;
-  onShinyTextEnabledChange?: (enabled: boolean) => void;
-  noiseEnabled?: boolean;
-  onNoiseEnabledChange?: (enabled: boolean) => void;
-  noiseOpacity?: number;
-  onNoiseOpacityChange?: (opacity: number) => void;
-  noiseDensity?: number;
-  onNoiseDensityChange?: (density: number) => void;
-  textStrokeEnabled?: boolean;
-  onTextStrokeEnabledChange?: (enabled: boolean) => void;
-  textStrokeWidth?: number;
-  onTextStrokeWidthChange?: (width: number) => void;
-  textStrokeColor?: string;
-  onTextStrokeColorChange?: (color: string) => void;
-  textFillEnabled?: boolean;
-  onTextFillEnabledChange?: (enabled: boolean) => void;
-}
+// Main configuration toolbar component that manages all display settings UI
+export default function ToolBar() {
+  // Access settings from context
+  const {
+    textSettings,
+    updateTextSettings,
+    backgroundSettings,
+    updateBackgroundSettings,
+    effectsSettings,
+    updateEffectsSettings,
+    isTextScrolling
+  } = useSettings();
 
-/**
- * Main toolbar component for configuring display options
- * 
- * Provides a comprehensive UI for adjusting text and background settings
- * with custom presets management. Uses multiple custom hooks to separate
- * and manage different aspects of functionality.
- */
-export default function ToolBar({
-  text,
-  onTextChange,
-  textColor,
-  onColorChange,
-  fontFamily,
-  onFontChange,
-  fontSize,
-  onFontSizeChange,
-  scrollSpeed,
-  onScrollSpeedChange,
-  backgroundImage,
-  onBackgroundImageChange,
-  overlayEnabled,
-  onOverlayEnabledChange,
-  backgroundPosition = { x: 50, y: 50 },
-  onBackgroundPositionChange = () => {},
-  backgroundZoom = 1,
-  onBackgroundZoomChange = () => {},
-  edgeBlurEnabled = false,
-  onEdgeBlurEnabledChange = () => {},
-  edgeBlurIntensity = 5,
-  onEdgeBlurIntensityChange = () => {},
-  shinyTextEnabled = false,
-  onShinyTextEnabledChange = () => {},
-  noiseEnabled = false,
-  onNoiseEnabledChange = () => {},
-  noiseOpacity = 0.5,
-  onNoiseOpacityChange = () => {},
-  noiseDensity = 0.5,
-  onNoiseDensityChange = () => {},
-  textStrokeEnabled = true,
-  onTextStrokeEnabledChange = () => {},
-  textStrokeWidth = 1,
-  onTextStrokeWidthChange = () => {},
-  textStrokeColor = "#000000",
-  onTextStrokeColorChange = () => {},
-  textFillEnabled = true,
-  onTextFillEnabledChange = () => {},
-}: ToolBarProps) {
-  // Custom hooks manage state and logic
+  // Using custom hooks to separate state and logic for improved maintainability
   const {
     isOpen,
     isActive,
@@ -134,21 +56,19 @@ export default function ToolBar({
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
 
-  // Handle text state and editing
+  // Handle text state and editing logic
   const { 
     inputText, 
-    setInputText,
-    enterEditMode, 
-    exitEditMode 
+    setInputText
   } = useTextState(
-    text, 
-    onTextChange, 
+    textSettings.text, 
+    (text) => updateTextSettings({ text }), 
     enterEditModeBase, 
     exitEditModeBase, 
     textInputRef as any
   );
 
-  // Handle background image logic
+  // Handle background image functionality
   const {
     previewImage,
     sliderDisabled,
@@ -157,45 +77,43 @@ export default function ToolBar({
     removeBackgroundImage,
     handlePositionChange
   } = useBackgroundImage(
-    backgroundImage,
-    onBackgroundImageChange,
+    backgroundSettings.backgroundImage,
+    (imageUrl) => updateBackgroundSettings({ backgroundImage: imageUrl }),
     previewContainerRef as any,
     fileInputRef as any,
     handleImageChange,
-    backgroundPosition,
-    onBackgroundPositionChange,
+    backgroundSettings.backgroundPosition,
+    (position) => updateBackgroundSettings({ backgroundPosition: position }),
     isOpen
   );
 
-  /**
-   * Applies a preset configuration to all settings
-   */
+  // Apply preset configuration to all settings
   const loadPreset = (preset: Preset) => {
     applyPreset(preset, {
-      onTextChange,
-      onColorChange,
-      onFontChange,
-      onFontSizeChange,
-      onScrollSpeedChange,
-      onEdgeBlurEnabledChange,
-      onEdgeBlurIntensityChange,
-      onShinyTextEnabledChange,
-      onNoiseEnabledChange,
-      onNoiseOpacityChange,
-      onNoiseDensityChange,
-      onTextStrokeEnabledChange,
-      onTextStrokeWidthChange,
-      onTextStrokeColorChange,
-      onTextFillEnabledChange
+      onTextChange: (text) => updateTextSettings({ text }),
+      onColorChange: (color) => updateTextSettings({ textColor: color }),
+      onFontChange: (font) => updateTextSettings({ fontFamily: font }),
+      onFontSizeChange: (size) => updateTextSettings({ fontSize: size }),
+      onScrollSpeedChange: (speed) => updateTextSettings({ scrollSpeed: speed }),
+      onEdgeBlurEnabledChange: (enabled) => updateEffectsSettings({ edgeBlurEnabled: enabled }),
+      onEdgeBlurIntensityChange: (intensity) => updateEffectsSettings({ edgeBlurIntensity: intensity }),
+      onShinyTextEnabledChange: (enabled) => updateEffectsSettings({ shinyTextEnabled: enabled }),
+      onNoiseEnabledChange: (enabled) => updateEffectsSettings({ noiseEnabled: enabled }),
+      onNoiseOpacityChange: (opacity) => updateEffectsSettings({ noiseOpacity: opacity }),
+      onNoiseDensityChange: (density) => updateEffectsSettings({ noiseDensity: density }),
+      onTextStrokeEnabledChange: (enabled) => updateTextSettings({ textStrokeEnabled: enabled }),
+      onTextStrokeWidthChange: (width) => updateTextSettings({ textStrokeWidth: width }),
+      onTextStrokeColorChange: (color) => updateTextSettings({ textStrokeColor: color }),
+      onTextFillEnabledChange: (enabled) => updateTextSettings({ textFillEnabled: enabled })
     });
   };
 
-  // Toolbar menu items
+  // Toolbar menu item configuration
   const toolbarItems = [
     {
       id: "menu",
       label: "菜单",
-      icon: <Menu className="h-5 w-5" />,
+      icon: <Petal />,
       action: () => {
         if (activeTab === "menu") {
           closePanel();
@@ -206,55 +124,22 @@ export default function ToolBar({
     },
   ];
 
-  // Get setting items
+  // Get setting item components list
   const settingItems = ToolBarSettings({
-    text,
-    enterEditMode,
-    fontSize,
-    onFontSizeChange,
-    textColor,
-    onColorChange,
-    fontFamily,
-    onFontChange,
-    scrollSpeed,
-    onScrollSpeedChange,
-    backgroundImage,
-    triggerFileUpload,
-    removeBackgroundImage,
+    // Background image handling
     previewImage,
     previewContainerRef,
-    backgroundPosition,
     handlePositionChange,
     sliderDisabled,
-    backgroundZoom,
-    onBackgroundZoomChange,
-    overlayEnabled,
-    onOverlayEnabledChange,
-    edgeBlurEnabled,
-    onEdgeBlurEnabledChange,
-    edgeBlurIntensity,
-    onEdgeBlurIntensityChange,
-    shinyTextEnabled,
-    onShinyTextEnabledChange,
+    triggerFileUpload,
+    removeBackgroundImage,
     fileInputRef,
     handleFileChange: handleFileChangeWrapped,
+    
+    // Configuration options
     colorOptions,
     fontOptions,
     fontSizeOptions,
-    noiseEnabled,
-    onNoiseEnabledChange,
-    noiseOpacity,
-    onNoiseOpacityChange,
-    noiseDensity,
-    onNoiseDensityChange,
-    textStrokeEnabled,
-    onTextStrokeEnabledChange,
-    textStrokeWidth,
-    onTextStrokeWidthChange,
-    textStrokeColor,
-    onTextStrokeColorChange,
-    textFillEnabled,
-    onTextFillEnabledChange,
   });
   return (
     <MotionConfig transition={transition}>
@@ -298,7 +183,7 @@ export default function ToolBar({
               toolBarPosition.sm,
               toolBarPosition.md,
               toolBarPosition.lg,
-              "fixed flex flex-col backdrop-blur-2xl rounded-md bg-zinc-950/70 border border-zinc-800 overflow-hidden"
+              "fixed flex flex-col rounded-md bg-zinc-950 border border-zinc-800 overflow-hidden"
             )}
             style={{ zIndex: 999 }}
             initial={{ opacity: 0, scale:0.98  }}
@@ -318,40 +203,27 @@ export default function ToolBar({
               ))}
 
               <PresetManager
-                text={text}
-                textColor={textColor}
-                fontFamily={fontFamily}
-                fontSize={fontSize}
-                scrollSpeed={scrollSpeed}
-                edgeBlurEnabled={edgeBlurEnabled}
-                edgeBlurIntensity={edgeBlurIntensity}
-                shinyTextEnabled={shinyTextEnabled}
-                noiseEnabled={noiseEnabled}
-                noiseOpacity={noiseOpacity}
-                noiseDensity={noiseDensity}
-                textStrokeEnabled={textStrokeEnabled}
-                textStrokeWidth={textStrokeWidth}
-                textStrokeColor={textStrokeColor}
-                textFillEnabled={textFillEnabled}
+                text={textSettings.text}
+                textColor={textSettings.textColor}
+                fontFamily={textSettings.fontFamily}
+                fontSize={textSettings.fontSize}
+                scrollSpeed={textSettings.scrollSpeed}
+                edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
+                edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
+                shinyTextEnabled={effectsSettings.shinyTextEnabled}
+                noiseEnabled={effectsSettings.noiseEnabled}
+                noiseOpacity={effectsSettings.noiseOpacity}
+                noiseDensity={effectsSettings.noiseDensity}
+                textStrokeEnabled={textSettings.textStrokeEnabled}
+                textStrokeWidth={textSettings.textStrokeWidth}
+                textStrokeColor={textSettings.textStrokeColor}
+                textFillEnabled={textSettings.textFillEnabled}
                 onLoadPreset={loadPreset}
               />
             </PanelContent>
           </motion.div>
         )}
       </AnimatePresence>
-
-      <TextEditor
-        show={editMode}
-        text={inputText}
-        onTextChange={setInputText}
-        onClose={() => exitEditMode()}
-        onSubmit={exitEditMode}
-        textColor={textColor}
-        onColorChange={onColorChange}
-        textInputRef={textInputRef as React.RefObject<HTMLTextAreaElement>}
-        scrollSpeed={scrollSpeed}
-        onScrollSpeedChange={onScrollSpeedChange}
-      />
       </div>
     </MotionConfig>
   );
