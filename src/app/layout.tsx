@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/themeProvider";
-import { Geist, Geist_Mono, DM_Serif_Text, Kolker_Brush } from "next/font/google";
+import { Geist, Geist_Mono, DM_Serif_Text, Kolker_Brush, } from "next/font/google";
 import "./globals.css";
 
 // Font configurations with CSS variable assignments for consistent typography
