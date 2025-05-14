@@ -1,7 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Button } from "@/components/ui/button/button";
-import { Save, Download, Trash2, ChevronDown, RefreshCw } from "lucide-react";
+import {
+  Save,
+  Download,
+  Trash2,
+  ChevronDown,
+  RefreshCw,
+  AlertCircle,
+  X,
+  Check,
+} from "lucide-react";
 import {
   Accordion,
   AccordionItem,
@@ -82,6 +91,8 @@ export function PresetManager({
   const [presetName, setPresetName] = useState("");
   const [showPresetInput, setShowPresetInput] = useState(false);
   const [activePresetId, setActivePresetId] = useState<string | null>(null);
+  // Track which preset is currently in delete confirmation mode
+  const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
   const presetInputRef = useRef<HTMLInputElement>(null);
 
   // value to label
@@ -285,9 +296,16 @@ export function PresetManager({
     localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
   };
 
-  // Delete preset
-  const deletePreset = (id: string, e: React.MouseEvent) => {
+  // Show delete confirmation
+  const confirmDeletePreset = (id: string, e: React.MouseEvent) => {
     e.stopPropagation();
+    setDeleteConfirmId(id);
+  };
+
+  // Execute preset deletion
+  const executeDeletePreset = (id: string, e: React.MouseEvent) => {
+    e.stopPropagation();
+
     const updatedPresets = presets.filter((preset) => preset.id !== id);
     setPresets(updatedPresets);
     localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
@@ -296,6 +314,15 @@ export function PresetManager({
     if (activePresetId === id) {
       setActivePresetId(null);
     }
+
+    // Clear delete confirmation
+    setDeleteConfirmId(null);
+  };
+
+  // Cancel delete operation
+  const cancelDeletePreset = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setDeleteConfirmId(null);
   };
 
   // Load a preset and set it as active
@@ -310,11 +337,9 @@ export function PresetManager({
   };
 
   return (
-    <div className="space-y-2">
+    <div className="space-y-2 relative">
       <div className="flex items-center justify-between py-1">
-        <p className="text-zinc-300 text-sm font-medium select-none">
-          预设管理
-        </p>
+        <p className="text-zinc-300 text-sm font-bold select-none">预设</p>
 
         <Button
           size="sm"
@@ -323,7 +348,6 @@ export function PresetManager({
             setShowPresetInput(true);
             setTimeout(() => presetInputRef.current?.focus(), 10);
           }}
-          // className=" px-2 py-1 rounded-md text-xs font-sans bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 transition-colors"
         >
           <Save size={14} className="mr-1" />
           保存
@@ -344,7 +368,7 @@ export function PresetManager({
               onChange={(e) => setPresetName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && savePreset()}
               placeholder="预设名称..."
-              className="flex-1 px-2 py-1 text-sm bg-zinc-900 border border-zinc-800 rounded-md text-zinc-300 focus:outline-none focus:border-zinc-700"
+              className="flex-1 px-2 py-1 text-xs bg-zinc-900 border border-zinc-800 rounded-md text-zinc-300 focus:outline-none focus:border-zinc-700"
             />
             <Button
               size="sm"
@@ -376,7 +400,7 @@ export function PresetManager({
               >
                 <div
                   className={cn(
-                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm"
+                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm overflow-hidden"
                   )}
                 >
                   <div className="flex-1">
@@ -397,46 +421,86 @@ export function PresetManager({
                       </div>
                     </AccordionTrigger>
                   </div>
-                  <div className="flex">
-                    {activePresetId === preset.id ? (
-                      <Button
-                        size="sm"
-                        variant={"ghost"}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          updatePreset(preset.id);
-                        }}
-                        // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                        title="更新预设"
-                      >
-                        <RefreshCw size={14} />
-                      </Button>
-                    ) : (
-                      <Button
-                        size="sm"
-                        variant={"ghost"}
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleLoadPreset(preset);
-                        }}
-                        // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                        title="载入预设"
-                      >
-                        <Download size={14} />
-                      </Button>
-                    )}
-                    <Button
-                      size="sm"
-                      variant={"ghost"}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        deletePreset(preset.id, e);
-                      }}
-                      // className="px-2 py-1 text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300 rounded-md"
-                      title="删除预设"
-                    >
-                      <Trash2 size={14} />
-                    </Button>
+
+                  {/* Action buttons with delete confirmation */}
+                  <div className="flex relative items-center">
+                    {/* Normal action buttons */}
+                    <AnimatePresence mode="wait">
+                      {deleteConfirmId !== preset.id ? (
+                        <motion.div
+                          className="flex"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.1 }}
+                          key="normal-actions"
+                        >
+                          {activePresetId === preset.id ? (
+                            <Button
+                              size="sm"
+                              variant={"ghost"}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                updatePreset(preset.id);
+                              }}
+                              title="更新预设"
+                            >
+                              <RefreshCw size={14} />
+                            </Button>
+                          ) : (
+                            <Button
+                              size="sm"
+                              variant={"ghost"}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleLoadPreset(preset);
+                              }}
+                              title="载入预设"
+                            >
+                              <Download size={14} />
+                            </Button>
+                          )}
+                          <Button
+                            size="sm"
+                            variant={"ghost"}
+                            onClick={(e) => confirmDeletePreset(preset.id, e)}
+                            title="删除预设"
+                          >
+                            <Trash2 size={14} />
+                          </Button>
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          className="flex"
+                          initial={{ opacity: 0 }}
+                          animate={{ opacity: 1 }}
+                          exit={{ opacity: 0 }}
+                          transition={{ duration: 0.1 }}
+                          key="confirm-actions"
+                        >
+                          <div className="flex items-center gap-1 px-1 py-1 rounded-md">
+                            <Button
+                              size="sm"
+                              variant={"ghost"}
+                              className=" px-2 text-xs"
+                              onClick={(e) => executeDeletePreset(preset.id, e)}
+                              title="确认"
+                            >
+                              删除
+                            </Button>
+                            <Button
+                              size="sm"
+                              variant={"ghost"}
+                              className=" px-2 text-xs"
+                              onClick={cancelDeletePreset}
+                              title="取消"
+                            >
+                              取消
+                            </Button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
                 <AccordionContent className="bg-zinc-900/50 rounded-md mt-1 p-3">
