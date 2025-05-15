@@ -225,21 +225,6 @@ export function ToolBarSettings({
       ),
     },
     {
-      id: "textColor",
-      title: "字体颜色",
-      component: (
-        <OptionButtonGroup
-          options={colorOptions}
-          selectedValue={textSettings.textColor}
-          onChange={(color) => updateTextSettings({ textColor: color })}
-          buttonSize="icon"
-          renderOption={(option) => (
-            <Baseline className={cn(option.textColor)} size="12" />
-          )}
-        />
-      ),
-    },
-    {
       id: "textRendering",
       title: "字体渲染",
       component: (
@@ -274,6 +259,25 @@ export function ToolBarSettings({
                 {textSettings.textFillEnabled ? "开启" : "关闭"}
               </Button>
             </div>
+            
+            {textSettings.textFillEnabled && (
+              <div className="pt-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className={cn("text-sm whitespace-nowrap", styles.text.muted)}>
+                    颜色
+                  </span>
+                  <OptionButtonGroup
+                    options={colorOptions}
+                    selectedValue={textSettings.textColor}
+                    onChange={(color) => updateTextSettings({ textColor: color })}
+                    buttonSize="icon"
+                    renderOption={(option) => (
+                      <Baseline className={cn(option.textColor)} size="12" />
+                    )}
+                  />
+                </div>
+              </div>
+            )}
           </div>
 
           <div className={cn("space-y-2 px-2 py-1", styles.border.default)}>
