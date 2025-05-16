@@ -22,4 +22,24 @@ export const styles = {
     default: "border-b  border-zinc-800",
     active: "border-zinc-500",
   },
+  layout: {
+    // Containers
+    container: {
+      group: "flex flex-col gap-2", // container group
+      panel: "space-y-2 px-2 py-2", // container panel
+    },
+    
+    // Spacing
+    spacing: {
+      itemGap: "space-y-2",     // item gap
+      childGap: "gap-2",        // child gap
+      itemMargin: "mt-2",       // item margin
+    },
+    
+    // Item display
+    item: {
+      header: "flex items-center justify-between", // item header
+      row: "flex items-center gap-2",              // item row
+    }
+  },
 }; 
