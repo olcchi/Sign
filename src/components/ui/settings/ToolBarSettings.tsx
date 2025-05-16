@@ -17,18 +17,6 @@ import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
 import Image from "next/image";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 
-// Background image interaction properties
-interface BackgroundImageHandlingProps {
-  previewImage: string | null;
-  previewContainerRef: React.RefObject<HTMLDivElement | null>;
-  handlePositionChange: (axis: "x" | "y", value: number[]) => void;
-  sliderDisabled: { x: boolean; y: boolean };
-  triggerFileUpload: () => void;
-  removeBackgroundImage: () => void;
-  fileInputRef: React.RefObject<HTMLInputElement | null>;
-  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-}
-
 // Configurable options
 interface OptionsConfig {
   colorOptions: Array<{
@@ -51,6 +39,18 @@ interface OptionsConfig {
 // Text editing interaction properties
 interface TextEditHandlingProps {
   enterEditMode?: () => void;
+}
+
+// Background image interaction properties
+interface BackgroundImageHandlingProps {
+  previewImage: string | null;
+  previewContainerRef: React.RefObject<HTMLDivElement | null>;
+  handlePositionChange: (axis: "x" | "y", value: number[]) => void;
+  sliderDisabled: { x: boolean; y: boolean };
+  triggerFileUpload: () => void;
+  removeBackgroundImage: () => void;
+  fileInputRef: React.RefObject<HTMLInputElement | null>;
+  handleFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 // Combines all settings properties for extensibility
@@ -228,9 +228,9 @@ export function ToolBarSettings({
       id: "textRendering",
       title: "字体渲染",
       component: (
-        <div className={cn("flex flex-col gap-2")}>
-          <div className={cn("space-y-2 px-2 py-1", styles.border.default)}>
-            <div className="flex items-center justify-between">
+        <div className={cn(styles.layout.container.group)}>
+          <div className={cn(styles.layout.container.panel, styles.border.default)}>
+            <div className={cn(styles.layout.item.header)}>
               <span className={cn("text-sm", styles.text.muted)}>填充</span>
               <Button
                 size="sm"
@@ -261,8 +261,8 @@ export function ToolBarSettings({
             </div>
             
             {textSettings.textFillEnabled && (
-              <div className="pt-2 space-y-2">
-                <div className="flex items-center gap-2">
+              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
+                <div className={cn(styles.layout.item.row)}>
                   <span className={cn("text-sm whitespace-nowrap", styles.text.muted)}>
                     颜色
                   </span>
@@ -280,8 +280,8 @@ export function ToolBarSettings({
             )}
           </div>
 
-          <div className={cn("space-y-2 px-2 py-1", styles.border.default)}>
-            <div className="flex items-center justify-between">
+          <div className={cn(styles.layout.container.panel, styles.border.default)}>
+            <div className={cn(styles.layout.item.header)}>
               <span className={cn("text-sm", styles.text.muted)}>边框</span>
               <Button
                 size="sm"
@@ -312,8 +312,8 @@ export function ToolBarSettings({
             </div>
 
             {textSettings.textStrokeEnabled && (
-              <div className="pt-2 space-y-2">
-                <div className="flex items-center gap-2">
+              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
+                <div className={cn(styles.layout.item.row)}>
                   <span
                     className={cn(
                       "text-sm whitespace-nowrap",
@@ -334,7 +334,7 @@ export function ToolBarSettings({
                     )}
                   />
                 </div>
-                <div className="flex items-center gap-2 py-2">
+                <div className={cn(styles.layout.item.row)}>
                   <span
                     className={cn(
                       "text-sm whitespace-nowrap",
@@ -398,7 +398,7 @@ export function ToolBarSettings({
       id: "backgroundImage",
       title: "背景",
       component: (
-        <div className="space-y-2">
+        <div className={cn(styles.layout.spacing.itemGap)}>
           <input
             type="file"
             ref={fileInputRef}
@@ -406,7 +406,7 @@ export function ToolBarSettings({
             className="hidden"
             onChange={handleFileChange}
           />
-          <div className="flex gap-2">
+          <div className={cn(styles.layout.item.row)}>
             <Button
               onClick={triggerFileUpload}
               className={cn(
@@ -441,7 +441,7 @@ export function ToolBarSettings({
           {backgroundSettings.backgroundImage && (
             <>
               <div
-                className="mt-2 relative w-full h-20 rounded-md overflow-hidden"
+                className="relative w-full h-20 rounded-md overflow-hidden"
                 ref={previewContainerRef}
               >
                 <Image
@@ -457,8 +457,8 @@ export function ToolBarSettings({
                   }}
                 />
               </div>
-              <div className="mt-2 space-y-2">
-                <div className="flex items-center gap-2">
+              <div className={cn(styles.layout.spacing.itemGap)}>
+                <div className={cn(styles.layout.item.row)}>
                   <p className="text-xs whitespace-nowrap">水平</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundPosition.x]}
@@ -471,7 +471,7 @@ export function ToolBarSettings({
                     disabled={sliderDisabled.x}
                   />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className={cn(styles.layout.item.row)}>
                   <p className="text-xs whitespace-nowrap">垂直</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundPosition.y]}
@@ -484,7 +484,7 @@ export function ToolBarSettings({
                     disabled={sliderDisabled.y}
                   />
                 </div>
-                <div className="flex items-center gap-2 mt-2">
+                <div className={cn(styles.layout.item.row)}>
                   <p className="text-xs whitespace-nowrap">缩放</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundZoom]}
@@ -530,9 +530,9 @@ export function ToolBarSettings({
       id: "edgeBlurEffect",
       title: "特效",
       component: (
-        <div className={cn("flex flex-col gap-2")}>
-          <div className={cn("px-2 py-1", styles.border.default)}>
-            <div className="flex items-center justify-between">
+        <div className={cn(styles.layout.container.group)}>
+          <div className={cn(styles.layout.container.panel, styles.border.default)}>
+            <div className={cn(styles.layout.item.header)}>
               <span className={cn("text-sm", styles.text.muted)}>聚焦</span>
               <Button
                 size="sm"
@@ -553,8 +553,8 @@ export function ToolBarSettings({
             </div>
 
             {effectsSettings.edgeBlurEnabled && (
-              <div className="py-2">
-                <div className="flex items-center gap-2">
+              <div className={cn(styles.layout.spacing.itemMargin)}>
+                <div className={cn(styles.layout.item.row)}>
                   <p
                     className={cn(
                       "text-sm whitespace-nowrap",
@@ -579,8 +579,8 @@ export function ToolBarSettings({
             )}
           </div>
 
-          <div className={cn("px-2 py-1", styles.border.default)}>
-            <div className="flex items-center justify-between">
+          <div className={cn(styles.layout.container.panel, styles.border.default)}>
+            <div className={cn(styles.layout.item.header)}>
               <span className={cn("text-sm", styles.text.muted)}>噪点</span>
               <Button
                 size="sm"
@@ -601,8 +601,8 @@ export function ToolBarSettings({
             </div>
 
             {effectsSettings.noiseEnabled && (
-              <div className="py-2 space-y-2">
-                <div className="flex items-center gap-2">
+              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
+                <div className={cn(styles.layout.item.row)}>
                   <span
                     className={cn(
                       "text-sm whitespace-nowrap",
@@ -623,7 +623,7 @@ export function ToolBarSettings({
                     className="w-full"
                   />
                 </div>
-                <div className="flex items-center gap-2">
+                <div className={cn(styles.layout.item.row)}>
                   <span
                     className={cn(
                       "text-sm whitespace-nowrap",
@@ -650,7 +650,8 @@ export function ToolBarSettings({
 
           <div
             className={cn(
-              "flex items-center justify-between px-2 py-1",
+              styles.layout.container.panel,
+              styles.layout.item.header,
               styles.border.default
             )}
           >
