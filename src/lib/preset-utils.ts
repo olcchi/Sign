@@ -1,4 +1,4 @@
-import { Preset } from "@/components/ui/settings/PresetManager";
+import { Preset } from "@/components/ui/settings/Preset";
 
 /**
  * Interface for all preset property change handlers
