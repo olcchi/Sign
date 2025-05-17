@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
-import { PresetManager, Preset } from "@/components/ui/settings/PresetManager";
+import { PresetManager, Preset } from "@/components/ui/settings/Preset";
 import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
 import { PanelHeader } from "@/components/ui/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/panel/PanelContent";
