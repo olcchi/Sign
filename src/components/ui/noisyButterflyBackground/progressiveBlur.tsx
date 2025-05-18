@@ -20,7 +20,7 @@ export type ProgressiveBlurProps = {
 // Creates a gradually increasing blur effect using multiple overlapping layers with gradient masks
 export function ProgressiveBlur({
   direction = 'bottom',
-  blurLayers = 8,
+  blurLayers = 2,
   className,
   blurIntensity = 0.25,
   ...props

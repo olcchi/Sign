@@ -18,8 +18,10 @@ export function EdgeBlurEffect({
 }: EdgeBlurEffectProps) {
   if (!enabled) return null;
   
-  // Calculate optimal blur configuration based on user intensity setting
-  const blurLayers = Math.max(2, Math.min(12, Math.floor(intensity / 1.5)));
+  // Fixed number of blur layers for consistent DOM structure
+  const blurLayers = 6; // Optimal balance between smoothness and performance
+  
+  // Only intensity varies based on user input
   const blurIntensity = intensity * 0.1;
   
   return (
