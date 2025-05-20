@@ -2,7 +2,6 @@
 
 import React, { useRef, useEffect, useState } from "react";
 import { cn } from "@/lib/utils";
-import { styles } from "@/lib/styles";
 import {
   Baseline,
   Image as ImageIcon,
@@ -114,7 +113,7 @@ export function ToolBarSettings({
 
   // save text to global state
   const saveText = () => {
-    // 确保保存时如果文本为空，则使用默认值"Sign"
+    // ensure save when text is empty
     const finalText = localText.trim() === "" ? "Sign" : localText;
     updateTextSettings({ text: finalText });
     setIsEditing(false);
@@ -126,7 +125,7 @@ export function ToolBarSettings({
     setIsEditing(false);
   };
 
-  // 确保默认文本为"Sign"
+  // default text
   useEffect(() => {
     if (textSettings.text === "") {
       updateTextSettings({ text: "Sign" });
@@ -148,7 +147,6 @@ export function ToolBarSettings({
                   e.stopPropagation();
                   saveText();
                 }}
-                className={cn(" text-xs")}
               >
                 <Save size={12} className="mr-1" />
                 保存
@@ -160,7 +158,6 @@ export function ToolBarSettings({
                   e.stopPropagation();
                   revertText();
                 }}
-                className={cn(" text-xs")}
               >
                 <RotateCcw size={12} className="mr-1" />
                 撤销
@@ -170,15 +167,7 @@ export function ToolBarSettings({
         </div>
       ),
       component: (
-        <button
-          className={cn(
-            "w-full text-left px-3 py-2",
-            styles.bg.default,
-            styles.bg.hover,
-            styles.text.default,
-            "text-sm font-sans transition-colors rounded-md relative overflow-hidden"
-          )}
-        >
+        <button className="w-full rounded-md text-left px-3 py-2 text-sm font-sans relative overflow-hidden border bg-muted">
           <textarea
             ref={textareaRef}
             value={localText}
@@ -195,13 +184,7 @@ export function ToolBarSettings({
                 adjustHeight(e.target);
               }
             }}
-            className={cn(
-              "w-full resize-none bg-transparent outline-none border-none",
-              "text-sm font-sans",
-              "min-h-[32px]",
-              styles.text.default,
-              "overflow-y-auto max-h-[80px] custom-scrollbar"
-            )}
+            className="w-full resize-none bg-transparent outline-none border-none text-sm font-sans min-h-[32px] overflow-y-auto max-h-[80px] custom-scrollbar"
             placeholder="请输入文本内容..."
             onFocus={(e) => {
               adjustHeight(e.target);
@@ -228,10 +211,10 @@ export function ToolBarSettings({
       id: "textRendering",
       title: "字体渲染",
       component: (
-        <div className={cn(styles.layout.container.group)}>
-          <div className={cn(styles.layout.container.panel, styles.border.default)}>
-            <div className={cn(styles.layout.item.header)}>
-              <span className={cn("text-sm", styles.text.muted)}>填充</span>
+        <div className="space-y-2">
+          <div className="border-b overflow-hidden">
+            <div className="flex justify-between items-center p-2">
+              <span className="text-sm ">填充</span>
               <Button
                 size="sm"
                 variant="ghost"
@@ -259,17 +242,17 @@ export function ToolBarSettings({
                 {textSettings.textFillEnabled ? "开启" : "关闭"}
               </Button>
             </div>
-            
+
             {textSettings.textFillEnabled && (
-              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
-                <div className={cn(styles.layout.item.row)}>
-                  <span className={cn("text-sm whitespace-nowrap", styles.text.muted)}>
-                    颜色
-                  </span>
+              <div className="p-2 space-y-2">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm whitespace-nowrap ">颜色</span>
                   <OptionButtonGroup
                     options={colorOptions}
                     selectedValue={textSettings.textColor}
-                    onChange={(color) => updateTextSettings({ textColor: color })}
+                    onChange={(color) =>
+                      updateTextSettings({ textColor: color })
+                    }
                     buttonSize="icon"
                     renderOption={(option) => (
                       <Baseline className={cn(option.textColor)} size="12" />
@@ -280,9 +263,9 @@ export function ToolBarSettings({
             )}
           </div>
 
-          <div className={cn(styles.layout.container.panel, styles.border.default)}>
-            <div className={cn(styles.layout.item.header)}>
-              <span className={cn("text-sm", styles.text.muted)}>边框</span>
+          <div className="border-b overflow-hidden">
+            <div className="flex justify-between items-center p-2">
+              <span className="text-sm ">边框</span>
               <Button
                 size="sm"
                 variant={"ghost"}
@@ -312,16 +295,9 @@ export function ToolBarSettings({
             </div>
 
             {textSettings.textStrokeEnabled && (
-              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
-                <div className={cn(styles.layout.item.row)}>
-                  <span
-                    className={cn(
-                      "text-sm whitespace-nowrap",
-                      styles.text.muted
-                    )}
-                  >
-                    颜色
-                  </span>
+              <div className="p-2 space-y-2">
+                <div className="flex items-center  gap-2">
+                  <span className="text-sm whitespace-nowrap ">颜色</span>
                   <OptionButtonGroup
                     options={colorOptions}
                     selectedValue={textSettings.textStrokeColor}
@@ -334,15 +310,8 @@ export function ToolBarSettings({
                     )}
                   />
                 </div>
-                <div className={cn(styles.layout.item.row)}>
-                  <span
-                    className={cn(
-                      "text-sm whitespace-nowrap",
-                      styles.text.muted
-                    )}
-                  >
-                    宽度
-                  </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-sm whitespace-nowrap ">宽度</span>
                   <Slider
                     defaultValue={[textSettings.textStrokeWidth]}
                     value={[textSettings.textStrokeWidth]}
@@ -352,7 +321,6 @@ export function ToolBarSettings({
                     onValueChange={(value) =>
                       updateTextSettings({ textStrokeWidth: value[0] })
                     }
-                    className="w-full"
                   />
                 </div>
               </div>
@@ -398,42 +366,26 @@ export function ToolBarSettings({
       id: "backgroundImage",
       title: "背景",
       component: (
-        <div className={cn(styles.layout.spacing.itemGap)}>
-          <input
-            type="file"
-            ref={fileInputRef}
-            accept="image/*"
-            className="hidden"
-            onChange={handleFileChange}
-          />
-          <div className={cn(styles.layout.item.row)}>
-            <Button
-              onClick={triggerFileUpload}
-              className={cn(
-                backgroundSettings.backgroundImage
-                  ? styles.bg.active
-                  : styles.bg.default,
-                backgroundSettings.backgroundImage
-                  ? styles.text.default
-                  : styles.text.muted,
-                styles.bg.hover,
-                "flex items-center gap-1",
-                styles.button.base
-              )}
-              size="sm"
-            >
+        <div className="space-y-2">
+          <div className="flex items-center gap-2">
+            <input
+              type="file"
+              ref={fileInputRef}
+              accept="image/*"
+              className="hidden"
+              onChange={handleFileChange}
+            />
+            <Button onClick={triggerFileUpload} variant="secondary" >
+              <p className="text-xs whitespace-nowrap">上传图片</p>
               <ImageIcon size={14} />
-              上传图片
             </Button>
             {backgroundSettings.backgroundImage && (
-              <div className="flex items-center justify-between gap-2">
+              <div className="flex items-center gap-2">
                 <Button
-                  variant="destructive"
+                  variant="secondary"
                   onClick={removeBackgroundImage}
-                  size="sm"
-                  className={cn(styles.button.base, "hover:bg-red-400")}
                 >
-                  移除图片
+                  <p className="text-xs whitespace-nowrap">移除图片</p>
                 </Button>
               </div>
             )}
@@ -441,7 +393,7 @@ export function ToolBarSettings({
           {backgroundSettings.backgroundImage && (
             <>
               <div
-                className="relative w-full h-20 rounded-md overflow-hidden"
+                className="relative w-full h-20 overflow-hidden border"
                 ref={previewContainerRef}
               >
                 <Image
@@ -457,9 +409,9 @@ export function ToolBarSettings({
                   }}
                 />
               </div>
-              <div className={cn(styles.layout.spacing.itemGap)}>
-                <div className={cn(styles.layout.item.row)}>
-                  <p className="text-xs whitespace-nowrap">水平</p>
+              <div className="space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs whitespace-nowrap ">水平</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundPosition.x]}
                     value={[backgroundSettings.backgroundPosition.x]}
@@ -467,12 +419,11 @@ export function ToolBarSettings({
                     max={100}
                     step={1}
                     onValueChange={(value) => handlePositionChange("x", value)}
-                    className="w-full"
                     disabled={sliderDisabled.x}
                   />
                 </div>
-                <div className={cn(styles.layout.item.row)}>
-                  <p className="text-xs whitespace-nowrap">垂直</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs whitespace-nowrap ">垂直</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundPosition.y]}
                     value={[backgroundSettings.backgroundPosition.y]}
@@ -480,12 +431,11 @@ export function ToolBarSettings({
                     max={100}
                     step={1}
                     onValueChange={(value) => handlePositionChange("y", value)}
-                    className="w-full"
                     disabled={sliderDisabled.y}
                   />
                 </div>
-                <div className={cn(styles.layout.item.row)}>
-                  <p className="text-xs whitespace-nowrap">缩放</p>
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-xs whitespace-nowrap ">缩放</p>
                   <Slider
                     defaultValue={[backgroundSettings.backgroundZoom]}
                     value={[backgroundSettings.backgroundZoom]}
@@ -495,19 +445,11 @@ export function ToolBarSettings({
                     onValueChange={(value) =>
                       updateBackgroundSettings({ backgroundZoom: value[0] })
                     }
-                    className="w-full"
                   />
                 </div>
               </div>
               <Button
-                size="sm"
-                className={cn(
-                  styles.bg.darker,
-                  styles.bg.hover,
-                  styles.button.small,
-                  "flex items-center gap-1",
-                  styles.button.base
-                )}
+                variant="secondary"
                 onClick={() =>
                   updateBackgroundSettings({
                     overlayEnabled: !backgroundSettings.overlayEnabled,
@@ -519,7 +461,7 @@ export function ToolBarSettings({
                 ) : (
                   <EyeOff size={12} />
                 )}
-                弱化背景
+                <p className="text-xs whitespace-nowrap">弱化背景</p>
               </Button>
             </>
           )}
@@ -530,10 +472,10 @@ export function ToolBarSettings({
       id: "edgeBlurEffect",
       title: "特效",
       component: (
-        <div className={cn(styles.layout.container.group)}>
-          <div className={cn(styles.layout.container.panel, styles.border.default)}>
-            <div className={cn(styles.layout.item.header)}>
-              <span className={cn("text-sm", styles.text.muted)}>聚焦</span>
+        <div className="space-y-2">
+          <div className="border-b overflow-hidden">
+            <div className="flex justify-between items-center p-2">
+              <span className="text-sm ">聚焦</span>
               <Button
                 size="sm"
                 variant={"ghost"}
@@ -553,16 +495,9 @@ export function ToolBarSettings({
             </div>
 
             {effectsSettings.edgeBlurEnabled && (
-              <div className={cn(styles.layout.spacing.itemMargin)}>
-                <div className={cn(styles.layout.item.row)}>
-                  <p
-                    className={cn(
-                      "text-sm whitespace-nowrap",
-                      styles.text.muted
-                    )}
-                  >
-                    强度
-                  </p>
+              <div className="p-2">
+                <div className="flex items-center justify-between gap-2">
+                  <p className="text-sm whitespace-nowrap ">强度</p>
                   <Slider
                     defaultValue={[effectsSettings.edgeBlurIntensity]}
                     value={[effectsSettings.edgeBlurIntensity]}
@@ -572,16 +507,15 @@ export function ToolBarSettings({
                     onValueChange={(value) =>
                       updateEffectsSettings({ edgeBlurIntensity: value[0] })
                     }
-                    className="w-full"
                   />
                 </div>
               </div>
             )}
           </div>
 
-          <div className={cn(styles.layout.container.panel, styles.border.default)}>
-            <div className={cn(styles.layout.item.header)}>
-              <span className={cn("text-sm", styles.text.muted)}>噪点</span>
+          <div className="border-b overflow-hidden">
+            <div className="flex justify-between items-center p-2">
+              <span className="text-sm ">噪点</span>
               <Button
                 size="sm"
                 variant={"ghost"}
@@ -601,16 +535,9 @@ export function ToolBarSettings({
             </div>
 
             {effectsSettings.noiseEnabled && (
-              <div className={cn(styles.layout.spacing.itemGap, styles.layout.spacing.itemMargin)}>
-                <div className={cn(styles.layout.item.row)}>
-                  <span
-                    className={cn(
-                      "text-sm whitespace-nowrap",
-                      styles.text.muted
-                    )}
-                  >
-                    亮度
-                  </span>
+              <div className="p-2 space-y-2">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm whitespace-nowrap ">亮度</span>
                   <Slider
                     defaultValue={[effectsSettings.noiseOpacity]}
                     value={[effectsSettings.noiseOpacity]}
@@ -620,18 +547,10 @@ export function ToolBarSettings({
                     onValueChange={(value) =>
                       updateEffectsSettings({ noiseOpacity: value[0] })
                     }
-                    className="w-full"
                   />
                 </div>
-                <div className={cn(styles.layout.item.row)}>
-                  <span
-                    className={cn(
-                      "text-sm whitespace-nowrap",
-                      styles.text.muted
-                    )}
-                  >
-                    密度
-                  </span>
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm whitespace-nowrap ">密度</span>
                   <Slider
                     defaultValue={[effectsSettings.noiseDensity]}
                     value={[effectsSettings.noiseDensity]}
@@ -641,37 +560,32 @@ export function ToolBarSettings({
                     onValueChange={(value) =>
                       updateEffectsSettings({ noiseDensity: value[0] })
                     }
-                    className="w-full"
                   />
                 </div>
               </div>
             )}
           </div>
 
-          <div
-            className={cn(
-              styles.layout.container.panel,
-              styles.layout.item.header,
-              styles.border.default
-            )}
-          >
-            <span className={cn("text-sm", styles.text.muted)}>闪光</span>
-            <Button
-              size="sm"
-              variant={"ghost"}
-              onClick={() =>
-                updateEffectsSettings({
-                  shinyTextEnabled: !effectsSettings.shinyTextEnabled,
-                })
-              }
-            >
-              {effectsSettings.shinyTextEnabled ? (
-                <Eye size={12} />
-              ) : (
-                <EyeOff size={12} />
-              )}
-              {effectsSettings.shinyTextEnabled ? "开启" : "关闭"}
-            </Button>
+          <div className="border-b overflow-hidden">
+            <div className="flex justify-between items-center p-2">
+              <span className="text-sm ">闪光</span>
+              <Button
+                size="sm"
+                variant={"ghost"}
+                onClick={() =>
+                  updateEffectsSettings({
+                    shinyTextEnabled: !effectsSettings.shinyTextEnabled,
+                  })
+                }
+              >
+                {effectsSettings.shinyTextEnabled ? (
+                  <Eye size={12} />
+                ) : (
+                  <EyeOff size={12} />
+                )}
+                {effectsSettings.shinyTextEnabled ? "开启" : "关闭"}
+              </Button>
+            </div>
           </div>
         </div>
       ),
