@@ -18,7 +18,7 @@ export function SettingItem({ title, children }: SettingItemProps) {
   return (
     <div className="space-y-2">
       <div className="flex items-center gap-2">
-        <div className="text-zinc-300 text-sm font-bold select-none w-full">
+        <div className=" text-sm font-bold select-none w-full">
           {title}
         </div>
       </div>
