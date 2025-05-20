@@ -30,7 +30,7 @@ const KolkerBrush = Kolker_Brush({
 export const metadata: Metadata = {
   title: "Soul Sign ",
   icons: {
-    icon: "/butterfly.svg",
+    icon: "/sign.svg",
   },
   description: "Generate your electronic cheering sign",
 };
