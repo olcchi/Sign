@@ -1,5 +1,5 @@
-### Soul Sign
 
+![Soul Sign](/public/signHeroDark.png)
 Aesthetic digital support sign generator
 
 ## Introduction
