@@ -13,9 +13,7 @@ interface ScrollingTextScrollerProps {
   shinyTextEnabled?: boolean;
   textColor: string;
   textStrokeEnabled?: boolean;
-  textStrokeWidth?: number;
-  textStrokeColor?: string;
-  textFillEnabled?: boolean;
+
 }
 
 // Creates seamless infinite text scrolling with duplicated content
@@ -28,10 +26,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textRef,
   shinyTextEnabled = false,
   textColor,
-  textStrokeEnabled = true,
-  textStrokeWidth = 1,
-  textStrokeColor = "#000000",
-  textFillEnabled = true,
+
 }) => {
   // Add gap spacing to prevent visually abrupt transitions
   const combinedTextStyle = {
@@ -46,9 +41,10 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   );
 
   // Flag for white text to select appropriate visual effects
-  const isWhiteText = textColor.toLowerCase() === '#ffffff' || 
-                     textColor.toLowerCase() === 'white' ||
-                     textColor.toLowerCase() === 'rgb(255, 255, 255)';
+  const isWhiteText =
+    textColor.toLowerCase() === "#ffffff" ||
+    textColor.toLowerCase() === "white" ||
+    textColor.toLowerCase() === "rgb(255, 255, 255)";
 
   return (
     <motion.div
@@ -79,7 +75,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
         {editableText}
       </div>
       {/* Duplicate for seamless looping */}
-      <div 
+      <div
         className={textClasses}
         style={textStyle}
         data-text={editableText}
