@@ -73,7 +73,7 @@ const defaultBackgroundSettings: BackgroundSettings = {
 // Default values for initial effect settings
 const defaultEffectsSettings: EffectsSettings = {
   edgeBlurEnabled: false,
-  edgeBlurIntensity: 10,
+  edgeBlurIntensity: 4,
   shinyTextEnabled: true,
   noiseEnabled: false,
   noiseOpacity: 0.1,
