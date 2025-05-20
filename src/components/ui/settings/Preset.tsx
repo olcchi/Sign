@@ -339,7 +339,7 @@ export function PresetManager({
   return (
     <div className="space-y-2 relative">
       <div className="flex items-center justify-between py-1">
-        <p className="text-zinc-300 text-sm font-bold select-none">预设</p>
+        <p className=" text-sm font-bold select-none">预设</p>
 
         <Button
           size="sm"
@@ -368,19 +368,20 @@ export function PresetManager({
               onChange={(e) => setPresetName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && savePreset()}
               placeholder="预设名称..."
-              className="flex-1 px-2 py-1 text-xs bg-zinc-900 border border-zinc-800 rounded-md text-zinc-300 focus:outline-none focus:border-zinc-700"
+              className="flex-1 px-2 py-1 text-xs bg-muted rounded-md focus:outline-none focus:border-zinc-700"
             />
             <Button
               size="sm"
               onClick={savePreset}
-              className="px-2 py-1 rounded-md text-xs bg-zinc-100 hover:bg-white text-black"
+              className="px-2 py-1 rounded-md text-xs"
             >
               保存
             </Button>
             <Button
               size="sm"
+              variant={"secondary"}
               onClick={() => setShowPresetInput(false)}
-              className="px-2 py-1 rounded-md text-xs bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
+              className="px-2 py-1 rounded-md text-xs"
             >
               取消
             </Button>
@@ -400,19 +401,19 @@ export function PresetManager({
               >
                 <div
                   className={cn(
-                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-zinc-900/80 backdrop-blur-sm overflow-hidden"
+                    "flex w-full items-center rounded-md gap-2 px-3 sticky top-0 z-10 bg-muted overflow-hidden"
                   )}
                 >
                   <div className="flex-1">
                     <AccordionTrigger
                       className={cn(
-                        "w-full text-zinc-200 text-sm flex items-center transition-colors hover:no-underline"
+                        "w-full text-sm flex items-center transition-colors hover:no-underline"
                       )}
                     >
                       <div className="flex py-1 items-center gap-1 w-full">
                         <p className="max-w-40 font-sans text-xs">
                           {activePresetId === preset.id && (
-                            <span className="pr-2 text-zinc-400 text-xs">
+                            <span className="pr-2  text-xs">
                               当前
                             </span>
                           )}
@@ -503,8 +504,8 @@ export function PresetManager({
                     </AnimatePresence>
                   </div>
                 </div>
-                <AccordionContent className="bg-zinc-900/50 rounded-md mt-1 p-3">
-                  <div className="text-xs text-zinc-400 space-y-1 font-sans p-2">
+                <AccordionContent className="border rounded-md mt-1 p-3">
+                  <div className="text-xs space-y-1 font-sans p-2">
                     <p>
                       文字内容: {preset.text.substring(0, 30)}
                       {preset.text.length > 30 ? "..." : ""}
