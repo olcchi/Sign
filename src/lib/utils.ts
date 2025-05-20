@@ -6,7 +6,7 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
-// 添加防抖函数，用于延迟执行函数
+// debounce function
 export function debounce<T extends (...args: any[]) => any>(
   func: T,
   wait: number = 300
