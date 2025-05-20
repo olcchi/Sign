@@ -1,5 +1,6 @@
 import React from "react";
 import { Button } from "@/components/ui/button/button";
+import { cn } from "@/lib/utils";
 
 /**
  * Base option interface with required properties
@@ -46,21 +47,24 @@ export function OptionButtonGroup<T extends Option>({
 }: OptionButtonGroupProps<T>) {
   return (
     <div className={`flex flex-wrap gap-2 ${className}`}>
-      {options.map((option) => (
-        <Button
-          size={buttonSize}
-          key={option.value}
-          onClick={() => onChange(option.value)}
-          className={`px-3 py-1 rounded-md text-xs font-sans transition-colors ${
-            selectedValue === option.value
-              ? "bg-zinc-800 text-zinc-100"
-              : "bg-zinc-800/50 hover:bg-zinc-800 text-zinc-300"
-          } ${className}`}
-          title={option.name}
-        >
-          {renderOption ? renderOption(option) : option.name}
-        </Button>
-      ))}
+      {options.map((option) => {
+        const isActive = option.value === selectedValue;
+        return (
+          <Button
+            size={buttonSize}
+            variant={"secondary"}
+            key={option.value}
+            onClick={() => onChange(option.value)}
+            className={cn(
+              "rounded-md text-xs font-sans",
+              isActive ? "ring-1 ring-[#787D7B] dark:ring-[#BDC0BA]" : ""
+            )}
+            title={option.name}
+          >
+            {renderOption ? renderOption(option) : option.name}
+          </Button>
+        );
+      })}
     </div>
   );
-} 
+}
