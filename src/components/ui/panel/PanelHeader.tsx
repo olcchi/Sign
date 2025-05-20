@@ -18,14 +18,14 @@ export const PanelHeader: React.FC<PanelHeaderProps> = ({
   onClose 
 }) => {
   return (
-    <div className="w-full bg-zinc-950/90 backdrop-blur-xs border-b border-zinc-800">
+    <div className="w-full border-b">
       <div className="px-4 py-4 flex justify-between items-center">
-        <p className="text-zinc-200 text-sm select-none font-bold">
+        <p className=" text-sm select-none font-bold">
           {title}
         </p>
         <button
           onClick={onClose}
-          className="text-zinc-400 hover:text-zinc-200 transition-colors"
+          className=" transition-colors"
         >
           <X size={16} />
         </button>
