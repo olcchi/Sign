@@ -3,7 +3,6 @@
 import React, { useRef } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Menu } from "lucide-react";
 import { Button } from "@/components/ui/button/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
 import { PresetManager, Preset } from "@/components/ui/settings/Preset";
@@ -11,12 +10,13 @@ import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
 import { PanelHeader } from "@/components/ui/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
-import { 
-  colorOptions, 
-  fontOptions, 
-  fontSizeOptions, 
+import { Card, CardContent } from "@/components/ui/card";
+import {
+  colorOptions,
+  fontOptions,
+  fontSizeOptions,
   toolBarPosition,
-  transition
+  transition,
 } from "@/lib/toolbar-config";
 import Petal from "@/components/ui/Petal";
 import { useBackgroundImage } from "@/lib/hooks/useBackgroundImage";
@@ -34,7 +34,7 @@ export default function ToolBar() {
     updateBackgroundSettings,
     effectsSettings,
     updateEffectsSettings,
-    isTextScrolling
+    isTextScrolling,
   } = useSettings();
 
   // Using custom hooks to separate state and logic for improved maintainability
@@ -47,24 +47,20 @@ export default function ToolBar() {
     closePanel,
     enterEditMode: enterEditModeBase,
     exitEditMode: exitEditModeBase,
-    handleImageChange
+    handleImageChange,
   } = useToolbarState();
 
   const menuRef = useRef<HTMLDivElement>(null);
-  const cardRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
   const textInputRef = useRef<HTMLTextAreaElement>(null);
 
   // Handle text state and editing logic
-  const { 
-    inputText, 
-    setInputText
-  } = useTextState(
-    textSettings.text, 
-    (text) => updateTextSettings({ text }), 
-    enterEditModeBase, 
-    exitEditModeBase, 
+  const { inputText, setInputText } = useTextState(
+    textSettings.text,
+    (text) => updateTextSettings({ text }),
+    enterEditModeBase,
+    exitEditModeBase,
     textInputRef as any
   );
 
@@ -75,7 +71,7 @@ export default function ToolBar() {
     handleFileChangeWrapped,
     triggerFileUpload,
     removeBackgroundImage,
-    handlePositionChange
+    handlePositionChange,
   } = useBackgroundImage(
     backgroundSettings.backgroundImage,
     (imageUrl) => updateBackgroundSettings({ backgroundImage: imageUrl }),
@@ -94,17 +90,28 @@ export default function ToolBar() {
       onColorChange: (color) => updateTextSettings({ textColor: color }),
       onFontChange: (font) => updateTextSettings({ fontFamily: font }),
       onFontSizeChange: (size) => updateTextSettings({ fontSize: size }),
-      onScrollSpeedChange: (speed) => updateTextSettings({ scrollSpeed: speed }),
-      onEdgeBlurEnabledChange: (enabled) => updateEffectsSettings({ edgeBlurEnabled: enabled }),
-      onEdgeBlurIntensityChange: (intensity) => updateEffectsSettings({ edgeBlurIntensity: intensity }),
-      onShinyTextEnabledChange: (enabled) => updateEffectsSettings({ shinyTextEnabled: enabled }),
-      onNoiseEnabledChange: (enabled) => updateEffectsSettings({ noiseEnabled: enabled }),
-      onNoiseOpacityChange: (opacity) => updateEffectsSettings({ noiseOpacity: opacity }),
-      onNoiseDensityChange: (density) => updateEffectsSettings({ noiseDensity: density }),
-      onTextStrokeEnabledChange: (enabled) => updateTextSettings({ textStrokeEnabled: enabled }),
-      onTextStrokeWidthChange: (width) => updateTextSettings({ textStrokeWidth: width }),
-      onTextStrokeColorChange: (color) => updateTextSettings({ textStrokeColor: color }),
-      onTextFillEnabledChange: (enabled) => updateTextSettings({ textFillEnabled: enabled })
+      onScrollSpeedChange: (speed) =>
+        updateTextSettings({ scrollSpeed: speed }),
+      onEdgeBlurEnabledChange: (enabled) =>
+        updateEffectsSettings({ edgeBlurEnabled: enabled }),
+      onEdgeBlurIntensityChange: (intensity) =>
+        updateEffectsSettings({ edgeBlurIntensity: intensity }),
+      onShinyTextEnabledChange: (enabled) =>
+        updateEffectsSettings({ shinyTextEnabled: enabled }),
+      onNoiseEnabledChange: (enabled) =>
+        updateEffectsSettings({ noiseEnabled: enabled }),
+      onNoiseOpacityChange: (opacity) =>
+        updateEffectsSettings({ noiseOpacity: opacity }),
+      onNoiseDensityChange: (density) =>
+        updateEffectsSettings({ noiseDensity: density }),
+      onTextStrokeEnabledChange: (enabled) =>
+        updateTextSettings({ textStrokeEnabled: enabled }),
+      onTextStrokeWidthChange: (width) =>
+        updateTextSettings({ textStrokeWidth: width }),
+      onTextStrokeColorChange: (color) =>
+        updateTextSettings({ textStrokeColor: color }),
+      onTextFillEnabledChange: (enabled) =>
+        updateTextSettings({ textFillEnabled: enabled }),
     });
   };
 
@@ -135,7 +142,7 @@ export default function ToolBar() {
     removeBackgroundImage,
     fileInputRef,
     handleFileChange: handleFileChangeWrapped,
-    
+
     // Configuration options
     colorOptions,
     fontOptions,
@@ -144,86 +151,87 @@ export default function ToolBar() {
   return (
     <MotionConfig transition={transition}>
       <div className="z-[1000] relative">
-      {/* toolbar buttons */}
-      <div
-        className={cn(
-          "fixed top-4 right-4",
-          "transition-opacity duration-300",
-          isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
-        )}
-        style={{ zIndex: 999 }}
-        ref={menuRef}
-      >
-        <div className="flex space-x-2">
-          {toolbarItems.map((item) => (
-            <div
-              key={item.id}
-              className={cn("w-10 h-10 flex justify-center items-center")}
-            >
-              <Button
-                variant="ghost"
-                aria-label={item.label}
-                className="w-full h-full flex select-none appearance-none items-center justify-center text-zinc-300 hover:text-zinc-100 transition-colors"
-                type="button"
-                onClick={item.action}
+        {/* toolbar buttons */}
+        <div
+          className={cn(
+            "fixed top-4 right-4",
+            "transition-opacity duration-300",
+            isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
+          )}
+          style={{ zIndex: 999 }}
+          ref={menuRef}
+        >
+          <div className="flex space-x-2">
+            {toolbarItems.map((item) => (
+              <div
+                key={item.id}
+                className={cn("w-10 h-10 flex justify-center items-center")}
               >
-                {item.icon}
-              </Button>
-            </div>
-          ))}
+                <Button
+                  variant={"ghost"}
+                  aria-label={item.label}
+                  className="w-full h-full flex select-none appearance-none items-center justify-center"
+                  type="button"
+                  onClick={item.action}
+                >
+                  {item.icon}
+                </Button>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      {/* settings panel */}
-      <AnimatePresence>
-        {isOpen && (
-          <motion.div
-            ref={cardRef}
-            className={cn(
-              toolBarPosition.sm,
-              toolBarPosition.md,
-              toolBarPosition.lg,
-              "fixed flex flex-col rounded-md bg-zinc-950 border border-zinc-800 overflow-hidden"
-            )}
-            style={{ zIndex: 999 }}
-            initial={{ opacity: 0, scale:0.98  }}
-            animate={{ opacity: 1, scale:1}}
-            exit={{ opacity: 0, scale:0.98 }}
-            transition={{ ...transition }}
-          >
-            <PanelHeader 
-              title="配置" 
-              onClose={closePanel} 
-            />
-            <PanelContent className="z-[1000]">
-              {settingItems.map((item) => (
-                <SettingItem key={item.id} title={item.title}>
-                  {item.component}
-                </SettingItem>
-              ))}
+        {/* settings panel */}
+        <AnimatePresence>
+          {isOpen && (
+            <motion.div
+              style={{ zIndex: 999 }}
+              initial={{ opacity: 0, scale: 0.98 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.98 }}
+              transition={{ ...transition }}
+            >
+              <Card
+                className={cn(
+                  toolBarPosition.sm,
+                  toolBarPosition.md,
+                  toolBarPosition.lg,
+                  "fixed flex flex-col py-0 gap-0"
+                )}
+              >
+                <PanelHeader title="配置" onClose={closePanel} />
+                <CardContent className="p-0 flex-1 overflow-hidden overflow-y-auto custom-scrollbar">
+                  <PanelContent>
+                    {settingItems.map((item) => (
+                      <SettingItem key={item.id} title={item.title}>
+                        {item.component}
+                      </SettingItem>
+                    ))}
 
-              <PresetManager
-                text={textSettings.text}
-                textColor={textSettings.textColor}
-                fontFamily={textSettings.fontFamily}
-                fontSize={textSettings.fontSize}
-                scrollSpeed={textSettings.scrollSpeed}
-                edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
-                edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
-                shinyTextEnabled={effectsSettings.shinyTextEnabled}
-                noiseEnabled={effectsSettings.noiseEnabled}
-                noiseOpacity={effectsSettings.noiseOpacity}
-                noiseDensity={effectsSettings.noiseDensity}
-                textStrokeEnabled={textSettings.textStrokeEnabled}
-                textStrokeWidth={textSettings.textStrokeWidth}
-                textStrokeColor={textSettings.textStrokeColor}
-                textFillEnabled={textSettings.textFillEnabled}
-                onLoadPreset={loadPreset}
-              />
-            </PanelContent>
-          </motion.div>
-        )}
-      </AnimatePresence>
+                    <PresetManager
+                      text={textSettings.text}
+                      textColor={textSettings.textColor}
+                      fontFamily={textSettings.fontFamily}
+                      fontSize={textSettings.fontSize}
+                      scrollSpeed={textSettings.scrollSpeed}
+                      edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
+                      edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
+                      shinyTextEnabled={effectsSettings.shinyTextEnabled}
+                      noiseEnabled={effectsSettings.noiseEnabled}
+                      noiseOpacity={effectsSettings.noiseOpacity}
+                      noiseDensity={effectsSettings.noiseDensity}
+                      textStrokeEnabled={textSettings.textStrokeEnabled}
+                      textStrokeWidth={textSettings.textStrokeWidth}
+                      textStrokeColor={textSettings.textStrokeColor}
+                      textFillEnabled={textSettings.textFillEnabled}
+                      onLoadPreset={loadPreset}
+                    />
+                  </PanelContent>
+                </CardContent>
+              </Card>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
     </MotionConfig>
   );
