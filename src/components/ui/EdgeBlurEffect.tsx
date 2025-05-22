@@ -25,7 +25,7 @@ export function EdgeBlurEffect({
   const blurIntensity = intensity * 0.1;
   
   return (
-    <div className={cn('pointer-events-none fixed inset-0 z-30', className)}>
+    <div className={cn(className)}>
       {/* Left edge blur with progressive intensity */}
       <div className="absolute left-0 top-0 bottom-0 w-[35%]">
         <ProgressiveBlur
