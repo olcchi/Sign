@@ -18,7 +18,7 @@ function SoulSignContent() {
     backgroundSettings,
     effectsSettings,
     isTextScrolling,
-    setIsTextScrolling
+    setIsTextScrolling,
   } = useSettings();
 
   const backgroundStyle = {
@@ -49,47 +49,46 @@ function SoulSignContent() {
       )}
 
       {/* Semi-transparent overlay improves text readability over images */}
-      {backgroundSettings.backgroundImage && backgroundSettings.overlayEnabled && (
-        <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1"></div>
-      )}
+      {backgroundSettings.backgroundImage &&
+        backgroundSettings.overlayEnabled && (
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1"></div>
+        )}
 
       {/* Noise texture adds visual depth and dimension */}
       {effectsSettings.noiseEnabled && (
-        <Noise 
-          opacity={effectsSettings.noiseOpacity} 
-          density={effectsSettings.noiseDensity} 
-          color="#ffffff" 
-          className="z-20 mix-blend-overlay" 
+        <Noise
+          className="z-20 mix-blend-overlay"
+          opacity={effectsSettings.noiseOpacity}
+          density={effectsSettings.noiseDensity}
+          color="#ffffff"
         />
       )}
 
-      <div className="w-full h-full flex justify-center items-center relative z-10">
-        <div className="relative w-full">
-          <ScrollingText
-            fontFamily={textSettings.fontFamily}
-            text={textSettings.text}
-            fontSize={textSettings.fontSize}
-            color={textSettings.textColor}
-            textRef={textRef as React.RefObject<HTMLDivElement>}
-            scrollSpeed={textSettings.scrollSpeed}
-            onScrollStateChange={setIsTextScrolling}
-            shinyTextEnabled={effectsSettings.shinyTextEnabled}
-            textStrokeEnabled={textSettings.textStrokeEnabled}
-            textStrokeWidth={textSettings.textStrokeWidth}
-            textStrokeColor={textSettings.textStrokeColor}
-            textFillEnabled={textSettings.textFillEnabled}
-          />
-        </div>
-      </div>
-
-      <EdgeBlurEffect 
-        enabled={effectsSettings.edgeBlurEnabled} 
-        intensity={effectsSettings.edgeBlurIntensity} 
+      <ScrollingText
+        className="fixed inset-0 z-20 overflow-hidden flex items-center justify-center"
+        fontFamily={textSettings.fontFamily}
+        text={textSettings.text}
+        fontSize={textSettings.fontSize}
+        color={textSettings.textColor}
+        textRef={textRef as React.RefObject<HTMLDivElement>}
+        scrollSpeed={textSettings.scrollSpeed}
+        onScrollStateChange={setIsTextScrolling}
+        shinyTextEnabled={effectsSettings.shinyTextEnabled}
+        textStrokeEnabled={textSettings.textStrokeEnabled}
+        textStrokeWidth={textSettings.textStrokeWidth}
+        textStrokeColor={textSettings.textStrokeColor}
+        textFillEnabled={textSettings.textFillEnabled}
       />
-      
-      <ToolBar />
 
-      <FullScreen asButton={true} className="fixed top-4 left-4" />
+      <EdgeBlurEffect
+        className="pointer-events-none fixed inset-0 z-30"
+        enabled={effectsSettings.edgeBlurEnabled}
+        intensity={effectsSettings.edgeBlurIntensity}
+      />
+
+      <ToolBar className="w-full h-full z-[999] relative flex" />
+
+      <FullScreen asButton={true} className="z-[999]" />
     </main>
   );
 }
