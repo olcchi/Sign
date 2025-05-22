@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/themeProvider";
-import { Geist, Geist_Mono, DM_Serif_Text, Kolker_Brush, } from "next/font/google";
+import {
+  Geist,
+  Geist_Mono,
+  DM_Serif_Text,
+  Kolker_Brush,
+} from "next/font/google";
 import "./globals.css";
 
 // Font configurations with CSS variable assignments for consistent typography
@@ -19,12 +24,12 @@ const dmSerifText = DM_Serif_Text({
   variable: "--font-dm-serif-text",
   subsets: ["latin"],
 });
- 
+
 const KolkerBrush = Kolker_Brush({
   weight: "400",
   variable: "--font-kolker-brush",
   subsets: ["latin"],
-})
+});
 
 // SEO and site metadata configuration
 export const metadata: Metadata = {
@@ -46,10 +51,9 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} ${KolkerBrush.variable} antialiased`}
       >
-        {" "}
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="system"
           enableSystem
           disableTransitionOnChange
         >
