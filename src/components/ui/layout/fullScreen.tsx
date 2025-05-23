@@ -1,7 +1,7 @@
 import { Maximize, Minimize } from "lucide-react";
 import { useFullScreenStore } from "@/stores/fullScreenStore";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/layout/button";
 import { useEffect, useState } from "react";
 
 interface FullScreenProps {
@@ -68,7 +68,7 @@ export default function FullScreen({ className, asButton = false }: FullScreenPr
   return (
     <div 
       className={cn(
-        "z-998 transition-opacity duration-300", 
+        "fixed top-4 left-4 z-998 transition-opacity duration-300", 
         isActive ? "opacity-100" : "opacity-10 hover:opacity-100",
         className
       )}

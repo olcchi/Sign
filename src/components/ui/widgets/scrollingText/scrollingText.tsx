@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ScrollingTextScroller } from "@/components/ui/widgets/scrollingText/scrollingTextScroller";
-import "@/components/ui/widgets/shinyText/shinyText.css"
+import "@/components/ui/widgets/shinyText/shinyText.css";
 
 export interface ScrollingTextProps {
   text: string;
@@ -38,7 +38,7 @@ export default function ScrollingText({
 }: ScrollingTextProps) {
   const [textWidth, setTextWidth] = useState(0);
   const [shouldScroll, setShouldScroll] = useState(false);
-  
+
   const internalTextRef = useRef<HTMLDivElement>(null);
   const textRef = externalTextRef || internalTextRef;
   const containerRef = useRef<HTMLDivElement>(null);
@@ -50,7 +50,7 @@ export default function ScrollingText({
       const containerRect = containerRef.current.getBoundingClientRect();
 
       const needsScroll = textRect.width > containerRect.width;
-      
+
       // Reset before updating to prevent animation flicker
       setShouldScroll(false);
       setTimeout(() => {
@@ -76,31 +76,33 @@ export default function ScrollingText({
 
   // Space between repeated texts for smooth loop transition
   const TEXT_GAP = 150;
-  
+
   // Adjust animation speed relative to text length for consistent visual pace
   const BASE_WIDTH = 1000;
   const widthFactor = textWidth / BASE_WIDTH;
   const animationDuration = (widthFactor * 100) / scrollSpeed;
 
   // Ensure text remains visible even if contradictory props are provided
-  const ensuredTextFillEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textFillEnabled;
-  const ensuredTextStrokeEnabled = (!textStrokeEnabled && !textFillEnabled) ? true : textStrokeEnabled;
+  const ensuredTextFillEnabled =
+    !textStrokeEnabled && !textFillEnabled ? true : textFillEnabled;
+  const ensuredTextStrokeEnabled =
+    !textStrokeEnabled && !textFillEnabled ? true : textStrokeEnabled;
 
   const textStyle = {
     fontSize,
     fontFamily,
-    color: ensuredTextFillEnabled ? color : 'transparent',
+    color: ensuredTextFillEnabled ? color : "transparent",
     ...(ensuredTextStrokeEnabled && {
       WebkitTextStroke: `${textStrokeWidth}px ${textStrokeColor}`,
       textStroke: `${textStrokeWidth}px ${textStrokeColor}`,
     }),
-    WebkitFontSmoothing: 'antialiased',
-    MozOsxFontSmoothing: 'grayscale',
-    textRendering: 'optimizeLegibility' as const,
+    WebkitFontSmoothing: "antialiased",
+    MozOsxFontSmoothing: "grayscale",
+    textRendering: "optimizeLegibility" as const,
   };
 
   // White text requires different shiny effect parameters
-  const isWhiteText = color.toLowerCase() === '#fffffb'
+  const isWhiteText = color.toLowerCase() === "#fffffb";
 
   const textClasses = cn(
     "whitespace-nowrap inline-block mx-auto select-none",
@@ -108,13 +110,7 @@ export default function ScrollingText({
   );
 
   return (
-    <div
-      ref={containerRef}
-      className={cn(
-        "w-full h-full overflow-hidden flex items-center justify-center relative",
-        className
-      )}
-    >
+    <div ref={containerRef} className={cn(className)}>
       <div
         className="relative w-full h-fit overflow-hidden flex items-center"
         aria-label={`Scrolling text: ${text}`}
@@ -144,9 +140,7 @@ export default function ScrollingText({
             data-text={text}
             data-white-text={isWhiteText.toString()}
           >
-            <p>
-            {text}
-            </p>
+            <p>{text}</p>
           </div>
         )}
       </div>
