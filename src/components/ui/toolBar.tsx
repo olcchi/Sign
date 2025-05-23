@@ -3,14 +3,15 @@
 import React, { useRef } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/button/button";
+import { Button } from "@/components/ui/layout/button";
 import { SettingItem } from "@/components/ui/settings/SettingItem";
 import { PresetManager, Preset } from "@/components/ui/settings/Preset";
 import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
-import { PanelHeader } from "@/components/ui/panel/PanelHeader";
-import { PanelContent } from "@/components/ui/panel/PanelContent";
+import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
+import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
-import { Card, CardContent } from "@/components/ui/card";
+import Sign from "@/components/ui/icon/sign";
+import { Card, CardContent } from "@/components/ui/layout/card";
 import {
   colorOptions,
   fontOptions,
@@ -18,14 +19,15 @@ import {
   toolBarPosition,
   transition,
 } from "@/lib/toolbar-config";
-import Petal from "@/components/ui/Petal";
 import { useBackgroundImage } from "@/lib/hooks/useBackgroundImage";
-import { useTextState } from "@/lib/hooks/useTextState";
 import { applyPreset } from "@/lib/preset-utils";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 
+// Create motion variants of Card component
+const MotionCard = motion.create(Card);
+
 // Main configuration toolbar component that manages all display settings UI
-export default function ToolBar() {
+export default function ToolBar({ className }: { className?: string }) {
   // Access settings from context
   const {
     textSettings,
@@ -42,27 +44,14 @@ export default function ToolBar() {
     isOpen,
     isActive,
     activeTab,
-    editMode,
     openPanel,
     closePanel,
-    enterEditMode: enterEditModeBase,
-    exitEditMode: exitEditModeBase,
     handleImageChange,
   } = useToolbarState();
 
   const menuRef = useRef<HTMLDivElement>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const previewContainerRef = useRef<HTMLDivElement>(null);
-  const textInputRef = useRef<HTMLTextAreaElement>(null);
-
-  // Handle text state and editing logic
-  const { inputText, setInputText } = useTextState(
-    textSettings.text,
-    (text) => updateTextSettings({ text }),
-    enterEditModeBase,
-    exitEditModeBase,
-    textInputRef as any
-  );
 
   // Handle background image functionality
   const {
@@ -120,7 +109,7 @@ export default function ToolBar() {
     {
       id: "menu",
       label: "菜单",
-      icon: <Petal />,
+      icon: <Sign colorFull={false} />,
       action: () => {
         if (activeTab === "menu") {
           closePanel();
@@ -147,18 +136,20 @@ export default function ToolBar() {
     colorOptions,
     fontOptions,
     fontSizeOptions,
+
+    // Panel state
+    isOpen,
   });
   return (
     <MotionConfig transition={transition}>
-      <div className="z-[1000] relative">
+      <div className={cn(className)}>
         {/* toolbar buttons */}
         <div
           className={cn(
-            "fixed top-4 right-4",
+            "absolute top-4 right-4",
             "transition-opacity duration-300",
             isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
           )}
-          style={{ zIndex: 999 }}
           ref={menuRef}
         >
           <div className="flex space-x-2">
@@ -184,52 +175,48 @@ export default function ToolBar() {
         {/* settings panel */}
         <AnimatePresence>
           {isOpen && (
-            <motion.div
-              style={{ zIndex: 999 }}
+            <MotionCard
+              className={cn(
+                toolBarPosition.sm,
+                toolBarPosition.md,
+                toolBarPosition.lg,
+                "absolute flex flex-col py-0 gap-0"
+              )}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0, scale: 0.98 }}
               transition={{ ...transition }}
             >
-              <Card
-                className={cn(
-                  toolBarPosition.sm,
-                  toolBarPosition.md,
-                  toolBarPosition.lg,
-                  "fixed flex flex-col py-0 gap-0"
-                )}
-              >
-                <PanelHeader title="配置" onClose={closePanel} />
-                <CardContent className="p-0 flex-1 overflow-hidden overflow-y-auto custom-scrollbar">
-                  <PanelContent>
-                    {settingItems.map((item) => (
-                      <SettingItem key={item.id} title={item.title}>
-                        {item.component}
-                      </SettingItem>
-                    ))}
+              <PanelHeader title="配置" onClose={closePanel} />
+              <CardContent className="p-0 flex-1 overflow-hidden overflow-y-auto custom-scrollbar">
+                <PanelContent>
+                  {settingItems.map((item) => (
+                    <SettingItem key={item.id} title={item.title}>
+                      {item.component}
+                    </SettingItem>
+                  ))}
 
-                    <PresetManager
-                      text={textSettings.text}
-                      textColor={textSettings.textColor}
-                      fontFamily={textSettings.fontFamily}
-                      fontSize={textSettings.fontSize}
-                      scrollSpeed={textSettings.scrollSpeed}
-                      edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
-                      edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
-                      shinyTextEnabled={effectsSettings.shinyTextEnabled}
-                      noiseEnabled={effectsSettings.noiseEnabled}
-                      noiseOpacity={effectsSettings.noiseOpacity}
-                      noiseDensity={effectsSettings.noiseDensity}
-                      textStrokeEnabled={textSettings.textStrokeEnabled}
-                      textStrokeWidth={textSettings.textStrokeWidth}
-                      textStrokeColor={textSettings.textStrokeColor}
-                      textFillEnabled={textSettings.textFillEnabled}
-                      onLoadPreset={loadPreset}
-                    />
-                  </PanelContent>
-                </CardContent>
-              </Card>
-            </motion.div>
+                  <PresetManager
+                    text={textSettings.text}
+                    textColor={textSettings.textColor}
+                    fontFamily={textSettings.fontFamily}
+                    fontSize={textSettings.fontSize}
+                    scrollSpeed={textSettings.scrollSpeed}
+                    edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
+                    edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
+                    shinyTextEnabled={effectsSettings.shinyTextEnabled}
+                    noiseEnabled={effectsSettings.noiseEnabled}
+                    noiseOpacity={effectsSettings.noiseOpacity}
+                    noiseDensity={effectsSettings.noiseDensity}
+                    textStrokeEnabled={textSettings.textStrokeEnabled}
+                    textStrokeWidth={textSettings.textStrokeWidth}
+                    textStrokeColor={textSettings.textStrokeColor}
+                    textFillEnabled={textSettings.textFillEnabled}
+                    onLoadPreset={loadPreset}
+                  />
+                </PanelContent>
+              </CardContent>
+            </MotionCard>
           )}
         </AnimatePresence>
       </div>
