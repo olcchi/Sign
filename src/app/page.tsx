@@ -2,12 +2,12 @@
 import FullScreen from "@/components/ui/layout/fullScreen";
 import ToolBar from "@/components/ui/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
-import { EdgeBlurEffect } from "@/components/ui/EdgeBlurEffect";
-import { Olcchi } from "@/components/ui/olcchi";
+import { EdgeBlurEffect } from "@/components/ui/widgets/EdgeBlurEffect";
+import { Olcchi } from "@/components/ui/icon/olcchi";
 import { useRef } from "react";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
-import Noise from "@/components/ui/noisyButterflyBackground/noise";
+import Noise from "@/components/ui/filter/noise";
 import { SettingsProvider, useSettings } from "@/lib/contexts/SettingsContext";
 
 // Internal component using Context to access global settings
@@ -17,10 +17,10 @@ function SoulSignContent() {
     textSettings,
     backgroundSettings,
     effectsSettings,
-    isTextScrolling,
     setIsTextScrolling,
   } = useSettings();
 
+  // Background style based on settings
   const backgroundStyle = {
     backgroundColor: backgroundSettings.backgroundColor,
   };
@@ -30,6 +30,7 @@ function SoulSignContent() {
       className="relative w-screen h-[100dvh] overflow-hidden font-[family-name:var(--font-dm-serif-text)]"
       style={backgroundStyle}
     >
+      {/* Background image with dynamic positioning and scaling */}
       {backgroundSettings.backgroundImage && (
         <div className="absolute inset-0 z-0">
           <Image
@@ -64,6 +65,7 @@ function SoulSignContent() {
         />
       )}
 
+      {/* Scrolling text component with dynamic settings */}
       <ScrollingText
         className="fixed inset-0 z-20 overflow-hidden flex items-center justify-center"
         fontFamily={textSettings.fontFamily}
@@ -80,14 +82,17 @@ function SoulSignContent() {
         textFillEnabled={textSettings.textFillEnabled}
       />
 
+      {/* Edge blur effect for visual polish */}
       <EdgeBlurEffect
         className="pointer-events-none fixed inset-0 z-30"
         enabled={effectsSettings.edgeBlurEnabled}
         intensity={effectsSettings.edgeBlurIntensity}
       />
 
+      {/* Toolbar for user interactions */}
       <ToolBar className="w-full h-full z-[999] relative flex" />
 
+      {/* Fullscreen toggle button */}
       <FullScreen asButton={true} className="z-[999]" />
     </main>
   );
