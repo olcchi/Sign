@@ -37,9 +37,9 @@
   --sidebar-accent-foreground: oklch(0 0 0);
   --sidebar-border: oklch(0.94 0 0);
   --sidebar-ring: oklch(0 0 0);
-  --font-sans: Geist, sans-serif;
-  --font-serif: Georgia, serif;
-  --font-mono: Geist Mono, monospace;
+  --font-sans: "Geist", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "DM Serif Text", "Songti SC", "SimSun", Georgia, serif;
+  --font-mono: "Geist Mono", "SF Mono", "Consolas", monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
   --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
@@ -84,9 +84,9 @@
   --sidebar-accent-foreground: oklch(1 0 0);
   --sidebar-border: oklch(0.32 0 0);
   --sidebar-ring: oklch(0.72 0 0);
-  --font-sans: Geist, sans-serif, DM Sans;
-  --font-serif: Georgia, serif;
-  --font-mono: Geist Mono, monospace;
+  --font-sans: "Geist", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+  --font-serif: "DM Serif Text", "Songti SC", "SimSun", Georgia, serif;
+  --font-mono: "Geist Mono", "SF Mono", "Consolas", monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
   --shadow-xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
@@ -157,6 +157,20 @@
   }
   body {
     @apply bg-background text-foreground;
+    /* Optimize text rendering for mixed Chinese-English content */
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  /* Improve Chinese-English mixed text layout */
+  p, h1, h2, h3, h4, h5, h6, span, div {
+    /* Better line height for mixed content */
+    line-height: 1.6;
+    /* Prevent awkward line breaks in mixed content */
+    word-break: break-word;
+    /* Better spacing for Chinese characters */
+    letter-spacing: 0.01em;
   }
 }
 
@@ -171,7 +185,7 @@
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
   background-color: var(--accent);
-  border-radius: 3px;
+  /* border-radius: 3px; */
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
