@@ -6,6 +6,7 @@ import {
   DM_Serif_Text,
   DM_Sans,
   Kolker_Brush,
+  Noto_Sans_SC, // 添加中文字体支持
 } from "next/font/google";
 import "./globals.css";
 
@@ -35,6 +36,13 @@ const KolkerBrush = Kolker_Brush({
   subsets: ["latin"],
 });
 
+// Chinese font configuration for consistent Chinese text rendering
+const notoSansSC = Noto_Sans_SC({
+  weight: ["300", "400", "500", "700"],
+  variable: "--font-noto-sans-sc",
+  subsets: ["latin"],
+});
+
 // SEO and site metadata configuration
 export const metadata: Metadata = {
   title: "Soul Sign ",
@@ -53,7 +61,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} ${KolkerBrush.variable} ${dmSans.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} ${KolkerBrush.variable} ${dmSans.variable} ${notoSansSC.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
