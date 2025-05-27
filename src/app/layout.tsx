@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/themeProvider";
+import Sign from "@/components/ui/icon/sign";
 import {
   Geist,
   Geist_Mono,
@@ -45,11 +46,18 @@ const notoSansSC = Noto_Sans_SC({
 
 // SEO and site metadata configuration
 export const metadata: Metadata = {
-  title: "Soul Sign ",
-  icons: {
-    icon: "/sign.svg",
-  },
+  title: "Sign ",
   description: "Generate your electronic cheering sign",
+  icons: [
+    {
+      url: "/sign-light.svg",
+      media: "(prefers-color-scheme: light)",
+    },
+    {
+      url: "/sign-dark.svg",
+      media: "(prefers-color-scheme: dark)",
+    },
+  ],
 };
 
 // Root layout component that wraps all pages with common configuration
