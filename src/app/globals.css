@@ -184,10 +184,10 @@
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb {
-  background-color: var(--accent);
-  /* border-radius: 3px; */
+  background-color: var(--border);
+  border-radius: 3px;
 }
 
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
-  background-color: var(--accent);
+  background-color: var(--border);
 }
