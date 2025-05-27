@@ -9,13 +9,6 @@ interface PanelHeaderProps {
   onClose: () => void;
 }
 
-/**
- * Standard header component for all panel interfaces
- *
- * Creates a consistent header with title and close button for modal/panel UI patterns.
- * Maintains visual hierarchy and provides standard close functionality
- * with appropriate hover states and accessibility considerations.
- */
 export const PanelHeader: React.FC<PanelHeaderProps> = ({ title, onClose }) => {
   const { theme, setTheme } = useTheme();
 
@@ -24,9 +17,9 @@ export const PanelHeader: React.FC<PanelHeaderProps> = ({ title, onClose }) => {
   };
 
   return (
-    <div className="relative px-4 py-3 flex gap-2 items-center border-b">
+    <div className="relative h-12 px-4 py-3 flex gap-2 items-center border-b">
       <p className="text-sm select-none font-bold">{title}</p>
-      <Separator orientation="vertical" />
+      <Separator orientation="vertical" className="bg-border" />
       <div className="flex items-center gap-2">
         <Switch
           checked={theme === "dark"}
