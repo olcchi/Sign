@@ -46,3 +46,18 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# API keys and sensitive data
+*.key
+*.p8
+*.p12
+*.pfx
+config/secrets.json
+secrets/
+
+# IDE and editor files
+.vscode/settings.json
+.idea/
+*.swp
+*.swo
+*~
