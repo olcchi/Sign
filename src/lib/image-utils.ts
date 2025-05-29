@@ -1,4 +1,5 @@
-import { PREVIEW_IMAGE_QUALITY, BACKGROUND_IMAGE_QUALITY } from "./toolbar-config";
+import { PREVIEW_IMAGE_QUALITY, BACKGROUND_IMAGE_QUALITY } from "./settings-config";
+import { ImageSize } from "./types/common";
 
 interface ProcessedImage {
   backgroundImage: string;
@@ -62,7 +63,7 @@ export const processImageFile = (file: File): Promise<ProcessedImage> => {
 
 // Determines when position sliders should be disabled based on image dimensions
 export const getImageSliderState = (
-  imageSize: { width: number; height: number } | null
+  imageSize: ImageSize | null
 ): { x: boolean; y: boolean } => {
   // Default to disabled during server-side rendering
   if (typeof window === "undefined") {
