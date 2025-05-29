@@ -1,39 +1,24 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { ArrowRight } from "lucide-react";
-import { motion, AnimatePresence, Variants } from "motion/react";
-import LoopTextTittle from "@/components/ui/loopTextTittle";
+import { motion, AnimatePresence } from "motion/react";
 import { Separator } from "@/components/ui/layout/separator";
 import FullScreen from "@/components/ui/layout/fullScreen";
-interface setupGuideContentType {
+import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
+interface SetupGuideContentProps {
   isFull: boolean;
-  songsLyrics: {
-    song: string;
-    lyric: string;
-  }[];
-  isLandscape: boolean;
-  router: any;
-  pathname: string;
+  router: AppRouterInstance;
 }
 
 export function SetupGuideContent({
   isFull,
-  isLandscape,
-  songsLyrics,
   router,
-}: setupGuideContentType) {
+}: SetupGuideContentProps) {
   return (
     <div className="flex flex-col gap-4 justify-center w-fit p-4 text-neutral-200 select-none">
-      <LoopTextTittle />
+      {/* <LoopTextTittle /> */}
       <Separator />
-      <section className="flex flex-col gap-2 text-sm">
-        <p className=" text-white/60 italic">
-         {songsLyrics[0].lyric}
-        </p>
-        <p className=" text-end font-medium text-white/80">
-          - {songsLyrics[0].song}
-        </p>
-      </section>
       <section className="flex flex-col gap-6 w-full">
         <div className="flex flex-col gap-4">
           <div
