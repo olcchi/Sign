@@ -1,20 +1,18 @@
 import { useState, useEffect, RefObject } from 'react';
 import { processImageFile } from '../image-utils';
+import { ImageSize } from '../types/common';
 
 export interface ToolbarState {
   isOpen: boolean;
   isActive: boolean;
-  activeTab: "menu" | "text" | null;
-  editMode: boolean;
+  activeTab: "menu" | null;
   openPanel: () => void;
   closePanel: () => void;
-  enterEditMode: (text: string, textInputRef: RefObject<HTMLTextAreaElement>) => void;
-  exitEditMode: (inputText: string, onTextChange: (text: string) => void) => void;
   handleImageChange: (
     e: React.ChangeEvent<HTMLInputElement>,
     onImageChange: (url: string | null) => void,
     setPreviewImage: (url: string | null) => void,
-    setImageSize: (size: { width: number; height: number } | null) => void
+    setImageSize: (size: ImageSize | null) => void
   ) => void;
 }
 
@@ -26,11 +24,10 @@ export interface ToolbarState {
  */
 export const useToolbarState = (): ToolbarState => {
   const [isOpen, setIsOpen] = useState(false);
-  const [activeTab, setActiveTab] = useState<"menu" | "text" | null>(null);
-  const [editMode, setEditMode] = useState(false);
+  const [activeTab, setActiveTab] = useState<"menu" | null>(null);
   const [isActive, setIsActive] = useState(true);
 
-  // Auto-hide toolbar after inactivity unless in edit mode
+  // Auto-hide toolbar after inactivity
   useEffect(() => {
     let timeoutId: ReturnType<typeof setTimeout>;
 
@@ -38,7 +35,7 @@ export const useToolbarState = (): ToolbarState => {
       setIsActive(true);
       clearTimeout(timeoutId);
 
-      if (isOpen || editMode) return;
+      if (isOpen) return;
 
       timeoutId = setTimeout(() => {
         setIsActive(false);
@@ -64,7 +61,7 @@ export const useToolbarState = (): ToolbarState => {
         window.removeEventListener(event, handleUserInteraction);
       });
     };
-  }, [isOpen, editMode]);
+  }, [isOpen]);
 
   // Show panel with menu tab active
   const openPanel = () => {
@@ -78,33 +75,12 @@ export const useToolbarState = (): ToolbarState => {
     setActiveTab(null);
   };
 
-  // Enable text editing mode and prepare textarea
-  const enterEditMode = (text: string, textInputRef: RefObject<HTMLTextAreaElement>) => {
-    setEditMode(true);
-    closePanel();
-    
-    // Focus and select text for immediate editing
-    setTimeout(() => {
-      textInputRef.current?.focus();
-      textInputRef.current?.select();
-    }, 10);
-  };
-
-  // Complete editing and update content
-  const exitEditMode = (inputText: string, onTextChange: (text: string) => void) => {
-    setEditMode(false);
-    
-    // Prevent empty content by using default placeholder
-    const finalText = inputText.trim() === "" ? "Please enter some content..." : inputText;
-    onTextChange(finalText);
-  };
-
   // Process and optimize image uploads
   const handleImageChange = async (
     e: React.ChangeEvent<HTMLInputElement>,
     onImageChange: (url: string | null) => void,
     setPreviewImage: (url: string | null) => void,
-    setImageSize: (size: { width: number; height: number } | null) => void
+    setImageSize: (size: ImageSize | null) => void
   ) => {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -135,11 +111,8 @@ export const useToolbarState = (): ToolbarState => {
     isOpen,
     isActive,
     activeTab,
-    editMode,
     openPanel,
     closePanel,
-    enterEditMode,
-    exitEditMode,
     handleImageChange
   };
 }; 
