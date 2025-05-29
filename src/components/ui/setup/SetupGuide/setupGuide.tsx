@@ -5,10 +5,8 @@ import { motion, AnimatePresence } from "motion/react";
 import { useFullScreenStore } from "@/stores/fullScreenStore";
 import { useOrientationStore } from "@/stores/orientationStore";
 import { SetupGuideContent } from "./setupGuideContent";
-import songsData from "@/components/lyricData.json";
 export default function SetupGuide() {
 
-  const [randomSong, setRandomSong] = useState(songsData[0]);
   const router = useRouter();
   const pathname = usePathname();
   const { isFull } = useFullScreenStore();
@@ -16,22 +14,14 @@ export default function SetupGuide() {
 
   // const showMask = pathname === "/soulsign" && (!isFull || !isLandscape);
   const showMask = pathname === "/soulsign" && !isFull;
-  const getRandomSong = useCallback(() => {
-    const randomIndex = Math.floor(Math.random() * songsData.length);
-    setRandomSong(songsData[randomIndex]);
-  }, []);
+
+
 
   useEffect(() => {
     if (showMask) {
-      getRandomSong();
-    }
-  }, [showMask, getRandomSong]);
 
-  useEffect(() => {
-    if (showMask) {
-      getRandomSong();
     }
-  }, [showMask, getRandomSong]);
+  }, [showMask]);
   return (
     <AnimatePresence mode="wait">
       {showMask ? (
@@ -41,7 +31,7 @@ export default function SetupGuide() {
           animate={{ opacity: 1, backdropFilter: "blur(12px)" }}
           exit={{ opacity: 0, backdropFilter: "blur(0px)" }}
           transition={{ duration: 0.6, ease: "easeInOut" }}
-          className="fixed inset-0 z-999"
+          className="fixed inset-0"
         >
           <div className="absolute inset-0 bg-black/80" />
           <motion.div
@@ -55,11 +45,8 @@ export default function SetupGuide() {
             }}
           >
             <SetupGuideContent
-              songsLyrics={[randomSong]}
               isFull={isFull}
-              isLandscape={isLandscape}
               router={router}
-              pathname={pathname}
             />
           </motion.div>
         </motion.div>
@@ -76,11 +63,8 @@ export default function SetupGuide() {
           }}
         >
           <SetupGuideContent
-            songsLyrics={[randomSong]}
             isFull={isFull}
-            isLandscape={isLandscape}
             router={router}
-            pathname={pathname}
           />
         </motion.div>
       ) : null}
