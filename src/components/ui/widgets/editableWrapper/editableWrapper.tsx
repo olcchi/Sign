@@ -2,7 +2,7 @@
 import { motion } from "motion/react";
 import { useState, useCallback, useRef, useEffect } from "react";
 import { ChevronRight, Type } from "lucide-react";
-import useClickOutside from "../../../../hooks/useClickOutside";
+import useClickOutside from "@/lib/hooks/useClickOutside";
 import { useEditMode } from "./useEditMode";
 
 type EditWrapperProps = {
