@@ -77,6 +77,7 @@ export default function FullScreen({ className, asButton = false }: FullScreenPr
         <Button
           variant="ghost"
           onClick={toggleFullscreen}
+          className="hover:bg-[#080808] "
           aria-label={isFull ? "Exit fullscreen" : "Enter fullscreen"}
         >
           {icon}
