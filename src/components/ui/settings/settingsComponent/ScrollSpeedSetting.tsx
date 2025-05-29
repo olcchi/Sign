@@ -3,6 +3,7 @@
 import React from "react";
 import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
 import { useSettings } from "@/lib/contexts/SettingsContext";
+import { scrollSpeedOptions } from "@/lib/settings-config";
 
 export function ScrollSpeedSetting() {
   const { textSettings, updateTextSettings } = useSettings();
@@ -11,13 +12,7 @@ export function ScrollSpeedSetting() {
     title: "滚动速度",
     component: (
       <OptionButtonGroup<{ name: string; value: string }>
-        options={[
-          { name: "0.3x", value: "3" },
-          { name: "0.5x", value: "5" },
-          { name: "1x", value: "10" },
-          { name: "1.5x", value: "15" },
-          { name: "2x", value: "20" },
-        ]}
+        options={scrollSpeedOptions}
         selectedValue={textSettings.scrollSpeed.toString()}
         onChange={(value) =>
           updateTextSettings({ scrollSpeed: parseInt(value, 10) })
