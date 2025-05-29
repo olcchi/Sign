@@ -7,6 +7,7 @@ import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/layout/button";
 import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
 import { useSettings } from "@/lib/contexts/SettingsContext";
+import { textStrokeConfig } from "@/lib/settings-config";
 
 interface TextRenderingSettingProps {
   colorOptions: Array<{
@@ -127,9 +128,9 @@ export function TextRenderingSetting({ colorOptions }: TextRenderingSettingProps
                 <Slider
                   defaultValue={[textSettings.textStrokeWidth]}
                   value={[textSettings.textStrokeWidth]}
-                  min={1}
-                  max={3}
-                  step={0.5}
+                  min={textStrokeConfig.min}
+                  max={textStrokeConfig.max}
+                  step={textStrokeConfig.step}
                   onValueChange={(value) =>
                     updateTextSettings({ textStrokeWidth: value[0] })
                   }
