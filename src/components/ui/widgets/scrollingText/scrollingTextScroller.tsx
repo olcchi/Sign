@@ -13,7 +13,9 @@ interface ScrollingTextScrollerProps {
   shinyTextEnabled?: boolean;
   textColor: string;
   textStrokeEnabled?: boolean;
-
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
 }
 
 // Creates seamless infinite text scrolling with duplicated content
@@ -26,7 +28,10 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textRef,
   shinyTextEnabled = false,
   textColor,
-
+  textStrokeEnabled = false,
+  textStrokeWidth = 1,
+  textStrokeColor = "#000000",
+  textFillEnabled = true,
 }) => {
   // Add gap spacing to prevent visually abrupt transitions
   const combinedTextStyle = {
