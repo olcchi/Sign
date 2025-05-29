@@ -1,15 +1,15 @@
 "use client";
 import FullScreen from "@/components/ui/layout/fullScreen";
-import ToolBar from "@/components/ui/toolBar";
+import ToolBar from "@/components/ui/toolBar/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
-import { EdgeBlurEffect } from "@/components/ui/widgets/EdgeBlurEffect";
+import { EdgeBlurEffect } from "@/components/ui/filter/EdgeBlurEffect";
 import { Olcchi } from "@/components/ui/icon/olcchi";
 import { useRef } from "react";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/filter/noise";
 import { SettingsProvider, useSettings } from "@/lib/contexts/SettingsContext";
-
+import SignHeroTitle from "@/components/ui/icon/signHeroTitle";
 // Internal component using Context to access global settings
 function SoulSignContent() {
   const textRef = useRef<HTMLDivElement>(null);
@@ -27,9 +27,10 @@ function SoulSignContent() {
 
   return (
     <main
-      className="relative w-screen h-[100dvh] overflow-hidden font-[family-name:var(--font-dm-serif-text)]"
+      className="relative w-screen h-[100dvh] overflow-hidden font-sans"
       style={backgroundStyle}
     >
+      {/* <SignHeroTitle /> */}
       {/* Background image with dynamic positioning and scaling */}
       {backgroundSettings.backgroundImage && (
         <div className="absolute inset-0 z-0">
@@ -43,7 +44,7 @@ function SoulSignContent() {
               objectFit: "cover",
               objectPosition: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
               transform: `scale(${backgroundSettings.backgroundZoom})`,
-              transformOrigin: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
+              transformOrigin: "50% 50%",
             }}
           />
         </div>
@@ -58,7 +59,7 @@ function SoulSignContent() {
       {/* Noise texture adds visual depth and dimension */}
       {effectsSettings.noiseEnabled && (
         <Noise
-          className="z-20 mix-blend-overlay"
+          className="z-30 mix-blend-overlay"
           opacity={effectsSettings.noiseOpacity}
           density={effectsSettings.noiseDensity}
           color="#ffffff"
@@ -91,6 +92,7 @@ function SoulSignContent() {
 
       {/* Toolbar for user interactions */}
       <ToolBar className="w-full h-full z-[999] relative flex" />
+
 
       {/* Fullscreen toggle button */}
       <FullScreen asButton={true} className="z-[999]" />
