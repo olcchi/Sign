@@ -1,9 +1,18 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
+import { 
+  colorOptions, 
+  fontOptions, 
+  fontSizeOptions, 
+  scrollSpeedOptions,
+  edgeBlurConfig,
+  noiseConfig,
+  textStrokeConfig 
+} from "@/lib/settings-config";
 
 // Text settings interface for managing text content and styles
-interface TextSettings {
+export interface TextSettings {
   text: string;
   textColor: string;
   fontFamily: string;
@@ -16,7 +25,7 @@ interface TextSettings {
 }
 
 // Background settings interface for controlling page background appearance
-interface BackgroundSettings {
+export interface BackgroundSettings {
   backgroundColor: string;
   backgroundImage: string | null;
   backgroundPosition: { x: number; y: number };
@@ -25,7 +34,7 @@ interface BackgroundSettings {
 }
 
 // Visual effects settings interface for managing effect parameters
-interface EffectsSettings {
+export interface EffectsSettings {
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;
   shinyTextEnabled: boolean;
@@ -51,13 +60,13 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 // Default values for initial text settings
 const defaultTextSettings: TextSettings = {
   text: "Sign",
-  textColor: "#FFFFFB",
-  fontFamily: "var(--font-geist-sans)",
-  fontSize: "10rem",
-  scrollSpeed: 10,
+  textColor: colorOptions[0].value, // Use first color option
+  fontFamily: fontOptions[0].value, // Use first font option
+  fontSize: fontSizeOptions[2].value, // Use "L" size (10rem)
+  scrollSpeed: parseInt(scrollSpeedOptions[2].value), // Use "1x" speed (10)
   textStrokeEnabled: false,
-  textStrokeWidth: 2,
-  textStrokeColor: "#FFFFFB",
+  textStrokeWidth: textStrokeConfig.defaultValue,
+  textStrokeColor: colorOptions[0].value, // Use first color option
   textFillEnabled: true,
 };
 
@@ -73,11 +82,11 @@ const defaultBackgroundSettings: BackgroundSettings = {
 // Default values for initial effect settings
 const defaultEffectsSettings: EffectsSettings = {
   edgeBlurEnabled: false,
-  edgeBlurIntensity: 4,
+  edgeBlurIntensity: edgeBlurConfig.defaultValue,
   shinyTextEnabled: false,
   noiseEnabled: false,
-  noiseOpacity: 0.1,
-  noiseDensity: 0.3,
+  noiseOpacity: noiseConfig.opacity.defaultValue,
+  noiseDensity: noiseConfig.density.defaultValue,
 };
 
 // Settings provider that improves code maintainability through grouped management
