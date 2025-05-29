@@ -205,4 +205,4 @@ class VikaConfigStorage {
 }
 
 // Export singleton instance
-export const vikaConfigStorage = new VikaConfigStorage(); 
+export const vikaConfigStorage = new VikaConfigStorage();
