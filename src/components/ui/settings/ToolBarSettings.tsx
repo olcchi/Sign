@@ -9,7 +9,9 @@ import {
   ScrollSpeedSetting,
   BackgroundImageSetting,
   EffectsSetting,
+  ShareSetting,
 } from "@/components/ui/settings/settingsComponent";
+import { Preset } from "@/components/ui/settings/Preset";
 
 // Configurable options
 interface OptionsConfig {
@@ -47,6 +49,7 @@ export interface ToolBarSettingsProps
   extends BackgroundImageHandlingProps,
     OptionsConfig {
   isOpen?: boolean;
+  activePreset?: Preset | null; // Current active preset
 }
 
 // Constructs setting item components for toolbar option rendering
@@ -68,6 +71,7 @@ export function ToolBarSettings({
 
   // Panel state
   isOpen,
+  activePreset,
 }: ToolBarSettingsProps) {
   // Create setting components using the extracted components
   const contentSetting = ContentSetting({ isOpen });
@@ -86,6 +90,7 @@ export function ToolBarSettings({
     handleFileChange,
   });
   const effectsSetting = EffectsSetting();
+  const shareSetting = ShareSetting({ activePreset });
 
   return [
     {
@@ -122,6 +127,11 @@ export function ToolBarSettings({
       id: "edgeBlurEffect",
       title: effectsSetting.title,
       component: effectsSetting.component,
+    },
+    {
+      id: "share",
+      title: shareSetting.title,
+      component: shareSetting.component,
     },
   ];
 }

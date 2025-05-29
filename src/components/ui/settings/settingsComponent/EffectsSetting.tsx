@@ -5,6 +5,7 @@ import { Eye, EyeOff } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/layout/button";
 import { useSettings } from "@/lib/contexts/SettingsContext";
+import { edgeBlurConfig, noiseConfig } from "@/lib/settings-config";
 
 export function EffectsSetting() {
   const { effectsSettings, updateEffectsSettings } = useSettings();
@@ -41,9 +42,9 @@ export function EffectsSetting() {
                 <Slider
                   defaultValue={[effectsSettings.edgeBlurIntensity]}
                   value={[effectsSettings.edgeBlurIntensity]}
-                  min={1}
-                  max={20}
-                  step={1}
+                  min={edgeBlurConfig.min}
+                  max={edgeBlurConfig.max}
+                  step={edgeBlurConfig.step}
                   onValueChange={(value) =>
                     updateEffectsSettings({ edgeBlurIntensity: value[0] })
                   }
@@ -81,9 +82,9 @@ export function EffectsSetting() {
                 <Slider
                   defaultValue={[effectsSettings.noiseOpacity]}
                   value={[effectsSettings.noiseOpacity]}
-                  min={0.01}
-                  max={0.3}
-                  step={0.01}
+                  min={noiseConfig.opacity.min}
+                  max={noiseConfig.opacity.max}
+                  step={noiseConfig.opacity.step}
                   onValueChange={(value) =>
                     updateEffectsSettings({ noiseOpacity: value[0] })
                   }
@@ -94,9 +95,9 @@ export function EffectsSetting() {
                 <Slider
                   defaultValue={[effectsSettings.noiseDensity]}
                   value={[effectsSettings.noiseDensity]}
-                  min={0.1}
-                  max={0.6}
-                  step={0.05}
+                  min={noiseConfig.density.min}
+                  max={noiseConfig.density.max}
+                  step={noiseConfig.density.step}
                   onValueChange={(value) =>
                     updateEffectsSettings({ noiseDensity: value[0] })
                   }
