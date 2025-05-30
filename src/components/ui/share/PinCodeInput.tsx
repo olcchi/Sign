@@ -6,7 +6,7 @@ import {
   isValidPinCode,
 } from "@/lib/share-api";
 import { Preset } from "@/components/ui/settings/Preset";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/layout/button";
 import { Label } from "@/components/ui/label";
 import {
   InputOTP,
