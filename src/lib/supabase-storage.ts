@@ -159,6 +159,8 @@ class SupabaseConfigStorage {
     try {
       const supabase = await createClient()
 
+      console.log('Starting cleanup of expired presets...')
+      
       // Use PostgreSQL's NOW() function for server-side comparison
       const { data, error } = await supabase
         .from(this.tableName)
@@ -171,7 +173,16 @@ class SupabaseConfigStorage {
         return 0
       }
 
-      return data?.length || 0
+      const deletedCount = data?.length || 0
+      console.log(`Cleanup completed: ${deletedCount} expired presets deleted`)
+      
+      // Log some details about deleted presets (without sensitive data)
+      if (deletedCount > 0 && data) {
+        const pinCodes = data.map(preset => preset.pin_code).join(', ')
+        console.log(`Deleted PIN codes: ${pinCodes}`)
+      }
+
+      return deletedCount
     } catch (error) {
       console.error('Failed to cleanup expired presets:', error)
       return 0
