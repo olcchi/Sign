@@ -11,7 +11,7 @@ import { useRef } from "react";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/filter/noise";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/layout/button";
 import { ArrowLeft, Loader2, AlertCircle } from "lucide-react";
 
 // Loading state component
