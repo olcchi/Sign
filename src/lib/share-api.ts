@@ -1,4 +1,3 @@
-import { TextSettings, BackgroundSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
 import { Preset } from "@/components/ui/settings/Preset";
 
 // Simple request queue to avoid rate limiting
