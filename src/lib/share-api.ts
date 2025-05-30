@@ -76,6 +76,21 @@ export async function saveSharedPreset(
       }
 
       const result = await response.json();
+      
+      // Occasionally trigger cleanup (10% chance) as supplementary mechanism
+      if (Math.random() < 0.1) {
+        console.log('Triggering supplementary cleanup...');
+        // Fire and forget - don't wait for cleanup to complete
+        fetch('/api/cron/cleanup-expired', {
+          method: 'GET',
+          headers: {
+            'User-Agent': 'vercel-cron/1.0', // Mimic cron user agent
+          },
+        }).catch(error => {
+          console.log('Supplementary cleanup failed:', error);
+        });
+      }
+      
       return { success: true, data: result };
     } catch (error) {
       console.error('Failed to save shared preset:', error);
