@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { vikaConfigStorage } from '@/lib/vika-storage';
+import { supabaseConfigStorage } from '@/lib/supabase-storage';
 
 export async function DELETE(
   request: NextRequest,
@@ -23,8 +23,8 @@ export async function DELETE(
       );
     }
 
-    // Delete preset from Vika
-    const deleted = await vikaConfigStorage.deletePreset(pinCode);
+    // Delete preset from Supabase
+    const deleted = await supabaseConfigStorage.deletePreset(pinCode);
 
     if (!deleted) {
       return NextResponse.json(
