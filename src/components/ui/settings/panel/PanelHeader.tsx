@@ -4,13 +4,17 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/layout/button";
 import { Switch } from "@/components/ui/layout/switch";
 import { Separator } from "@/components/ui/layout/separator";
+
 interface PanelHeaderProps {
   title: string;
   onClose: () => void;
 }
 
 export const PanelHeader: React.FC<PanelHeaderProps> = ({ title, onClose }) => {
-  const { theme, setTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme } = useTheme();
+
+  // Use resolvedTheme to get the actual current theme (resolves 'system' to 'light' or 'dark')
+  const isDarkMode = resolvedTheme === "dark";
 
   const toggleTheme = () => {
     setTheme(theme === "dark" ? "light" : "dark");
@@ -22,11 +26,11 @@ export const PanelHeader: React.FC<PanelHeaderProps> = ({ title, onClose }) => {
       <Separator orientation="vertical" className="bg-border" />
       <div className="flex items-center gap-2">
         <Switch
-          checked={theme === "dark"}
+          checked={isDarkMode}
           onCheckedChange={toggleTheme}
-          aria-label={theme === "dark" ? "切换亮色模式" : "切换暗色模式"}
+          aria-label={isDarkMode ? "切换亮色模式" : "切换暗色模式"}
         >
-          {theme === "dark" ? (
+          {isDarkMode ? (
             <Moon size={12} className="text-[#FCFAF2]" />
           ) : (
             <Sun size={12} className="text-[#080808]" />
