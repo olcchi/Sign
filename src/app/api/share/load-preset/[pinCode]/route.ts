@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { vikaConfigStorage } from '@/lib/vika-storage';
+import { supabaseConfigStorage } from '@/lib/supabase-storage';
 
 export async function GET(
   request: NextRequest,
@@ -23,8 +23,8 @@ export async function GET(
       );
     }
 
-    // Get preset from Vika
-    const preset = await vikaConfigStorage.getPreset(pinCode);
+    // Get preset from Supabase
+    const preset = await supabaseConfigStorage.getPreset(pinCode);
 
     if (!preset) {
       return NextResponse.json(
