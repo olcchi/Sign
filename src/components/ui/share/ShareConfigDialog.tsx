@@ -9,7 +9,7 @@ import {
 } from "@/lib/share-api";
 import { Preset } from "@/components/ui/settings/Preset";
 import { Button } from "@/components/ui/layout/button";
-import { Input } from "@/components/ui/input";
+import { Input } from "@/components/ui/inputs/input";
 import { Label } from "@/components/ui/label";
 import {
   Dialog,
