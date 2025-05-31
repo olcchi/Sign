@@ -161,11 +161,8 @@ export default function SharePresetDialog({
               {/* Success result */}
               <div className="space-y-3">
                 <div className="text-center">
-                  <div className="text-2xl font-bold text-green-600 mb-1">
+                  <div className="text-2xl font-bold font-mono mb-1">
                     {shareResult.pinCode}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    PIN码（24小时内有效）
                   </div>
                 </div>
 
@@ -178,9 +175,10 @@ export default function SharePresetDialog({
                       readOnly
                       className="font-mono text-center text-lg"
                     /> */}
-                    <Label htmlFor="pin-code">PIN码</Label>
+                    {/* <Label htmlFor="pin-code">PIN码</Label> */}
                     <Button
-                      size="icon"
+                      size="lg"
+                      className="w-full"
                       variant="outline"
                       onClick={() => copyToClipboard(shareResult.pinCode)}
                     >
@@ -190,7 +188,7 @@ export default function SharePresetDialog({
                 </div>
 
                 {/* Share URL copy */}
-                <div className="space-y-2">
+                {/* <div className="space-y-2">
                   <Label htmlFor="share-url">分享链接</Label>
                   <div className="flex gap-2">
                     <Input
@@ -207,17 +205,17 @@ export default function SharePresetDialog({
                       {copied ? <Check size={16} /> : <Copy size={16} />}
                     </Button>
                   </div>
-                </div>
+                </div> */}
               </div>
 
               {/* Generate new button */}
-              <Button
+              {/* <Button
                 variant="outline"
                 onClick={() => setShareResult(null)}
                 className="w-full"
               >
                 重新生成
-              </Button>
+              </Button> */}
             </>
           )}
         </div>
