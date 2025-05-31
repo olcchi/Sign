@@ -12,7 +12,7 @@ import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/input-otp";
+} from "@/components/ui/inputs/input-otp";
 import {
   Dialog,
   DialogContent,
