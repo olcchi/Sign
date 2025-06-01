@@ -13,13 +13,41 @@ import { Input } from "@/components/ui/inputs/input";
 import { Label } from "@/components/ui/label";
 import {
   Dialog,
-  DialogContent,
   DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogPortal,
+  DialogOverlay,
 } from "@/components/ui/dialog";
-import { Copy, Check, Loader2, AlertCircle } from "lucide-react";
+import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { Copy, Check, Loader2, AlertCircle, X } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+// Create a non-animated version of DialogContent
+const DialogContentNoAnimation = React.forwardRef<
+  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
+>(({ className, children, ...props }, ref) => (
+  <DialogPortal>
+    <DialogOverlay className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm" />
+    <DialogPrimitive.Content
+      ref={ref}
+      className={cn(
+        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg",
+        className
+      )}
+      {...props}
+    >
+      {children}
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+        <X className="h-4 w-4" />
+        <span className="sr-only">Close</span>
+      </DialogPrimitive.Close>
+    </DialogPrimitive.Content>
+  </DialogPortal>
+));
+DialogContentNoAnimation.displayName = "DialogContentNoAnimation";
 
 interface SharePresetDialogProps {
   children: React.ReactNode;
@@ -101,7 +129,7 @@ export default function SharePresetDialog({
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>
-      <DialogContent className="sm:max-w-md">
+      <DialogContentNoAnimation className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <p className="text-sm font-bold">分享预设</p>
@@ -219,7 +247,7 @@ export default function SharePresetDialog({
             </>
           )}
         </div>
-      </DialogContent>
+      </DialogContentNoAnimation>
     </Dialog>
   );
 }
