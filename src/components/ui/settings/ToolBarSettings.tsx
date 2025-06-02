@@ -9,7 +9,6 @@ import {
   ScrollSpeedSetting,
   BackgroundImageSetting,
   EffectsSetting,
-  ShareSetting,
 } from "@/components/ui/settings/settingsComponent";
 import { Preset } from "@/components/ui/settings/Preset";
 
@@ -90,7 +89,6 @@ export function ToolBarSettings({
     handleFileChange,
   });
   const effectsSetting = EffectsSetting();
-  const shareSetting = ShareSetting({ activePreset });
 
   return [
     {
@@ -127,11 +125,6 @@ export function ToolBarSettings({
       id: "edgeBlurEffect",
       title: effectsSetting.title,
       component: effectsSetting.component,
-    },
-    {
-      id: "share",
-      title: shareSetting.title,
-      component: shareSetting.component,
     },
   ];
 }
