@@ -1,4 +1,11 @@
 import { Preset } from "@/components/ui/settings/Preset";
+import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
+import {
+  colorOptions,
+  fontOptions,
+  fontSizeOptions,
+  scrollSpeedOptions,
+} from "@/lib/settings-config";
 
 /**
  * Interface for all preset property change handlers
@@ -85,4 +92,160 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
   if (preset.textFillEnabled !== undefined) {
     onTextFillEnabledChange(preset.textFillEnabled);
   }
+}
+
+/**
+ * Convert current settings to Preset format
+ */
+export function createPresetFromCurrentSettings(
+  textSettings: TextSettings,
+  effectsSettings: EffectsSettings,
+  name: string = "当前设置"
+): Preset {
+  return {
+    id: `temp-${Date.now()}`, // Temporary ID for current settings
+    name,
+    text: textSettings.text,
+    textColor: textSettings.textColor,
+    fontFamily: textSettings.fontFamily,
+    fontSize: textSettings.fontSize,
+    scrollSpeed: textSettings.scrollSpeed,
+    edgeBlurEnabled: effectsSettings.edgeBlurEnabled,
+    edgeBlurIntensity: effectsSettings.edgeBlurIntensity,
+    shinyTextEnabled: effectsSettings.shinyTextEnabled,
+    noiseEnabled: effectsSettings.noiseEnabled,
+    noiseOpacity: effectsSettings.noiseOpacity,
+    noiseDensity: effectsSettings.noiseDensity,
+    textStrokeEnabled: textSettings.textStrokeEnabled,
+    textStrokeWidth: textSettings.textStrokeWidth,
+    textStrokeColor: textSettings.textStrokeColor,
+    textFillEnabled: textSettings.textFillEnabled,
+  };
+}
+
+/**
+ * Check if current settings match a saved preset
+ */
+export function findMatchingPreset(
+  textSettings: TextSettings,
+  effectsSettings: EffectsSettings,
+  savedPresets: Preset[]
+): Preset | null {
+  return savedPresets.find(preset => 
+    preset.text === textSettings.text &&
+    preset.textColor === textSettings.textColor &&
+    preset.fontFamily === textSettings.fontFamily &&
+    preset.fontSize === textSettings.fontSize &&
+    preset.scrollSpeed === textSettings.scrollSpeed &&
+    preset.edgeBlurEnabled === effectsSettings.edgeBlurEnabled &&
+    preset.edgeBlurIntensity === effectsSettings.edgeBlurIntensity &&
+    preset.shinyTextEnabled === effectsSettings.shinyTextEnabled &&
+    preset.noiseEnabled === effectsSettings.noiseEnabled &&
+    preset.noiseOpacity === effectsSettings.noiseOpacity &&
+    preset.noiseDensity === effectsSettings.noiseDensity &&
+    preset.textStrokeEnabled === textSettings.textStrokeEnabled &&
+    preset.textStrokeWidth === textSettings.textStrokeWidth &&
+    preset.textStrokeColor === textSettings.textStrokeColor &&
+    preset.textFillEnabled === textSettings.textFillEnabled
+  ) || null;
+}
+
+/**
+ * Get detailed preset information as an array of strings for vertical display
+ * Reuses the same display logic as Preset.tsx AccordionContent
+ */
+export function getPresetDetailedInfo(preset: Preset): string[] {
+  const details = [];
+  
+  // Text content (truncated)
+  const textContent = preset.text.substring(0, 30) + (preset.text.length > 30 ? "..." : "");
+  details.push(`内容: ${textContent}`);
+  
+  // Font family
+  const fontName = fontOptions.find(opt => opt.value === preset.fontFamily)?.name || preset.fontFamily;
+  details.push(`字体: ${fontName}`);
+  
+  // Color
+  const colorName = colorOptions.find(opt => opt.value === preset.textColor)?.name || preset.textColor;
+  details.push(`颜色: ${colorName}`);
+  
+  // Font size
+  const sizeName = fontSizeOptions.find(opt => opt.value === preset.fontSize)?.name || preset.fontSize;
+  details.push(`字号: ${sizeName}`);
+  
+  // Scroll speed
+  const speedName = scrollSpeedOptions.find(opt => parseInt(opt.value) === preset.scrollSpeed)?.name || `${preset.scrollSpeed}x`;
+  details.push(`滚动速度: ${speedName}`);
+  
+  // Effects
+  details.push(`聚焦: ${preset.edgeBlurEnabled ? "开启" : "关闭"}`);
+  details.push(`闪光: ${preset.shinyTextEnabled ? "开启" : "关闭"}`);
+  details.push(`噪点: ${preset.noiseEnabled ? "开启" : "关闭"}`);
+  details.push(`填充: ${preset.textFillEnabled ? "开启" : "关闭"}`);
+  details.push(`边框: ${preset.textStrokeEnabled ? "开启" : "关闭"}`);
+  
+  return details;
+}
+
+/**
+ * Get a detailed description of preset settings for display
+ * Reuses the same display logic as Preset.tsx
+ */
+export function getPresetDescription(preset: Preset): string {
+  const details = [];
+  
+  // Text content (truncated)
+  const textContent = preset.text.substring(0, 30) + (preset.text.length > 30 ? "..." : "");
+  details.push(`内容: ${textContent}`);
+  
+  // Font family
+  const fontName = fontOptions.find(opt => opt.value === preset.fontFamily)?.name || preset.fontFamily;
+  details.push(`字体: ${fontName}`);
+  
+  // Color
+  const colorName = colorOptions.find(opt => opt.value === preset.textColor)?.name || preset.textColor;
+  details.push(`颜色: ${colorName}`);
+  
+  // Font size
+  const sizeName = fontSizeOptions.find(opt => opt.value === preset.fontSize)?.name || preset.fontSize;
+  details.push(`字号: ${sizeName}`);
+  
+  // Scroll speed
+  const speedName = scrollSpeedOptions.find(opt => parseInt(opt.value) === preset.scrollSpeed)?.name || `${preset.scrollSpeed}x`;
+  details.push(`滚动: ${speedName}`);
+  
+  // Effects
+  const effects = [];
+  if (preset.edgeBlurEnabled) effects.push("聚焦");
+  if (preset.shinyTextEnabled) effects.push("闪光");
+  if (preset.noiseEnabled) effects.push("噪点");
+  if (preset.textFillEnabled) effects.push("填充");
+  if (preset.textStrokeEnabled) effects.push("边框");
+  
+  if (effects.length > 0) {
+    details.push(`特效: ${effects.join("、")}`);
+  }
+  
+  return details.join(" | ");
+}
+
+/**
+ * Get a short description of the current settings for display
+ * Shows text content and enabled effects only
+ */
+export function getSettingsDescription(
+  textSettings: TextSettings,
+  effectsSettings: EffectsSettings
+): string {
+  const features = [];
+  
+  if (effectsSettings.edgeBlurEnabled) features.push("聚焦");
+  if (effectsSettings.shinyTextEnabled) features.push("闪光");
+  if (effectsSettings.noiseEnabled) features.push("噪点");
+  if (textSettings.textStrokeEnabled) features.push("边框");
+  
+  const textContent = textSettings.text.substring(0, 20) + (textSettings.text.length > 20 ? "..." : "");
+  const effectsText = features.length > 0 ? ` · ${features.join("、")}` : "";
+  
+  return `${textContent}${effectsText}`;
 } 
