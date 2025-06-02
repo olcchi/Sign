@@ -8,6 +8,13 @@ import {
   ShareApiResponse,
 } from "@/lib/share-api";
 import { Preset } from "@/components/ui/settings/Preset";
+import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
+import {
+  createPresetFromCurrentSettings,
+  findMatchingPreset,
+  getSettingsDescription,
+  getPresetDetailedInfo,
+} from "@/lib/preset-utils";
 import { Button } from "@/components/ui/layout/button";
 import { Input } from "@/components/ui/inputs/input";
 import { Label } from "@/components/ui/label";
@@ -20,21 +27,27 @@ import {
   DialogPortal,
   DialogOverlay,
 } from "@/components/ui/dialog";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/layout/accordion";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Copy, Check, Loader2, AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 // Create a non-animated version of DialogContent
-const DialogContentNoAnimation = React.forwardRef<
+const DialogContent = React.forwardRef<
   React.ElementRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay className="fixed inset-0 z-50 bg-background/80 backdrop-blur-sm" />
+    <DialogOverlay className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm" />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg",
+        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
         className
       )}
       {...props}
@@ -47,19 +60,25 @@ const DialogContentNoAnimation = React.forwardRef<
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
-DialogContentNoAnimation.displayName = "DialogContentNoAnimation";
+DialogContent.displayName = "DialogContent";
 
-interface SharePresetDialogProps {
+interface ShareDialogProps {
   children: React.ReactNode;
   className?: string;
   activePreset?: Preset | null; // Current active preset
+  currentTextSettings?: TextSettings; // Current text settings
+  currentEffectsSettings?: EffectsSettings; // Current effects settings
+  savedPresets?: Preset[]; // All saved presets for matching
 }
 
-export default function SharePresetDialog({
+export default function ShareDialog({
   children,
   className,
   activePreset,
-}: SharePresetDialogProps) {
+  currentTextSettings,
+  currentEffectsSettings,
+  savedPresets = [],
+}: ShareDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [shareResult, setShareResult] = useState<{
@@ -69,23 +88,52 @@ export default function SharePresetDialog({
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  // Generate PIN code and save preset
-  const handleShare = async () => {
-    if (!activePreset) {
-      setError("请先激活一个预设");
-      return;
+  // Determine what to share: current settings or active preset
+  const getPresetToShare = (): {
+    preset: Preset;
+    isCurrentSettings: boolean;
+    matchedPreset?: Preset;
+  } => {
+    if (!currentTextSettings || !currentEffectsSettings) {
+      // Fallback to active preset if current settings not provided
+      if (activePreset) {
+        return { preset: activePreset, isCurrentSettings: false };
+      }
+      throw new Error("没有可分享的设置");
     }
 
+    // Check if current settings match any saved preset
+    const matchedPreset = findMatchingPreset(
+      currentTextSettings,
+      currentEffectsSettings,
+      savedPresets
+    );
+
+    if (matchedPreset) {
+      // Current settings match a saved preset
+      return { preset: matchedPreset, isCurrentSettings: false, matchedPreset };
+    } else {
+      // Current settings are unique, create temporary preset
+      const currentPreset = createPresetFromCurrentSettings(
+        currentTextSettings,
+        currentEffectsSettings,
+        "当前设置"
+      );
+      return { preset: currentPreset, isCurrentSettings: true };
+    }
+  };
+
+  // Generate PIN code and save preset
+  const handleShare = async () => {
     setIsLoading(true);
     setError(null);
 
     try {
+      const { preset } = getPresetToShare();
+
       // Generate new PIN code and save preset
       const pinCode = generatePinCode();
-      const result: ShareApiResponse = await saveSharedPreset(
-        pinCode,
-        activePreset
-      );
+      const result: ShareApiResponse = await saveSharedPreset(pinCode, preset);
 
       if (result.success) {
         const shareUrl = createPresetShareUrl(pinCode);
@@ -97,9 +145,42 @@ export default function SharePresetDialog({
         setError(result.error || "分享失败，请重试");
       }
     } catch (err) {
-      setError("网络错误，请检查连接后重试");
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("网络错误，请检查连接后重试");
+      }
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  // Get display information for what will be shared
+  const getShareInfo = () => {
+    try {
+      const { preset, isCurrentSettings, matchedPreset } = getPresetToShare();
+
+      if (matchedPreset) {
+        return {
+          title: `分享预设：${matchedPreset.name}`,
+          description: getPresetDetailedInfo(matchedPreset),
+          preset: matchedPreset,
+        };
+      } else if (isCurrentSettings) {
+        return {
+          title: "分享当前设置",
+          description: getPresetDetailedInfo(preset),
+          preset,
+        };
+      } else {
+        return {
+          title: `分享预设：${preset.name}`,
+          description: getPresetDetailedInfo(preset),
+          preset,
+        };
+      }
+    } catch {
+      return null;
     }
   };
 
@@ -124,18 +205,24 @@ export default function SharePresetDialog({
     }
   };
 
+  const shareInfo = getShareInfo();
+
   return (
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild className={className}>
         {children}
       </DialogTrigger>
-      <DialogContentNoAnimation className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <p className="text-sm font-bold">分享预设</p>
+            <p className="text-sm font-bold">
+              {shareInfo?.title || "分享设置"}
+            </p>
           </DialogTitle>
           <DialogDescription>
-            生成一个6位PIN码来分享你的预设配置
+            {shareInfo
+              ? "生成一个6位PIN码来分享你的设置"
+              : "生成一个6位PIN码来分享你的预设配置"}
           </DialogDescription>
         </DialogHeader>
 
@@ -143,15 +230,21 @@ export default function SharePresetDialog({
           {!shareResult ? (
             <>
               {/* Active preset info */}
-              {activePreset && (
-                <div className="p-3 bg-muted rounded-lg">
-                  <div className="text-sm font-medium">{activePreset.name}</div>
-                  <div className="text-xs text-muted-foreground mt-1">
-                    {activePreset.text.length > 50
-                      ? `${activePreset.text.substring(0, 50)}...`
-                      : activePreset.text}
-                  </div>
-                </div>
+              {shareInfo && (
+                <Accordion type="single" collapsible className="w-full">
+                  <AccordionItem value="preset-details" className="rounded-lg">
+                    <AccordionTrigger className="px-3 py-2 hover:no-underline">
+                      <div className="text-sm font-medium">{shareInfo.preset.name}</div>
+                    </AccordionTrigger>
+                    <AccordionContent className="px-3 pb-3">
+                      <div className="text-xs text-muted-foreground leading-relaxed space-y-1">
+                        {shareInfo.description.map((detail, index) => (
+                          <div key={index}>{detail}</div>
+                        ))}
+                      </div>
+                    </AccordionContent>
+                  </AccordionItem>
+                </Accordion>
               )}
 
               {/* Error display */}
@@ -162,7 +255,7 @@ export default function SharePresetDialog({
                 </div>
               )}
               {/* no activePreset */}
-              {!activePreset && (
+              {!shareInfo && (
                 <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg">
                   <AlertCircle size={16} />
                   <span className="text-sm">激活您需要分享的预设</span>
@@ -171,7 +264,7 @@ export default function SharePresetDialog({
               {/* Share button */}
               <Button
                 onClick={handleShare}
-                disabled={isLoading || !activePreset}
+                disabled={isLoading || !shareInfo}
                 className="w-full"
               >
                 {isLoading ? (
@@ -247,7 +340,7 @@ export default function SharePresetDialog({
             </>
           )}
         </div>
-      </DialogContentNoAnimation>
+      </DialogContent>
     </Dialog>
   );
 }

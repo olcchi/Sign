@@ -4,10 +4,10 @@ import React from "react";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 import { Preset } from "@/components/ui/settings/Preset";
 import { applyPreset } from "@/lib/preset-utils";
-import SharePresetDialog from "@/components/ui/share/ShareConfigDialog";
-import PinCodeInput from "@/components/ui/share/PinCodeInput";
+import ShareDialog from "@/components/ui/share/ShareDialog";
+import ImportDialog from "@/components/ui/share/ImportDialog";
 import { Button } from "@/components/ui/layout/button";
-import { Share2, CloudDownload, AlertCircle } from "lucide-react";
+import { CloudUpload, CloudDownload, AlertCircle } from "lucide-react";
 import {
   Alert,
   AlertTitle,
@@ -16,13 +16,15 @@ import {
 
 interface ShareSettingProps {
   activePreset?: Preset | null; // Current active preset from preset manager
+  savedPresets?: Preset[]; // All saved presets for matching
 }
 
 // Share setting component for preset sharing functionality
-export function ShareSetting({ activePreset }: ShareSettingProps) {
+export function ShareSetting({ activePreset, savedPresets = [] }: ShareSettingProps) {
   const {
+    textSettings,
+    effectsSettings,
     updateTextSettings,
-    updateBackgroundSettings,
     updateEffectsSettings,
   } = useSettings();
 
@@ -59,37 +61,30 @@ export function ShareSetting({ activePreset }: ShareSettingProps) {
     });
   };
 
-  const component = (
+  return (
     <div className="space-y-3 flex-col gap-2">
       <div className="flex gap-2">
-        {/* Share current active preset */}
-        <SharePresetDialog activePreset={activePreset}>
-          <Button variant="outline" className=" justify-start">
-            <Share2 className="mr-2 h-4 w-4" />
+        {/* Share current settings */}
+        <ShareDialog 
+          activePreset={activePreset}
+          currentTextSettings={textSettings}
+          currentEffectsSettings={effectsSettings}
+          savedPresets={savedPresets}
+        >
+          <Button variant="secondary" size="sm" className="flex-1 justify-center text-xs">
+            <CloudUpload className="mr-2 h-3 w-3" />
             分享预设
           </Button>
-        </SharePresetDialog>
+        </ShareDialog>
 
         {/* Load shared preset */}
-        <PinCodeInput onPresetLoaded={handlePresetLoaded}>
-          <Button variant="outline" className="justify-start">
-            <CloudDownload className="mr-2 h-4 w-4" />
+        <ImportDialog onPresetLoaded={handlePresetLoaded}>
+          <Button variant="secondary" size="sm" className="flex-1 justify-center text-xs">
+            <CloudDownload className="mr-2 h-3 w-3" />
             加载预设
           </Button>
-        </PinCodeInput>
+        </ImportDialog>
       </div>
-      <Alert className="text-xs">
-        <AlertCircle />
-        <AlertTitle>提示</AlertTitle>
-        <AlertDescription className="text-xs">
-          <p>PIN码有效期24小时</p>
-        </AlertDescription>
-      </Alert>
     </div>
   );
-
-  return {
-    title: "分享预设",
-    component,
-  };
 }
