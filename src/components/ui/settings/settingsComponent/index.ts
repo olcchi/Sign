@@ -4,5 +4,4 @@ export { TextRenderingSetting } from "./TextRenderingSetting";
 export { FontFamilySetting } from "./FontFamilySetting";
 export { ScrollSpeedSetting } from "./ScrollSpeedSetting";
 export { BackgroundImageSetting } from "./BackgroundImageSetting";
-export { EffectsSetting } from "./EffectsSetting";
-export { ShareSetting } from "./ShareSetting"; 
+export { EffectsSetting } from "./EffectsSetting"; 
