@@ -7,6 +7,7 @@ import {
   Trash2,
   RefreshCw,
   CircleAlert,
+  AlertCircle,
 } from "lucide-react";
 import {
   Alert,
@@ -20,12 +21,9 @@ import {
   AccordionContent,
 } from "@/components/ui/layout/accordion";
 import { cn } from "@/lib/utils";
-import {
-  colorOptions,
-  fontOptions,
-  fontSizeOptions,
-  scrollSpeedOptions,
-} from "@/lib/settings-config";
+import { ShareSetting } from "@/components/ui/settings/settingsComponent/ShareSetting";
+import { useSettings } from "@/lib/contexts/SettingsContext";
+import { getPresetDetailedInfo } from "@/lib/preset-utils";
 
 /**
  * Preset interface defining the structure of saved presets
@@ -97,6 +95,8 @@ export function PresetManager({
   onLoadPreset,
   onActivePresetChange,
 }: PresetManagerProps) {
+  const { updateTextSettings, updateEffectsSettings } = useSettings();
+
   const [presets, setPresets] = useState<Preset[]>([]);
   const [presetName, setPresetName] = useState("");
   const [showPresetInput, setShowPresetInput] = useState(false);
@@ -184,7 +184,7 @@ export function PresetManager({
         activePreset.textStrokeWidth !== textStrokeWidth ||
         activePreset.textStrokeColor !== textStrokeColor ||
         activePreset.textFillEnabled !== textFillEnabled;
-      
+
       setHasUnsavedChanges(settingsChanged);
     }
   }, [
@@ -210,7 +210,7 @@ export function PresetManager({
   // Notify parent component when active preset changes
   useEffect(() => {
     if (onActivePresetChange) {
-      const activePreset = activePresetId 
+      const activePreset = activePresetId
         ? presets.find((p) => p.id === activePresetId) || null
         : null;
       onActivePresetChange(activePreset);
@@ -319,7 +319,7 @@ export function PresetManager({
   return (
     <div className="space-y-2 relative">
       <div className="flex items-center justify-between py-1">
-        <p className=" text-sm font-bold select-none">预设</p>
+        <p className=" text-sm font-bold select-none">预设管理</p>
         <Button
           size="sm"
           variant={"ghost"}
@@ -341,16 +341,29 @@ export function PresetManager({
           保存
         </Button>
       </div>
+
       {isAlert && (
         <Alert className="my-2">
           <CircleAlert size={12} />
           <AlertTitle className="text-xs">提示</AlertTitle>
           <AlertDescription className="text-xs">
-            预设保存在您的浏览器LocalStorage，不保证持久性
+            <p>- 预设保存在您的浏览器LocalStorage，不保证持久性</p>
+            <p>- 分享预设PIN码有效期24小时</p>
           </AlertDescription>
-          {/* <X className="w-4 h-4 absolute top-2 right-2" onClick={() => setIsAlert(false)} /> */}
         </Alert>
       )}
+
+      {/* Share functionality section */}
+      <div className="space-y-2">
+        <ShareSetting
+          activePreset={
+            activePresetId
+              ? presets.find((p) => p.id === activePresetId) || null
+              : null
+          }
+          savedPresets={presets}
+        />
+      </div>
       <AnimatePresence>
         {showPresetInput && (
           <motion.div
@@ -444,7 +457,10 @@ export function PresetManager({
                                 updatePreset(preset.id);
                               }}
                               title="更新预设"
-                              className={cn('relative',hasUnsavedChanges?"ring-1 ring-green-500":"")}
+                              className={cn(
+                                "relative",
+                                hasUnsavedChanges ? "ring-1 ring-green-500" : ""
+                              )}
                             >
                               <RefreshCw size={14} />
                             </Button>
@@ -464,7 +480,9 @@ export function PresetManager({
                           <Button
                             size="sm"
                             variant={"ghost"}
-                            onClick={(e: React.MouseEvent) => confirmDeletePreset(preset.id, e)}
+                            onClick={(e: React.MouseEvent) =>
+                              confirmDeletePreset(preset.id, e)
+                            }
                             title="删除预设"
                           >
                             <Trash2 size={14} />
@@ -484,7 +502,9 @@ export function PresetManager({
                               size="sm"
                               variant={"ghost"}
                               className=" px-2 text-xs"
-                              onClick={(e: React.MouseEvent) => executeDeletePreset(preset.id, e)}
+                              onClick={(e: React.MouseEvent) =>
+                                executeDeletePreset(preset.id, e)
+                              }
                               title="确认"
                             >
                               删除
@@ -493,7 +513,9 @@ export function PresetManager({
                               size="sm"
                               variant={"ghost"}
                               className=" px-2 text-xs"
-                              onClick={(e: React.MouseEvent) => cancelDeletePreset(e)}
+                              onClick={(e: React.MouseEvent) =>
+                                cancelDeletePreset(e)
+                              }
                               title="取消"
                             >
                               取消
@@ -506,47 +528,9 @@ export function PresetManager({
                 </div>
                 <AccordionContent className="border rounded-md mt-1 p-3">
                   <div className="text-xs space-y-1 font-sans p-2">
-                    <p>
-                      文字内容: {preset.text.substring(0, 30)}
-                      {preset.text.length > 30 ? "..." : ""}
-                    </p>
-                    <p>
-                      字体:{" "}
-                      {fontOptions.find(
-                        (opt) => opt.value === preset.fontFamily
-                      )?.name || preset.fontFamily}
-                    </p>
-                    <p>
-                      颜色:{" "}
-                      <span
-                        className={
-                          colorOptions.find(
-                            (opt) => opt.value === preset.textColor
-                          )?.textColor || ""
-                        }
-                      >
-                        {colorOptions.find(
-                          (opt) => opt.value === preset.textColor
-                        )?.name || preset.textColor}
-                      </span>
-                    </p>
-                    <p>
-                      字号:{" "}
-                      {fontSizeOptions.find(
-                        (opt) => opt.value === preset.fontSize
-                      )?.name || preset.fontSize}
-                    </p>
-                    <p>
-                      滚动速度:{" "}
-                      {scrollSpeedOptions.find(
-                        (opt) => parseInt(opt.value) === preset.scrollSpeed
-                      )?.name || `${preset.scrollSpeed}x`}
-                    </p>
-                    <p>聚焦: {preset.edgeBlurEnabled ? "开启" : "关闭"}</p>
-                    <p>闪光: {preset.shinyTextEnabled ? "开启" : "关闭"}</p>
-                    <p>噪点: {preset.noiseEnabled ? "开启" : "关闭"}</p>
-                    <p>填充: {preset.textFillEnabled ? "开启" : "关闭"}</p>
-                    <p>边框: {preset.textStrokeEnabled ? "开启" : "关闭"}</p>
+                    {getPresetDetailedInfo(preset).map((detail, index) => (
+                      <p key={index}>{detail}</p>
+                    ))}
                   </div>
                 </AccordionContent>
               </AccordionItem>
