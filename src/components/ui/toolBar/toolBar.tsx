@@ -121,7 +121,7 @@ export default function ToolBar({ className }: { className?: string }) {
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
-    sm: "w-[80vw] top-16 right-4 h-fit max-h-[70vh]",
+    sm: "w-[80vw] top-16 right-4 h-auto max-h-[70vh]",
     md: "md:w-[40vw] md:top-4 md:right-16 md:h-[90vh] md:max-h-[90dvh]",
     lg: "lg:w-100 lg:top-16 lg:right-4 lg:h-fit",
   };
@@ -192,7 +192,7 @@ export default function ToolBar({ className }: { className?: string }) {
                 toolBarPosition.sm,
                 toolBarPosition.md,
                 toolBarPosition.lg,
-                "absolute flex flex-col py-0 gap-0"
+                "absolute flex flex-col py-0 gap-0 bg-red-200"
               )}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
