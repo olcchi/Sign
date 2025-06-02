@@ -192,7 +192,7 @@ export default function ToolBar({ className }: { className?: string }) {
                 toolBarPosition.sm,
                 toolBarPosition.md,
                 toolBarPosition.lg,
-                "absolute flex flex-col py-0 gap-0 bg-red-200"
+                "absolute flex flex-col py-0 gap-0 "
               )}
               initial={{ opacity: 0, scale: 0.98 }}
               animate={{ opacity: 1, scale: 1 }}
