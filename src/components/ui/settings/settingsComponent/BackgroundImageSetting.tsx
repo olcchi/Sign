@@ -47,23 +47,6 @@ export function BackgroundImageSetting({
             <p className="text-xs whitespace-nowrap">上传图片</p>
           </Button>
           {backgroundSettings.backgroundImage && (
-            <Button
-              variant="secondary"
-              onClick={() =>
-                updateBackgroundSettings({
-                  overlayEnabled: !backgroundSettings.overlayEnabled,
-                })
-              }
-            >
-              {backgroundSettings.overlayEnabled ? (
-                <Eye size={12} />
-              ) : (
-                <EyeOff size={12} />
-              )}
-              <p className="text-xs whitespace-nowrap">弱化背景</p>
-            </Button>
-          )}
-          {backgroundSettings.backgroundImage && (
             <div className="flex items-center gap-2">
               <Button variant="destructive" onClick={removeBackgroundImage}>
                 <p className="text-xs whitespace-nowrap">移除图片</p>
@@ -91,6 +74,23 @@ export function BackgroundImageSetting({
               />
             </div>
             <div className="space-y-2">
+              {backgroundSettings.backgroundImage && (
+                <Button
+                  variant="secondary"
+                  onClick={() =>
+                    updateBackgroundSettings({
+                      overlayEnabled: !backgroundSettings.overlayEnabled,
+                    })
+                  }
+                >
+                  {backgroundSettings.overlayEnabled ? (
+                    <Eye size={12} />
+                  ) : (
+                    <EyeOff size={12} />
+                  )}
+                  <p className="text-xs whitespace-nowrap">弱化背景</p>
+                </Button>
+              )}
               <div className="flex items-center justify-between gap-2">
                 <p className="text-xs whitespace-nowrap ">水平</p>
                 <Slider
@@ -134,4 +134,4 @@ export function BackgroundImageSetting({
       </div>
     ),
   };
-} 
+}
