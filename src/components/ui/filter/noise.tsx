@@ -1,6 +1,6 @@
 "use client";
 import { useRef, useEffect } from "react";
-import { cn } from "@/lib/utils";
+import { cn, debounce } from "@/lib/utils";
 
 interface NoiseProps {
   opacity?: number;
@@ -10,15 +10,6 @@ interface NoiseProps {
   color?: string;
   zIndex?: number;
 }
-
-// Helper function to prevent excessive rendering during window resize
-const debounce = (fn: Function, ms = 300) => {
-  let timeoutId: ReturnType<typeof setTimeout>;
-  return function(this: any, ...args: any[]) {
-    clearTimeout(timeoutId);
-    timeoutId = setTimeout(() => fn.apply(this, args), ms);
-  };
-};
 
 // Renders a customizable noise texture using canvas for visual interest and texture
 export default function Noise({
