@@ -4,21 +4,33 @@ import ToolBar from "@/components/ui/toolBar/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
 import { EdgeBlurEffect } from "@/components/ui/filter/EdgeBlurEffect";
 import { Olcchi } from "@/components/ui/icon/olcchi";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/filter/noise";
 import { SettingsProvider, useSettings } from "@/lib/contexts/SettingsContext";
 import SignHeroTitle from "@/components/ui/icon/signHeroTitle";
+import WelcomeModal from "@/components/ui/welcome/WelcomeModal";
+
 // Internal component using Context to access global settings
 function SoulSignContent() {
   const textRef = useRef<HTMLDivElement>(null);
+  const [showWelcome, setShowWelcome] = useState(false);
   const {
     textSettings,
     backgroundSettings,
     effectsSettings,
     setIsTextScrolling,
   } = useSettings();
+
+  // Check if this is the first visit and show welcome modal
+  useEffect(() => {
+    const hasVisited = localStorage.getItem('sign-has-visited');
+    if (!hasVisited) {
+      setShowWelcome(true);
+      localStorage.setItem('sign-has-visited', 'true');
+    }
+  }, []);
 
   // Background style based on settings
   const backgroundStyle = {
@@ -30,6 +42,12 @@ function SoulSignContent() {
       className="relative w-screen h-[100dvh] overflow-hidden font-sans"
       style={backgroundStyle}
     >
+      {/* Welcome Modal */}
+      <WelcomeModal 
+        open={showWelcome} 
+        onOpenChange={setShowWelcome}
+      />
+
       {/* <SignHeroTitle /> */}
       {/* Background image with dynamic positioning and scaling */}
       {backgroundSettings.backgroundImage && (
@@ -72,6 +90,7 @@ function SoulSignContent() {
         fontFamily={textSettings.fontFamily}
         text={textSettings.text}
         fontSize={textSettings.fontSize}
+        fontWeight={textSettings.fontWeight}
         color={textSettings.textColor}
         textRef={textRef as React.RefObject<HTMLDivElement>}
         scrollSpeed={textSettings.scrollSpeed}
@@ -91,7 +110,10 @@ function SoulSignContent() {
       />
 
       {/* Toolbar for user interactions */}
-      <ToolBar className="w-full h-full z-[999] relative flex" />
+      <ToolBar 
+        className="w-full h-full z-[999] relative flex" 
+        onShowWelcome={() => setShowWelcome(true)}
+      />
 
 
       {/* Fullscreen toggle button */}
