@@ -15,6 +15,7 @@ interface PresetHandlers {
   onColorChange: (color: string) => void;
   onFontChange: (font: string) => void;
   onFontSizeChange: (size: string) => void;
+  onFontWeightChange: (weight: string) => void;
   onScrollSpeedChange: (speed: number) => void;
   onEdgeBlurEnabledChange: (enabled: boolean) => void;
   onEdgeBlurIntensityChange: (intensity: number) => void;
@@ -45,6 +46,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
     onColorChange,
     onFontChange,
     onFontSizeChange,
+    onFontWeightChange,
     onScrollSpeedChange,
     onEdgeBlurEnabledChange,
     onEdgeBlurIntensityChange,
@@ -63,6 +65,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
   onColorChange(preset.textColor);
   onFontChange(preset.fontFamily);
   onFontSizeChange(preset.fontSize);
+  onFontWeightChange(preset.fontWeight);
   onScrollSpeedChange(preset.scrollSpeed);
   onEdgeBlurEnabledChange(preset.edgeBlurEnabled);
   onEdgeBlurIntensityChange(preset.edgeBlurIntensity);
@@ -109,6 +112,7 @@ export function createPresetFromCurrentSettings(
     textColor: textSettings.textColor,
     fontFamily: textSettings.fontFamily,
     fontSize: textSettings.fontSize,
+    fontWeight: textSettings.fontWeight,
     scrollSpeed: textSettings.scrollSpeed,
     edgeBlurEnabled: effectsSettings.edgeBlurEnabled,
     edgeBlurIntensity: effectsSettings.edgeBlurIntensity,
@@ -138,6 +142,7 @@ export function findMatchingPreset(
         preset.textColor === textSettings.textColor &&
         preset.fontFamily === textSettings.fontFamily &&
         preset.fontSize === textSettings.fontSize &&
+        preset.fontWeight === textSettings.fontWeight &&
         preset.scrollSpeed === textSettings.scrollSpeed &&
         preset.edgeBlurEnabled === effectsSettings.edgeBlurEnabled &&
         preset.edgeBlurIntensity === effectsSettings.edgeBlurIntensity &&
@@ -182,6 +187,10 @@ export function getPresetDetailedInfo(preset: Preset): string[] {
     fontSizeOptions.find((opt) => opt.value === preset.fontSize)?.name ||
     preset.fontSize;
   details.push(`字号: ${sizeName}`);
+
+  // Font weight - simplified to bold/normal
+  const weightName = preset.fontWeight === "700" ? "粗体" : "正常";
+  details.push(`粗体: ${weightName}`);
 
   // Scroll speed
   const speedName =
