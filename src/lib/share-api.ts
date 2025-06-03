@@ -23,15 +23,28 @@ const requestQueue = new RequestQueue();
 
 // Preset sharing interface
 export interface ShareablePreset {
-  preset: Preset;
-  createdAt: string;
-  expiresAt: string;
+  id: string;
+  name: string;
+  text: string;
+  textColor: string;
+  fontFamily: string;
+  fontSize: string;
+  scrollSpeed: number;
+  edgeBlurEnabled: boolean;
+  edgeBlurIntensity: number;
+  shinyTextEnabled: boolean;
+  noiseEnabled?: boolean;
+  noiseOpacity?: number;
+  noiseDensity?: number;
+  textStrokeEnabled?: boolean;
+  textStrokeWidth?: number;
+  textStrokeColor?: string;
+  textFillEnabled?: boolean;
 }
 
 // API response interface for share operations
 export interface ShareApiResponse {
   success: boolean;
-  data?: any;
   error?: string;
 }
 
@@ -47,120 +60,66 @@ export function getExpirationTime(): string {
   return expiration.toISOString();
 }
 
-// Save preset with PIN code
-export async function saveSharedPreset(
-  pinCode: string,
-  preset: Preset
-): Promise<ShareApiResponse> {
-  return requestQueue.execute(async () => {
-    try {
-      const shareablePreset: ShareablePreset = {
-        preset,
-        createdAt: new Date().toISOString(),
-        expiresAt: getExpirationTime(),
-      };
-
-      const response = await fetch('/api/share/save-preset', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          pinCode,
-          preset: shareablePreset,
-        }),
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const result = await response.json();
-      
-      // Occasionally trigger cleanup (10% chance) as supplementary mechanism
-      if (Math.random() < 0.1) {
-        console.log('Triggering supplementary cleanup...');
-        // Fire and forget - don't wait for cleanup to complete
-        fetch('/api/cron/cleanup-expired', {
-          method: 'GET',
-          headers: {
-            'User-Agent': 'vercel-cron/1.0', // Mimic cron user agent
-          },
-        }).catch(error => {
-          console.log('Supplementary cleanup failed:', error);
-        });
-      }
-      
-      return { success: true, data: result };
-    } catch (error) {
-      console.error('Failed to save shared preset:', error);
-      return { 
-        success: false, 
-        error: error instanceof Error ? error.message : 'Unknown error' 
-      };
-    }
-  });
+// Create shareable URL for preset
+export function createPresetShareUrl(pinCode: string): string {
+  const baseUrl = typeof window !== 'undefined' 
+    ? window.location.origin 
+    : process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000';
+  return `${baseUrl}/share-preset/${pinCode}`;
 }
 
-// Load preset by PIN code
-export async function loadSharedPreset(pinCode: string): Promise<ShareApiResponse> {
+// Save shared preset with automatic cleanup
+export async function saveSharedPreset(pinCode: string, preset: Preset): Promise<ShareApiResponse> {
   try {
-    const response = await fetch(`/api/share/load-preset/${pinCode}`, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
+    const shareablePreset: ShareablePreset = {
+      id: preset.id,
+      name: preset.name,
+      text: preset.text,
+      textColor: preset.textColor,
+      fontFamily: preset.fontFamily,
+      fontSize: preset.fontSize,
+      scrollSpeed: preset.scrollSpeed,
+      edgeBlurEnabled: preset.edgeBlurEnabled,
+      edgeBlurIntensity: preset.edgeBlurIntensity,
+      shinyTextEnabled: preset.shinyTextEnabled,
+      noiseEnabled: preset.noiseEnabled,
+      noiseOpacity: preset.noiseOpacity,
+      noiseDensity: preset.noiseDensity,
+      textStrokeEnabled: preset.textStrokeEnabled,
+      textStrokeWidth: preset.textStrokeWidth,
+      textStrokeColor: preset.textStrokeColor,
+      textFillEnabled: preset.textFillEnabled,
+    };
+
+    const response = await requestQueue.execute(() =>
+      fetch('/api/share/save-preset', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ pinCode, preset: shareablePreset }),
+      })
+    );
 
     if (!response.ok) {
-      if (response.status === 404) {
-        return { success: false, error: 'PIN码不存在或已过期' };
-      }
-      throw new Error(`HTTP error! status: ${response.status}`);
+      return { success: false, error: `HTTP ${response.status}` };
     }
 
     const result = await response.json();
     
-    // Check if preset has expired
-    const presetData = result.preset as ShareablePreset;
-    if (new Date(presetData.expiresAt) < new Date()) {
-      // Delete expired preset
-      await deleteSharedPreset(pinCode);
-      return { success: false, error: 'PIN码已过期' };
+    if (result.success) {
+      // Trigger supplementary cleanup in background
+      try {
+        fetch('/api/cron/cleanup-expired', { method: 'POST' }).catch(() => {
+          // Silent fail for cleanup
+        });
+      } catch (error) {
+        // Silent fail for cleanup
+      }
     }
 
-    return { success: true, data: presetData };
+    return result;
   } catch (error) {
-    console.error('Failed to load shared preset:', error);
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
-    };
-  }
-}
-
-// Delete preset by PIN code
-export async function deleteSharedPreset(pinCode: string): Promise<ShareApiResponse> {
-  try {
-    const response = await fetch(`/api/share/delete-preset/${pinCode}`, {
-      method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-    });
-
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const result = await response.json();
-    return { success: true, data: result };
-  } catch (error) {
-    console.error('Failed to delete shared preset:', error);
-    return { 
-      success: false, 
-      error: error instanceof Error ? error.message : 'Unknown error' 
-    };
+    console.error('Failed to save shared preset:', error);
+    return { success: false, error: 'Network error' };
   }
 }
 
@@ -169,8 +128,61 @@ export function isValidPinCode(pinCode: string): boolean {
   return /^\d{6}$/.test(pinCode);
 }
 
-// Create shareable URL for preset
-export function createPresetShareUrl(pinCode: string): string {
-  const baseUrl = typeof window !== 'undefined' ? window.location.origin : '';
-  return `${baseUrl}/share-preset/${pinCode}`;
+// Load shared preset by PIN code
+export async function loadSharedPreset(pinCode: string): Promise<{
+  success: boolean;
+  preset?: ShareablePreset;
+  error?: string;
+}> {
+  if (!isValidPinCode(pinCode)) {
+    return { success: false, error: 'Invalid PIN code format' };
+  }
+
+  try {
+    const response = await requestQueue.execute(() =>
+      fetch(`/api/share/load-preset/${pinCode}`, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
+
+    if (!response.ok) {
+      if (response.status === 404) {
+        return { success: false, error: 'Preset not found or expired' };
+      }
+      return { success: false, error: `HTTP ${response.status}` };
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Failed to load shared preset:', error);
+    return { success: false, error: 'Network error' };
+  }
+}
+
+// Delete shared preset by PIN code
+export async function deleteSharedPreset(pinCode: string): Promise<ShareApiResponse> {
+  if (!isValidPinCode(pinCode)) {
+    return { success: false, error: 'Invalid PIN code format' };
+  }
+
+  try {
+    const response = await requestQueue.execute(() =>
+      fetch(`/api/share/delete-preset/${pinCode}`, {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' },
+      })
+    );
+
+    if (!response.ok) {
+      return { success: false, error: `HTTP ${response.status}` };
+    }
+
+    const result = await response.json();
+    return result;
+  } catch (error) {
+    console.error('Failed to delete shared preset:', error);
+    return { success: false, error: 'Network error' };
+  }
 } 
