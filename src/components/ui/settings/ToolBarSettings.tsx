@@ -3,9 +3,7 @@
 import React from "react";
 import {
   ContentSetting,
-  FontSizeSetting,
   TextRenderingSetting,
-  FontFamilySetting,
   ScrollSpeedSetting,
   BackgroundImageSetting,
   EffectsSetting,
@@ -74,9 +72,11 @@ export function ToolBarSettings({
 }: ToolBarSettingsProps) {
   // Create setting components using the extracted components
   const contentSetting = ContentSetting({ isOpen });
-  const fontSizeSetting = FontSizeSetting({ fontSizeOptions });
-  const textRenderingSetting = TextRenderingSetting({ colorOptions });
-  const fontFamilySetting = FontFamilySetting({ fontOptions });
+  const textRenderingSetting = TextRenderingSetting({ 
+    colorOptions,
+    fontOptions,
+    fontSizeOptions
+  });
   const scrollSpeedSetting = ScrollSpeedSetting();
   const backgroundImageSetting = BackgroundImageSetting({
     previewImage,
@@ -97,19 +97,9 @@ export function ToolBarSettings({
       component: contentSetting.component,
     },
     {
-      id: "fontSize",
-      title: fontSizeSetting.title,
-      component: fontSizeSetting.component,
-    },
-    {
       id: "textRendering",
       title: textRenderingSetting.title,
       component: textRenderingSetting.component,
-    },
-    {
-      id: "fontFamily",
-      title: fontFamilySetting.title,
-      component: fontFamilySetting.component,
     },
     {
       id: "scrollSpeed",
