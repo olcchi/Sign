@@ -11,7 +11,7 @@ import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
 import { Card, CardContent } from "@/components/ui/layout/card";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, HelpCircle } from "lucide-react";
 import {
   colorOptions,
   fontOptions,
@@ -24,8 +24,13 @@ import { useSettings } from "@/lib/contexts/SettingsContext";
 // Create motion variants of Card component
 const MotionCard = motion.create(Card);
 
+interface ToolBarProps {
+  className?: string;
+  onShowWelcome?: () => void;
+}
+
 // Main configuration toolbar component that manages all display settings UI
-export default function ToolBar({ className }: { className?: string }) {
+export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
   // Access settings from context
   const {
     textSettings,
@@ -79,6 +84,7 @@ export default function ToolBar({ className }: { className?: string }) {
       onColorChange: (color) => updateTextSettings({ textColor: color }),
       onFontChange: (font) => updateTextSettings({ fontFamily: font }),
       onFontSizeChange: (size) => updateTextSettings({ fontSize: size }),
+      onFontWeightChange: (weight) => updateTextSettings({ fontWeight: weight }),
       onScrollSpeedChange: (speed) =>
         updateTextSettings({ scrollSpeed: speed }),
       onEdgeBlurEnabledChange: (enabled) =>
@@ -107,9 +113,18 @@ export default function ToolBar({ className }: { className?: string }) {
   // Toolbar menu item configuration
   const toolbarItems = [
     {
+      id: "help",
+      label: "帮助",
+      icon: <HelpCircle color="#FFFFFB" />,
+      action: () => {
+        onShowWelcome?.();
+      },
+    },
+    {
       id: "menu",
       label: "菜单",
       icon: <Ellipsis color="#FFFFFB" />,
+      // icon: <p className="font-sans border-b font-thin border-white">配置</p>,
       action: () => {
         if (activeTab === "menu") {
           closePanel();
@@ -194,9 +209,9 @@ export default function ToolBar({ className }: { className?: string }) {
                 toolBarPosition.lg,
                 "absolute flex flex-col py-0 gap-0 "
               )}
-              initial={{ opacity: 0, scale: 0.98 }}
-              animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.98 }}
+              initial={{ opacity: 0, y: -10 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -10 }}
               transition={{ ...transition }}
             >
               <PanelHeader title="配置" onClose={closePanel} />
@@ -213,6 +228,7 @@ export default function ToolBar({ className }: { className?: string }) {
                     textColor={textSettings.textColor}
                     fontFamily={textSettings.fontFamily}
                     fontSize={textSettings.fontSize}
+                    fontWeight={textSettings.fontWeight}
                     scrollSpeed={textSettings.scrollSpeed}
                     edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
                     edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
