@@ -8,6 +8,7 @@ export interface ScrollingTextProps {
   text: string;
   fontSize?: string;
   fontFamily?: string;
+  fontWeight?: string;
   color?: string;
   className?: string;
   textRef?: React.RefObject<HTMLDivElement>;
@@ -25,6 +26,7 @@ export default function ScrollingText({
   text,
   fontSize,
   fontFamily = "var(--font-dm-serif-text)",
+  fontWeight = "400",
   color = "#FFFFFB",
   className = "",
   textRef: externalTextRef,
@@ -91,6 +93,7 @@ export default function ScrollingText({
   const textStyle = {
     fontSize,
     fontFamily,
+    fontWeight,
     color: ensuredTextFillEnabled ? color : "transparent",
     ...(ensuredTextStrokeEnabled && {
       WebkitTextStroke: `${textStrokeWidth}px ${textStrokeColor}`,
