@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/themeProvider";
-import Sign from "@/components/ui/icon/sign";
 import {
   Geist,
   Geist_Mono,
   DM_Serif_Text,
   DM_Sans,
   Kolker_Brush,
-  Noto_Sans_SC, // 添加中文字体支持
+  Noto_Sans_SC, // chinese font
 } from "next/font/google";
 import "./globals.css";
 
