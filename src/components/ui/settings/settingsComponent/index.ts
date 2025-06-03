@@ -1,7 +1,11 @@
 export { ContentSetting } from "./ContentSetting";
-export { FontSizeSetting } from "./FontSizeSetting";
 export { TextRenderingSetting } from "./TextRenderingSetting";
 export { FontFamilySetting } from "./FontFamilySetting";
+export { FontSizeSetting } from "./FontSizeSetting";
+export { FontWeightSetting } from "./FontWeightSetting";
+export { TextFillSetting } from "./TextFillSetting";
+export { TextStrokeSetting } from "./TextStrokeSetting";
 export { ScrollSpeedSetting } from "./ScrollSpeedSetting";
 export { BackgroundImageSetting } from "./BackgroundImageSetting";
-export { EffectsSetting } from "./EffectsSetting"; 
+export { EffectsSetting } from "./EffectsSetting";
+export { ShareSetting } from "./ShareSetting"; 
