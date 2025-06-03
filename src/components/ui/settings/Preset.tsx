@@ -35,6 +35,7 @@ export interface Preset {
   textColor: string;
   fontFamily: string;
   fontSize: string;
+  fontWeight: string;
   scrollSpeed: number;
   // backgroundColor?: string;
   edgeBlurEnabled: boolean;
@@ -57,6 +58,7 @@ interface PresetManagerProps {
   textColor: string;
   fontFamily: string;
   fontSize: string;
+  fontWeight: string;
   scrollSpeed: number;
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;
@@ -81,6 +83,7 @@ export function PresetManager({
   textColor,
   fontFamily,
   fontSize,
+  fontWeight,
   scrollSpeed,
   edgeBlurEnabled,
   edgeBlurIntensity,
@@ -173,6 +176,7 @@ export function PresetManager({
         activePreset.textColor !== textColor ||
         activePreset.fontFamily !== fontFamily ||
         activePreset.fontSize !== fontSize ||
+        activePreset.fontWeight !== fontWeight ||
         activePreset.scrollSpeed !== scrollSpeed ||
         activePreset.edgeBlurEnabled !== edgeBlurEnabled ||
         activePreset.edgeBlurIntensity !== edgeBlurIntensity ||
@@ -193,6 +197,7 @@ export function PresetManager({
     textColor,
     fontFamily,
     fontSize,
+    fontWeight,
     scrollSpeed,
     edgeBlurEnabled,
     edgeBlurIntensity,
@@ -228,6 +233,7 @@ export function PresetManager({
       textColor,
       fontFamily,
       fontSize,
+      fontWeight,
       scrollSpeed,
       edgeBlurEnabled,
       edgeBlurIntensity,
