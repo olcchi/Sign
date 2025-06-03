@@ -29,6 +29,7 @@ export interface ShareablePreset {
   textColor: string;
   fontFamily: string;
   fontSize: string;
+  fontWeight: string;
   scrollSpeed: number;
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;
@@ -78,6 +79,7 @@ export async function saveSharedPreset(pinCode: string, preset: Preset): Promise
       textColor: preset.textColor,
       fontFamily: preset.fontFamily,
       fontSize: preset.fontSize,
+      fontWeight: preset.fontWeight,
       scrollSpeed: preset.scrollSpeed,
       edgeBlurEnabled: preset.edgeBlurEnabled,
       edgeBlurIntensity: preset.edgeBlurIntensity,
@@ -148,23 +150,23 @@ export async function loadSharedPreset(pinCode: string): Promise<{
 
     if (!response.ok) {
       if (response.status === 404) {
-        return { success: false, error: 'Preset not found or expired' };
+        return { success: false, error: '预设不存在或已过期' };
       }
-      return { success: false, error: `HTTP ${response.status}` };
+      return { success: false, error: `网络错误 ${response.status}` };
     }
 
     const result = await response.json();
     return result;
   } catch (error) {
     console.error('Failed to load shared preset:', error);
-    return { success: false, error: 'Network error' };
+    return { success: false, error: '网络错误' };
   }
 }
 
 // Delete shared preset by PIN code
 export async function deleteSharedPreset(pinCode: string): Promise<ShareApiResponse> {
   if (!isValidPinCode(pinCode)) {
-    return { success: false, error: 'Invalid PIN code format' };
+    return { success: false, error: '无效的PIN码格式' };
   }
 
   try {
@@ -183,6 +185,6 @@ export async function deleteSharedPreset(pinCode: string): Promise<ShareApiRespo
     return result;
   } catch (error) {
     console.error('Failed to delete shared preset:', error);
-    return { success: false, error: 'Network error' };
+    return { success: false, error: '网络错误' };
   }
 } 
