@@ -30,12 +30,12 @@ interface PresetHandlers {
 
 /**
  * Applies a configuration preset to the current UI settings
- * 
+ *
  * Handles the application of preset values to all supported UI properties
  * with special handling for optional properties. This centralizes the
  * preset application logic to ensure consistent behavior and simplify
  * the preset loading process.
- * 
+ *
  * @param preset - The configuration preset to apply
  * @param handlers - Object containing all the setter functions for each property
  */
@@ -55,7 +55,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
     onTextStrokeEnabledChange,
     onTextStrokeWidthChange,
     onTextStrokeColorChange,
-    onTextFillEnabledChange
+    onTextFillEnabledChange,
   } = handlers;
 
   // Apply base properties
@@ -67,7 +67,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
   onEdgeBlurEnabledChange(preset.edgeBlurEnabled);
   onEdgeBlurIntensityChange(preset.edgeBlurIntensity);
   onShinyTextEnabledChange(preset.shinyTextEnabled);
-  
+
   // Apply optional properties conditionally
   if (preset.noiseEnabled !== undefined) {
     onNoiseEnabledChange(preset.noiseEnabled);
@@ -78,7 +78,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
   if (preset.noiseDensity !== undefined) {
     onNoiseDensityChange(preset.noiseDensity);
   }
-  
+
   // Apply text styling properties conditionally
   if (preset.textStrokeEnabled !== undefined) {
     onTextStrokeEnabledChange(preset.textStrokeEnabled);
@@ -131,23 +131,26 @@ export function findMatchingPreset(
   effectsSettings: EffectsSettings,
   savedPresets: Preset[]
 ): Preset | null {
-  return savedPresets.find(preset => 
-    preset.text === textSettings.text &&
-    preset.textColor === textSettings.textColor &&
-    preset.fontFamily === textSettings.fontFamily &&
-    preset.fontSize === textSettings.fontSize &&
-    preset.scrollSpeed === textSettings.scrollSpeed &&
-    preset.edgeBlurEnabled === effectsSettings.edgeBlurEnabled &&
-    preset.edgeBlurIntensity === effectsSettings.edgeBlurIntensity &&
-    preset.shinyTextEnabled === effectsSettings.shinyTextEnabled &&
-    preset.noiseEnabled === effectsSettings.noiseEnabled &&
-    preset.noiseOpacity === effectsSettings.noiseOpacity &&
-    preset.noiseDensity === effectsSettings.noiseDensity &&
-    preset.textStrokeEnabled === textSettings.textStrokeEnabled &&
-    preset.textStrokeWidth === textSettings.textStrokeWidth &&
-    preset.textStrokeColor === textSettings.textStrokeColor &&
-    preset.textFillEnabled === textSettings.textFillEnabled
-  ) || null;
+  return (
+    savedPresets.find(
+      (preset) =>
+        preset.text === textSettings.text &&
+        preset.textColor === textSettings.textColor &&
+        preset.fontFamily === textSettings.fontFamily &&
+        preset.fontSize === textSettings.fontSize &&
+        preset.scrollSpeed === textSettings.scrollSpeed &&
+        preset.edgeBlurEnabled === effectsSettings.edgeBlurEnabled &&
+        preset.edgeBlurIntensity === effectsSettings.edgeBlurIntensity &&
+        preset.shinyTextEnabled === effectsSettings.shinyTextEnabled &&
+        preset.noiseEnabled === effectsSettings.noiseEnabled &&
+        preset.noiseOpacity === effectsSettings.noiseOpacity &&
+        preset.noiseDensity === effectsSettings.noiseDensity &&
+        preset.textStrokeEnabled === textSettings.textStrokeEnabled &&
+        preset.textStrokeWidth === textSettings.textStrokeWidth &&
+        preset.textStrokeColor === textSettings.textStrokeColor &&
+        preset.textFillEnabled === textSettings.textFillEnabled
+    ) || null
+  );
 }
 
 /**
@@ -156,96 +159,42 @@ export function findMatchingPreset(
  */
 export function getPresetDetailedInfo(preset: Preset): string[] {
   const details = [];
-  
+
   // Text content (truncated)
-  const textContent = preset.text.substring(0, 30) + (preset.text.length > 30 ? "..." : "");
+  const textContent =
+    preset.text.substring(0, 30) + (preset.text.length > 30 ? "..." : "");
   details.push(`内容: ${textContent}`);
-  
+
   // Font family
-  const fontName = fontOptions.find(opt => opt.value === preset.fontFamily)?.name || preset.fontFamily;
+  const fontName =
+    fontOptions.find((opt) => opt.value === preset.fontFamily)?.name ||
+    preset.fontFamily;
   details.push(`字体: ${fontName}`);
-  
+
   // Color
-  const colorName = colorOptions.find(opt => opt.value === preset.textColor)?.name || preset.textColor;
+  const colorName =
+    colorOptions.find((opt) => opt.value === preset.textColor)?.name ||
+    preset.textColor;
   details.push(`颜色: ${colorName}`);
-  
+
   // Font size
-  const sizeName = fontSizeOptions.find(opt => opt.value === preset.fontSize)?.name || preset.fontSize;
+  const sizeName =
+    fontSizeOptions.find((opt) => opt.value === preset.fontSize)?.name ||
+    preset.fontSize;
   details.push(`字号: ${sizeName}`);
-  
+
   // Scroll speed
-  const speedName = scrollSpeedOptions.find(opt => parseInt(opt.value) === preset.scrollSpeed)?.name || `${preset.scrollSpeed}x`;
+  const speedName =
+    scrollSpeedOptions.find((opt) => parseInt(opt.value) === preset.scrollSpeed)
+      ?.name || `${preset.scrollSpeed}x`;
   details.push(`滚动速度: ${speedName}`);
-  
+
   // Effects
   details.push(`聚焦: ${preset.edgeBlurEnabled ? "开启" : "关闭"}`);
   details.push(`闪光: ${preset.shinyTextEnabled ? "开启" : "关闭"}`);
   details.push(`噪点: ${preset.noiseEnabled ? "开启" : "关闭"}`);
   details.push(`填充: ${preset.textFillEnabled ? "开启" : "关闭"}`);
   details.push(`边框: ${preset.textStrokeEnabled ? "开启" : "关闭"}`);
-  
+
   return details;
 }
-
-/**
- * Get a detailed description of preset settings for display
- * Reuses the same display logic as Preset.tsx
- */
-export function getPresetDescription(preset: Preset): string {
-  const details = [];
-  
-  // Text content (truncated)
-  const textContent = preset.text.substring(0, 30) + (preset.text.length > 30 ? "..." : "");
-  details.push(`内容: ${textContent}`);
-  
-  // Font family
-  const fontName = fontOptions.find(opt => opt.value === preset.fontFamily)?.name || preset.fontFamily;
-  details.push(`字体: ${fontName}`);
-  
-  // Color
-  const colorName = colorOptions.find(opt => opt.value === preset.textColor)?.name || preset.textColor;
-  details.push(`颜色: ${colorName}`);
-  
-  // Font size
-  const sizeName = fontSizeOptions.find(opt => opt.value === preset.fontSize)?.name || preset.fontSize;
-  details.push(`字号: ${sizeName}`);
-  
-  // Scroll speed
-  const speedName = scrollSpeedOptions.find(opt => parseInt(opt.value) === preset.scrollSpeed)?.name || `${preset.scrollSpeed}x`;
-  details.push(`滚动: ${speedName}`);
-  
-  // Effects
-  const effects = [];
-  if (preset.edgeBlurEnabled) effects.push("聚焦");
-  if (preset.shinyTextEnabled) effects.push("闪光");
-  if (preset.noiseEnabled) effects.push("噪点");
-  if (preset.textFillEnabled) effects.push("填充");
-  if (preset.textStrokeEnabled) effects.push("边框");
-  
-  if (effects.length > 0) {
-    details.push(`特效: ${effects.join("、")}`);
-  }
-  
-  return details.join(" | ");
-}
-
-/**
- * Get a short description of the current settings for display
- * Shows text content and enabled effects only
- */
-export function getSettingsDescription(
-  textSettings: TextSettings,
-  effectsSettings: EffectsSettings
-): string {
-  const features = [];
-  
-  if (effectsSettings.edgeBlurEnabled) features.push("聚焦");
-  if (effectsSettings.shinyTextEnabled) features.push("闪光");
-  if (effectsSettings.noiseEnabled) features.push("噪点");
-  if (textSettings.textStrokeEnabled) features.push("边框");
-  
-  const textContent = textSettings.text.substring(0, 20) + (textSettings.text.length > 20 ? "..." : "");
-  const effectsText = features.length > 0 ? ` · ${features.join("、")}` : "";
-  
-  return `${textContent}${effectsText}`;
-} 
