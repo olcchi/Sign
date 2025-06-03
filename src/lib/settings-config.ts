@@ -59,6 +59,15 @@ export const fontSizeOptions = [
   { name: "2XL", value: "30rem" },
 ];
 
+// Font weight options (deprecated - now using toggle button for normal/bold)
+export const fontWeightOptions = [
+  { name: "Light", value: "300" },
+  { name: "Normal", value: "400" },
+  { name: "Medium", value: "500" },
+  { name: "Bold", value: "700" },
+  { name: "Black", value: "900" },
+];
+
 // Scroll speed options
 export const scrollSpeedOptions = [
   { name: "0.3x", value: "3" },
