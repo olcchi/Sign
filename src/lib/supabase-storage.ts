@@ -1,69 +1,54 @@
 import { createClient } from '@/lib/supabase/server'
 import { ShareablePreset } from '@/lib/share-api'
 
-// Database table interface for presets - updated to match actual table structure
-interface PresetRecord {
-  pin_code: number
+interface SupabasePreset {
+  pin_code: string
   preset_data: any
-  created_at?: string
-  expires_at: string // Now using timestamptz (ISO string)
+  created_at: string
+  expires_at: string
 }
 
-// Supabase-based storage service for share configurations
+// Supabase storage implementation for shared presets
 class SupabaseConfigStorage {
   private tableName = 'shared_presets'
 
-  // Save preset to Supabase
   async setPreset(pinCode: string, preset: ShareablePreset): Promise<boolean> {
     try {
       const supabase = await createClient()
 
-      console.log('Attempting to save preset with PIN:', pinCode)
-      console.log('Preset data:', JSON.stringify(preset, null, 2))
-
       // Check if preset with this PIN already exists
       const { data: existingPreset, error: selectError } = await supabase
         .from(this.tableName)
-        .select('*')
-        .eq('pin_code', parseInt(pinCode))
+        .select('pin_code')
+        .eq('pin_code', pinCode)
         .single()
 
-      console.log('Existing preset check:', { existingPreset, selectError })
-
-      const presetData: PresetRecord = {
-        pin_code: parseInt(pinCode),
+      const presetData: Omit<SupabasePreset, 'created_at'> = {
+        pin_code: pinCode,
         preset_data: preset,
-        created_at: preset.createdAt,
-        expires_at: preset.expiresAt // Direct ISO string assignment
+        expires_at: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString() // 24 hours from now
       }
-
-      console.log('Data to insert/update:', JSON.stringify(presetData, null, 2))
 
       let result
 
       if (existingPreset && !selectError) {
         // Update existing preset
-        console.log('Updating existing preset')
         result = await supabase
           .from(this.tableName)
           .update(presetData)
-          .eq('pin_code', parseInt(pinCode))
+          .eq('pin_code', pinCode)
       } else {
         // Insert new preset
-        console.log('Inserting new preset')
         result = await supabase
           .from(this.tableName)
           .insert(presetData)
       }
-
-      console.log('Operation result:', JSON.stringify(result, null, 2))
 
       if (result.error) {
         console.error('Supabase error:', result.error)
         return false
       }
 
-      console.log(`Successfully saved preset with PIN: ${pinCode}`)
       return true
     } catch (error) {
       console.error('Failed to save preset to Supabase:', error)
@@ -71,39 +56,34 @@ class SupabaseConfigStorage {
     }
   }
 
-  // Get preset from Supabase by PIN code
-  async getPreset(pinCode: string): Promise<ShareablePreset | undefined> {
+  async getPreset(pinCode: string): Promise<ShareablePreset | null> {
     try {
       const supabase = await createClient()
 
       const { data, error } = await supabase
         .from(this.tableName)
-        .select('*')
-        .eq('pin_code', parseInt(pinCode))
+        .select('preset_data, expires_at')
+        .eq('pin_code', pinCode)
         .single()
 
       if (error || !data) {
-        console.log('No preset found for PIN:', pinCode, 'Error:', error)
-        return undefined
+        return null
       }
 
-      const preset = data.preset_data as ShareablePreset
-
-      // Check if preset has expired (using timestamptz comparison)
+      // Check if preset has expired
       if (new Date(data.expires_at) < new Date()) {
-        // Delete expired preset
+        // Clean up expired preset
         await this.deletePreset(pinCode)
-        return undefined
+        return null
       }
 
-      return preset
+      return data.preset_data as ShareablePreset
     } catch (error) {
       console.error('Failed to get preset from Supabase:', error)
-      return undefined
+      return null
     }
   }
 
-  // Delete preset by PIN code
   async deletePreset(pinCode: string): Promise<boolean> {
     try {
       const supabase = await createClient()
@@ -111,7 +91,7 @@ class SupabaseConfigStorage {
       const { error } = await supabase
         .from(this.tableName)
         .delete()
-        .eq('pin_code', parseInt(pinCode))
+        .eq('pin_code', pinCode)
 
       if (error) {
         console.error('Supabase delete error:', error)
@@ -125,24 +105,23 @@ class SupabaseConfigStorage {
     }
   }
 
-  // Check if preset exists (for validation)
-  async checkPreset(pinCode: string): Promise<boolean> {
+  async hasPreset(pinCode: string): Promise<boolean> {
     try {
       const supabase = await createClient()
 
       const { data, error } = await supabase
         .from(this.tableName)
-        .select('*')
-        .eq('pin_code', parseInt(pinCode))
+        .select('pin_code, expires_at')
+        .eq('pin_code', pinCode)
         .single()
 
       if (error || !data) {
         return false
       }
 
-      // Check if preset has expired (using timestamptz comparison)
+      // Check if preset has expired
       if (new Date(data.expires_at) < new Date()) {
-        // Delete expired preset
+        // Clean up expired preset
         await this.deletePreset(pinCode)
         return false
       }
@@ -158,8 +137,6 @@ class SupabaseConfigStorage {
   async cleanupExpiredPresets(): Promise<number> {
     try {
       const supabase = await createClient()
-
-      console.log('Starting cleanup of expired presets...')
       
       // Use PostgreSQL's NOW() function for server-side comparison
       const { data, error } = await supabase
@@ -174,14 +151,7 @@ class SupabaseConfigStorage {
       }
 
       const deletedCount = data?.length || 0
-      console.log(`Cleanup completed: ${deletedCount} expired presets deleted`)
       
-      // Log some details about deleted presets (without sensitive data)
-      if (deletedCount > 0 && data) {
-        const pinCodes = data.map(preset => preset.pin_code).join(', ')
-        console.log(`Deleted PIN codes: ${pinCodes}`)
-      }
-
       return deletedCount
     } catch (error) {
       console.error('Failed to cleanup expired presets:', error)
@@ -190,5 +160,4 @@ class SupabaseConfigStorage {
   }
 }
 
-// Export singleton instance
 export const supabaseConfigStorage = new SupabaseConfigStorage() 
