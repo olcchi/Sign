@@ -15,17 +15,21 @@ interface FontFamilySettingProps {
 export function FontFamilySetting({ fontOptions }: FontFamilySettingProps) {
   const { textSettings, updateTextSettings } = useSettings();
 
-  return {
-    title: "字体样式",
-    component: (
-      <OptionButtonGroup
-        options={fontOptions}
-        selectedValue={textSettings.fontFamily}
-        onChange={(font) => updateTextSettings({ fontFamily: font })}
-        renderOption={(option) => (
-          <span style={{ fontFamily: option.value }}>{option.name}</span>
-        )}
-      />
-    ),
-  };
+  return (
+    <div className="border-b overflow-hidden">
+      <div className="flex justify-between items-center p-2">
+        <span className="text-sm">样式</span>
+      </div>
+      <div className="p-2">
+        <OptionButtonGroup
+          options={fontOptions}
+          selectedValue={textSettings.fontFamily}
+          onChange={(font) => updateTextSettings({ fontFamily: font })}
+          renderOption={(option) => (
+            <span style={{ fontFamily: option.value }}>{option.name}</span>
+          )}
+        />
+      </div>
+    </div>
+  );
 } 
