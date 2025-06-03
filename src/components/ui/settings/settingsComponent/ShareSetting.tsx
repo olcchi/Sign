@@ -8,11 +8,6 @@ import ShareDialog from "@/components/ui/share/ShareDialog";
 import ImportDialog from "@/components/ui/share/ImportDialog";
 import { Button } from "@/components/ui/layout/button";
 import { CloudUpload, CloudDownload, AlertCircle } from "lucide-react";
-import {
-  Alert,
-  AlertTitle,
-  AlertDescription,
-} from "@/components/ui/layout/alert";
 
 interface ShareSettingProps {
   activePreset?: Preset | null; // Current active preset from preset manager
@@ -36,6 +31,7 @@ export function ShareSetting({ activePreset, savedPresets = [] }: ShareSettingPr
       onColorChange: (color) => updateTextSettings({ textColor: color }),
       onFontChange: (font) => updateTextSettings({ fontFamily: font }),
       onFontSizeChange: (size) => updateTextSettings({ fontSize: size }),
+      onFontWeightChange: (weight) => updateTextSettings({ fontWeight: weight }),
       onScrollSpeedChange: (speed) =>
         updateTextSettings({ scrollSpeed: speed }),
       onEdgeBlurEnabledChange: (enabled) =>
