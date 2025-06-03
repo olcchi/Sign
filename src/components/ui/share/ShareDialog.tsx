@@ -12,12 +12,9 @@ import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
 import {
   createPresetFromCurrentSettings,
   findMatchingPreset,
-  getSettingsDescription,
   getPresetDetailedInfo,
 } from "@/lib/preset-utils";
 import { Button } from "@/components/ui/layout/button";
-import { Input } from "@/components/ui/inputs/input";
-import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogDescription,
@@ -290,13 +287,6 @@ export default function ShareDialog({
                 {/* PIN Code copy */}
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    {/* <Input
-                      id="pin-code"
-                      value={shareResult.pinCode}
-                      readOnly
-                      className="font-mono text-center text-lg"
-                    /> */}
-                    {/* <Label htmlFor="pin-code">PIN码</Label> */}
                     <Button
                       size="lg"
                       className="w-full"
