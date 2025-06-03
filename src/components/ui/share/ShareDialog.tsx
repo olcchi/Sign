@@ -262,6 +262,7 @@ export default function ShareDialog({
               <Button
                 onClick={handleShare}
                 disabled={isLoading || !shareInfo}
+                variant="outline"
                 className="w-full"
               >
                 {isLoading ? (
@@ -270,7 +271,7 @@ export default function ShareDialog({
                     生成中...
                   </>
                 ) : (
-                  <>生成分享链接</>
+                  <>生成分享PIN码</>
                 )}
               </Button>
             </>
