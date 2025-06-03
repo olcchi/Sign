@@ -56,8 +56,6 @@ function PreviewContent({ presetData }: { presetData: ShareablePreset }) {
   const textRef = useRef<HTMLDivElement>(null);
   const [isTextScrolling, setIsTextScrolling] = useState(false);
 
-  const { preset } = presetData;
-
   // Default background settings for preset preview
   const backgroundSettings = {
     backgroundColor: "#000000",
@@ -73,11 +71,11 @@ function PreviewContent({ presetData }: { presetData: ShareablePreset }) {
       style={{ backgroundColor: backgroundSettings.backgroundColor }}
     >
       {/* Noise texture adds visual depth and dimension */}
-      {preset.noiseEnabled && (
+      {presetData.noiseEnabled && (
         <Noise
           className="z-30 mix-blend-overlay"
-          opacity={preset.noiseOpacity || 0.5}
-          density={preset.noiseDensity || 0.5}
+          opacity={presetData.noiseOpacity || 0.5}
+          density={presetData.noiseDensity || 0.5}
           color="#ffffff"
         />
       )}
@@ -85,25 +83,26 @@ function PreviewContent({ presetData }: { presetData: ShareablePreset }) {
       {/* Scrolling text component with preset settings */}
       <ScrollingText
         className="fixed inset-0 z-20 overflow-hidden flex items-center justify-center"
-        fontFamily={preset.fontFamily}
-        text={preset.text}
-        fontSize={preset.fontSize}
-        color={preset.textColor}
+        fontFamily={presetData.fontFamily}
+        text={presetData.text}
+        fontSize={presetData.fontSize}
+        fontWeight={presetData.fontWeight}
+        color={presetData.textColor}
         textRef={textRef as React.RefObject<HTMLDivElement>}
-        scrollSpeed={preset.scrollSpeed}
+        scrollSpeed={presetData.scrollSpeed}
         onScrollStateChange={setIsTextScrolling}
-        shinyTextEnabled={preset.shinyTextEnabled}
-        textStrokeEnabled={preset.textStrokeEnabled}
-        textStrokeWidth={preset.textStrokeWidth}
-        textStrokeColor={preset.textStrokeColor}
-        textFillEnabled={preset.textFillEnabled}
+        shinyTextEnabled={presetData.shinyTextEnabled}
+        textStrokeEnabled={presetData.textStrokeEnabled}
+        textStrokeWidth={presetData.textStrokeWidth}
+        textStrokeColor={presetData.textStrokeColor}
+        textFillEnabled={presetData.textFillEnabled}
       />
 
       {/* Edge blur effect for visual polish */}
       <EdgeBlurEffect
         className="pointer-events-none fixed inset-0 z-30"
-        enabled={preset.edgeBlurEnabled}
-        intensity={preset.edgeBlurIntensity}
+        enabled={presetData.edgeBlurEnabled}
+        intensity={presetData.edgeBlurIntensity}
       />
 
       {/* Fullscreen toggle button */}
@@ -122,10 +121,10 @@ function PreviewContent({ presetData }: { presetData: ShareablePreset }) {
 
       {/* Preset info overlay */}
       <div className="fixed bottom-4 left-4 z-[999] bg-black/20 backdrop-blur-sm text-white p-3 rounded-md">
-        <p className="text-sm font-medium">{preset.name}</p>
+        <p className="text-sm font-medium">{presetData.name}</p>
         <p className="text-xs text-gray-300">
-          {preset.text.substring(0, 30)}
-          {preset.text.length > 30 ? "..." : ""}
+          {presetData.text.substring(0, 30)}
+          {presetData.text.length > 30 ? "..." : ""}
         </p>
       </div>
     </main>
@@ -155,8 +154,8 @@ export default function SharePresetPreviewPage() {
     try {
       const result = await loadSharedPreset(pinCode);
 
-      if (result.success && result.data) {
-        setPresetData(result.data);
+      if (result.success && result.preset) {
+        setPresetData(result.preset);
       } else {
         setError(result.error || "加载预设失败");
       }
