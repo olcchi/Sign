@@ -4,7 +4,7 @@ import React, { createContext, useContext, useState, ReactNode } from "react";
 import { 
   colorOptions, 
   fontOptions, 
-  fontSizeOptions, 
+  fontSizeOptions,
   scrollSpeedOptions,
   edgeBlurConfig,
   noiseConfig,
@@ -17,6 +17,7 @@ export interface TextSettings {
   textColor: string;
   fontFamily: string;
   fontSize: string;
+  fontWeight: string;
   scrollSpeed: number;
   textStrokeEnabled: boolean;
   textStrokeWidth: number;
@@ -63,6 +64,7 @@ const defaultTextSettings: TextSettings = {
   textColor: colorOptions[0].value, // Use first color option
   fontFamily: fontOptions[0].value, // Use first font option
   fontSize: fontSizeOptions[2].value, // Use "L" size (10rem)
+  fontWeight: "400",
   scrollSpeed: parseInt(scrollSpeedOptions[2].value), // Use "1x" speed (10)
   textStrokeEnabled: false,
   textStrokeWidth: textStrokeConfig.defaultValue,
