@@ -79,10 +79,28 @@ export default function ImportDialog({
     try {
       const result = await loadSharedPreset(currentPinCode);
 
-      if (result.success && result.data) {
-        // Extract preset from ShareablePreset
-        const shareablePreset = result.data;
-        const preset = shareablePreset.preset;
+      if (result.success && result.preset) {
+        // Convert ShareablePreset to Preset format
+        const shareablePreset = result.preset;
+        const preset: Preset = {
+          id: shareablePreset.id,
+          name: shareablePreset.name,
+          text: shareablePreset.text,
+          textColor: shareablePreset.textColor,
+          fontFamily: shareablePreset.fontFamily,
+          fontSize: shareablePreset.fontSize,
+          scrollSpeed: shareablePreset.scrollSpeed,
+          edgeBlurEnabled: shareablePreset.edgeBlurEnabled,
+          edgeBlurIntensity: shareablePreset.edgeBlurIntensity,
+          shinyTextEnabled: shareablePreset.shinyTextEnabled,
+          noiseEnabled: shareablePreset.noiseEnabled,
+          noiseOpacity: shareablePreset.noiseOpacity,
+          noiseDensity: shareablePreset.noiseDensity,
+          textStrokeEnabled: shareablePreset.textStrokeEnabled,
+          textStrokeWidth: shareablePreset.textStrokeWidth,
+          textStrokeColor: shareablePreset.textStrokeColor,
+          textFillEnabled: shareablePreset.textFillEnabled,
+        };
 
         onPresetLoaded(preset);
         setIsOpen(false);
