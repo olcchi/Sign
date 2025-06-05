@@ -1,8 +1,7 @@
 "use client";
 
 import React from "react";
-import { Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/layout/button";
+import { ToggleButton } from "@/components/ui/settings/ToggleButton";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 
 export function FontWeightSetting() {
@@ -21,15 +20,12 @@ export function FontWeightSetting() {
   return (
     <div className="border-b overflow-hidden">
       <div className="flex justify-between items-center p-2">
-        <span className="text-sm">粗体</span>
-        <Button
-          size="sm"
+        <span className="text-xs font-bold">粗体</span>
+        <ToggleButton
+          isEnabled={isBold}
+          onToggle={toggleBold}
           variant={isBold ? "default" : "ghost"}
-          onClick={toggleBold}
-        >
-          {isBold ? <Eye size={12} /> : <EyeOff size={12} />}
-          {isBold ? "开启" : "关闭"}
-        </Button>
+        />
       </div>
     </div>
   );
