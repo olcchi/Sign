@@ -16,9 +16,8 @@ export function FontSizeSetting({ fontSizeOptions }: FontSizeSettingProps) {
 
   return (
     <div className="border-b overflow-hidden">
-      <div className="flex justify-between items-center p-2">
-        <span className="text-sm">尺寸</span>
-      </div>
+      <div className="flex items-center p-2">
+        <span className="text-xs font-bold">尺寸</span>
       <div className="p-2">
         <OptionButtonGroup
           options={fontSizeOptions}
@@ -26,6 +25,7 @@ export function FontSizeSetting({ fontSizeOptions }: FontSizeSettingProps) {
           buttonSize="icon"
           onChange={(size) => updateTextSettings({ fontSize: size })}
         />
+      </div>
       </div>
     </div>
   );
