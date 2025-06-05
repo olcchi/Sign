@@ -329,7 +329,7 @@ export function PresetManager({
         <Button
           size="sm"
           variant={"ghost"}
-          className="py-0"
+          className="py-0 text-xs"
           onClick={() => {
             // Generate current date in YYYYMMDD format
             const now = new Date();
@@ -367,7 +367,6 @@ export function PresetManager({
               ? presets.find((p) => p.id === activePresetId) || null
               : null
           }
-          savedPresets={presets}
         />
       </div>
       <AnimatePresence>
