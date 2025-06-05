@@ -118,6 +118,7 @@ function SoulSignContent() {
 
       {/* Fullscreen toggle button */}
       <FullScreen asButton={true} className="z-[999]" />
+      <Olcchi className="z-[999]" />
     </main>
   );
 }
