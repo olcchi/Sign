@@ -11,7 +11,6 @@ import { Preset } from "@/components/ui/settings/Preset";
 import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
 import {
   createPresetFromCurrentSettings,
-  findMatchingPreset,
   getPresetDetailedInfo,
 } from "@/lib/preset-utils";
 import { Button } from "@/components/ui/layout/button";
@@ -65,7 +64,6 @@ interface ShareDialogProps {
   activePreset?: Preset | null; // Current active preset
   currentTextSettings?: TextSettings; // Current text settings
   currentEffectsSettings?: EffectsSettings; // Current effects settings
-  savedPresets?: Preset[]; // All saved presets for matching
 }
 
 export default function ShareDialog({
@@ -74,7 +72,6 @@ export default function ShareDialog({
   activePreset,
   currentTextSettings,
   currentEffectsSettings,
-  savedPresets = [],
 }: ShareDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -89,7 +86,6 @@ export default function ShareDialog({
   const getPresetToShare = (): {
     preset: Preset;
     isCurrentSettings: boolean;
-    matchedPreset?: Preset;
   } => {
     if (!currentTextSettings || !currentEffectsSettings) {
       // Fallback to active preset if current settings not provided
@@ -99,18 +95,11 @@ export default function ShareDialog({
       throw new Error("没有可分享的设置");
     }
 
-    // Check if current settings match any saved preset
-    const matchedPreset = findMatchingPreset(
-      currentTextSettings,
-      currentEffectsSettings,
-      savedPresets
-    );
-
-    if (matchedPreset) {
-      // Current settings match a saved preset
-      return { preset: matchedPreset, isCurrentSettings: false, matchedPreset };
+    // Simple logic: share active preset if exists, otherwise share current settings
+    if (activePreset) {
+      return { preset: activePreset, isCurrentSettings: false };
     } else {
-      // Current settings are unique, create temporary preset
+      // No active preset, create temporary preset from current settings
       const currentPreset = createPresetFromCurrentSettings(
         currentTextSettings,
         currentEffectsSettings,
@@ -155,15 +144,9 @@ export default function ShareDialog({
   // Get display information for what will be shared
   const getShareInfo = () => {
     try {
-      const { preset, isCurrentSettings, matchedPreset } = getPresetToShare();
+      const { preset, isCurrentSettings } = getPresetToShare();
 
-      if (matchedPreset) {
-        return {
-          title: `分享预设：${matchedPreset.name}`,
-          description: getPresetDetailedInfo(matchedPreset),
-          preset: matchedPreset,
-        };
-      } else if (isCurrentSettings) {
+      if (isCurrentSettings) {
         return {
           title: "分享当前设置",
           description: getPresetDetailedInfo(preset),
