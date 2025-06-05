@@ -35,7 +35,7 @@ export const colorOptions = [
 // Typography options
 export const fontOptions = [
   {
-    name: "Sans",
+    name: "无衬线",
     value: "var(--font-geist-sans)",
     fontFamily: "text-[var(--font-geist-sans)]",
   },
@@ -45,7 +45,7 @@ export const fontOptions = [
   //   fontFamily: "text-[var(--font-kolker-brush)]",
   // },
   {
-    name: "Serif",
+    name: "衬线",
     value: "var(--font-dm-serif-text)",
     fontFamily: "text-[var(--font-dm-serif-text)]",
   },
@@ -59,14 +59,6 @@ export const fontSizeOptions = [
   { name: "2XL", value: "30rem" },
 ];
 
-// Font weight options (deprecated - now using toggle button for normal/bold)
-export const fontWeightOptions = [
-  { name: "Light", value: "300" },
-  { name: "Normal", value: "400" },
-  { name: "Medium", value: "500" },
-  { name: "Bold", value: "700" },
-  { name: "Black", value: "900" },
-];
 
 // Scroll speed options
 export const scrollSpeedOptions = [
