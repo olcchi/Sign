@@ -24,7 +24,7 @@ export async function GET(
     }
 
     // Check if preset exists in Supabase
-    const exists = await supabaseConfigStorage.checkPreset(pinCode);
+    const exists = await supabaseConfigStorage.hasPreset(pinCode);
 
     return NextResponse.json({
       success: true,
