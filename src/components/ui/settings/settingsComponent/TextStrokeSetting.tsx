@@ -2,9 +2,9 @@
 
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Baseline, Eye, EyeOff } from "lucide-react";
+import { Baseline } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
-import { Button } from "@/components/ui/layout/button";
+import { ToggleButton } from "@/components/ui/settings/ToggleButton";
 import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 import { textStrokeConfig } from "@/lib/settings-config";
@@ -24,11 +24,10 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
   return (
     <div className="border-b overflow-hidden">
       <div className="flex justify-between items-center p-2">
-        <span className="text-sm">边框</span>
-        <Button
-          size="sm"
-          variant={"ghost"}
-          onClick={() => {
+        <span className="text-xs font-bold">边框</span>
+        <ToggleButton
+          isEnabled={textSettings.textStrokeEnabled}
+          onToggle={() => {
             if (
               textSettings.textStrokeEnabled &&
               !textSettings.textFillEnabled
@@ -42,20 +41,13 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
           disabled={
             !textSettings.textFillEnabled && !textSettings.textStrokeEnabled
           }
-        >
-          {textSettings.textStrokeEnabled ? (
-            <Eye size={12} />
-          ) : (
-            <EyeOff size={12} />
-          )}
-          {textSettings.textStrokeEnabled ? "开启" : "关闭"}
-        </Button>
+        />
       </div>
 
       {textSettings.textStrokeEnabled && (
         <div className="p-2 space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-sm whitespace-nowrap">颜色</span>
+            <span className="text-xs font-bold whitespace-nowrap">颜色</span>
             <OptionButtonGroup
               options={colorOptions}
               selectedValue={textSettings.textStrokeColor}
@@ -69,7 +61,7 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-sm whitespace-nowrap">宽度</span>
+            <span className="text-xs font-bold whitespace-nowrap">宽度</span>
             <Slider
               defaultValue={[textSettings.textStrokeWidth]}
               value={[textSettings.textStrokeWidth]}
