@@ -1,11 +1,12 @@
 "use client";
 
 import React from "react";
-import { Image as ImageIcon, Eye, EyeOff } from "lucide-react";
+import { ImagePlus, Trash2 } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/layout/button";
 import Image from "next/image";
 import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ToggleButton } from "../ToggleButton";
 
 interface BackgroundImageSettingProps {
   previewImage: string | null;
@@ -42,14 +43,15 @@ export function BackgroundImageSetting({
             className="hidden"
             onChange={handleFileChange}
           />
-          <Button onClick={triggerFileUpload} variant="secondary">
-            <ImageIcon size={14} />
+          <Button onClick={triggerFileUpload} variant="outline">
+            <ImagePlus size={12} />
             <p className="text-xs whitespace-nowrap">上传图片</p>
           </Button>
           {backgroundSettings.backgroundImage && (
             <div className="flex items-center gap-2">
-              <Button variant="destructive" onClick={removeBackgroundImage}>
-                <p className="text-xs whitespace-nowrap">移除图片</p>
+              <Button variant="outline" onClick={removeBackgroundImage}>
+                <Trash2 size={12} />
+                <p className="text-xs whitespace-nowrap">移除</p>
               </Button>
             </div>
           )}
@@ -60,6 +62,16 @@ export function BackgroundImageSetting({
               className="relative w-full h-20 rounded-md overflow-hidden border"
               ref={previewContainerRef}
             >
+              <div className="absolute bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 z-30 inset-0">
+              <Button 
+                variant="ghost" 
+                onClick={triggerFileUpload}
+                className="text-xs text-white"
+              >
+                <ImagePlus size={12} />
+                <p className="text-xs whitespace-nowrap">更换图片</p>
+              </Button>
+              </div>
               <Image
                 src={previewImage || backgroundSettings.backgroundImage}
                 alt="Background preview"
@@ -73,23 +85,19 @@ export function BackgroundImageSetting({
                 }}
               />
             </div>
-            <div className="space-y-2">
+            <div className="space-y-2 py-2 border-b border-border">
               {backgroundSettings.backgroundImage && (
-                <Button
-                  variant="secondary"
-                  onClick={() =>
-                    updateBackgroundSettings({
-                      overlayEnabled: !backgroundSettings.overlayEnabled,
-                    })
-                  }
-                >
-                  {backgroundSettings.overlayEnabled ? (
-                    <Eye size={12} />
-                  ) : (
-                    <EyeOff size={12} />
-                  )}
+                <div className="flex justify-between items-center px-2">
                   <p className="text-xs whitespace-nowrap">弱化背景</p>
-                </Button>
+                  <ToggleButton
+                    isEnabled={backgroundSettings.overlayEnabled}
+                    onToggle={() =>
+                      updateBackgroundSettings({
+                        overlayEnabled: !backgroundSettings.overlayEnabled,
+                      })
+                    }
+                  />
+                </div>
               )}
               <div className="flex items-center justify-between gap-2">
                 <p className="text-xs whitespace-nowrap ">水平</p>
