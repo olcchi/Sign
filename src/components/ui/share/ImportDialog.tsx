@@ -89,6 +89,7 @@ export default function ImportDialog({
           textColor: shareablePreset.textColor,
           fontFamily: shareablePreset.fontFamily,
           fontSize: shareablePreset.fontSize,
+          fontWeight: shareablePreset.fontWeight,
           scrollSpeed: shareablePreset.scrollSpeed,
           edgeBlurEnabled: shareablePreset.edgeBlurEnabled,
           edgeBlurIntensity: shareablePreset.edgeBlurIntensity,
