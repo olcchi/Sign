@@ -52,7 +52,7 @@ export function OptionButtonGroup<T extends Option>({
         return (
           <Button
             size={buttonSize}
-            variant={"secondary"}
+            variant={"outline"}
             key={option.value}
             onClick={() => onChange(option.value)}
             className={cn(
