@@ -1,9 +1,8 @@
 "use client";
 
 import React from "react";
-import { Eye, EyeOff } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
-import { Button } from "@/components/ui/layout/button";
+import { ToggleButton } from "@/components/ui/settings/ToggleButton";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 import { edgeBlurConfig, noiseConfig } from "@/lib/settings-config";
 
@@ -17,22 +16,14 @@ export function EffectsSetting() {
         <div className="border-b overflow-hidden">
           <div className="flex justify-between items-center p-2">
             <span className="text-sm ">聚焦</span>
-            <Button
-              size="sm"
-              variant={"ghost"}
-              onClick={() =>
+            <ToggleButton
+              isEnabled={effectsSettings.edgeBlurEnabled}
+              onToggle={() =>
                 updateEffectsSettings({
                   edgeBlurEnabled: !effectsSettings.edgeBlurEnabled,
                 })
               }
-            >
-              {effectsSettings.edgeBlurEnabled ? (
-                <Eye size={12} />
-              ) : (
-                <EyeOff size={12} />
-              )}
-              {effectsSettings.edgeBlurEnabled ? "开启" : "关闭"}
-            </Button>
+            />
           </div>
 
           {effectsSettings.edgeBlurEnabled && (
@@ -57,22 +48,14 @@ export function EffectsSetting() {
         <div className="border-b overflow-hidden">
           <div className="flex justify-between items-center p-2">
             <span className="text-sm ">噪点</span>
-            <Button
-              size="sm"
-              variant={"ghost"}
-              onClick={() =>
+            <ToggleButton
+              isEnabled={effectsSettings.noiseEnabled}
+              onToggle={() =>
                 updateEffectsSettings({
                   noiseEnabled: !effectsSettings.noiseEnabled,
                 })
               }
-            >
-              {effectsSettings.noiseEnabled ? (
-                <Eye size={12} />
-              ) : (
-                <EyeOff size={12} />
-              )}
-              {effectsSettings.noiseEnabled ? "开启" : "关闭"}
-            </Button>
+            />
           </div>
 
           {effectsSettings.noiseEnabled && (
@@ -110,22 +93,14 @@ export function EffectsSetting() {
         <div className="border-b overflow-hidden">
           <div className="flex justify-between items-center p-2">
             <span className="text-sm ">闪光</span>
-            <Button
-              size="sm"
-              variant={"ghost"}
-              onClick={() =>
+            <ToggleButton
+              isEnabled={effectsSettings.shinyTextEnabled}
+              onToggle={() =>
                 updateEffectsSettings({
                   shinyTextEnabled: !effectsSettings.shinyTextEnabled,
                 })
               }
-            >
-              {effectsSettings.shinyTextEnabled ? (
-                <Eye size={12} />
-              ) : (
-                <EyeOff size={12} />
-              )}
-              {effectsSettings.shinyTextEnabled ? "开启" : "关闭"}
-            </Button>
+            />
           </div>
         </div>
       </div>
