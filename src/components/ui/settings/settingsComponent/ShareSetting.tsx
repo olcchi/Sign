@@ -11,11 +11,10 @@ import { CloudUpload, CloudDownload, AlertCircle } from "lucide-react";
 
 interface ShareSettingProps {
   activePreset?: Preset | null; // Current active preset from preset manager
-  savedPresets?: Preset[]; // All saved presets for matching
 }
 
 // Share setting component for preset sharing functionality
-export function ShareSetting({ activePreset, savedPresets = [] }: ShareSettingProps) {
+export function ShareSetting({ activePreset }: ShareSettingProps) {
   const {
     textSettings,
     effectsSettings,
@@ -65,9 +64,8 @@ export function ShareSetting({ activePreset, savedPresets = [] }: ShareSettingPr
           activePreset={activePreset}
           currentTextSettings={textSettings}
           currentEffectsSettings={effectsSettings}
-          savedPresets={savedPresets}
         >
-          <Button variant="secondary" size="sm" className="flex-1 justify-center text-xs">
+          <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
             <CloudUpload className="mr-2 h-3 w-3" />
             分享预设
           </Button>
@@ -75,7 +73,7 @@ export function ShareSetting({ activePreset, savedPresets = [] }: ShareSettingPr
 
         {/* Load shared preset */}
         <ImportDialog onPresetLoaded={handlePresetLoaded}>
-          <Button variant="secondary" size="sm" className="flex-1 justify-center text-xs">
+          <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
             <CloudDownload className="mr-2 h-3 w-3" />
             加载预设
           </Button>
