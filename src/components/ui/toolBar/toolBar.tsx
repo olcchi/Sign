@@ -137,8 +137,8 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
     sm: "w-[80vw] top-16 right-4 h-auto max-h-[70vh]",
-    md: "md:w-[40vw] md:top-4 md:right-16 md:h-[90vh] md:max-h-[90dvh]",
-    lg: "lg:w-100 lg:top-16 lg:right-4",
+    md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
+    lg: "lg:w-90 lg:top-16 lg:right-4",
   };
   // Animation configuration for toolbar transitions
   const transition = {
