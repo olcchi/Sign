@@ -128,37 +128,6 @@ export function createPresetFromCurrentSettings(
 }
 
 /**
- * Check if current settings match a saved preset
- */
-export function findMatchingPreset(
-  textSettings: TextSettings,
-  effectsSettings: EffectsSettings,
-  savedPresets: Preset[]
-): Preset | null {
-  return (
-    savedPresets.find(
-      (preset) =>
-        preset.text === textSettings.text &&
-        preset.textColor === textSettings.textColor &&
-        preset.fontFamily === textSettings.fontFamily &&
-        preset.fontSize === textSettings.fontSize &&
-        preset.fontWeight === textSettings.fontWeight &&
-        preset.scrollSpeed === textSettings.scrollSpeed &&
-        preset.edgeBlurEnabled === effectsSettings.edgeBlurEnabled &&
-        preset.edgeBlurIntensity === effectsSettings.edgeBlurIntensity &&
-        preset.shinyTextEnabled === effectsSettings.shinyTextEnabled &&
-        preset.noiseEnabled === effectsSettings.noiseEnabled &&
-        preset.noiseOpacity === effectsSettings.noiseOpacity &&
-        preset.noiseDensity === effectsSettings.noiseDensity &&
-        preset.textStrokeEnabled === textSettings.textStrokeEnabled &&
-        preset.textStrokeWidth === textSettings.textStrokeWidth &&
-        preset.textStrokeColor === textSettings.textStrokeColor &&
-        preset.textFillEnabled === textSettings.textFillEnabled
-    ) || null
-  );
-}
-
-/**
  * Get detailed preset information as an array of strings for vertical display
  * Reuses the same display logic as Preset.tsx AccordionContent
  */
