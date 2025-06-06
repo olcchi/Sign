@@ -61,6 +61,9 @@ export default function WelcomeModal({
             使用 Sign 创建美丽的电子应援牌
           </DialogTitle>
         </DialogHeader>
+        <div className="">
+          <p>快速创建</p>
+        </div>
         <div className="space-y-4 text-white">
           <Button
             onClick={() => onOpenChange(false)}
