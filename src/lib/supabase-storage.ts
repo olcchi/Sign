@@ -3,7 +3,7 @@ import { ShareablePreset } from '@/lib/share-api'
 
 interface SupabasePreset {
   pin_code: string
-  preset_data: any
+  preset_data: ShareablePreset
   created_at: string
   expires_at: string
 }
