@@ -1,4 +1,5 @@
-import { Preset } from "@/components/ui/settings/Preset";
+import { Preset } from "@/components/ui/settings/Preset/types";
+import { ApiResponse } from "@/types";
 
 // Simple request queue to avoid rate limiting
 class RequestQueue {
@@ -43,11 +44,8 @@ export interface ShareablePreset {
   textFillEnabled?: boolean;
 }
 
-// API response interface for share operations
-export interface ShareApiResponse {
-  success: boolean;
-  error?: string;
-}
+// API response interface for share operations (deprecated - use ApiResponse instead)
+export interface ShareApiResponse extends ApiResponse<void> {}
 
 // Generate a random 6-digit PIN code
 export function generatePinCode(): string {
