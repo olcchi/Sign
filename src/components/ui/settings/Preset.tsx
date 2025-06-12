@@ -24,55 +24,7 @@ import { cn } from "@/lib/utils";
 import { ShareSetting } from "@/components/ui/settings/settingsComponent/ShareSetting";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
-
-/**
- * Preset interface defining the structure of saved presets
- */
-export interface Preset {
-  id: string;
-  name: string;
-  text: string;
-  textColor: string;
-  fontFamily: string;
-  fontSize: string;
-  fontWeight: string;
-  scrollSpeed: number;
-  // backgroundColor?: string;
-  edgeBlurEnabled: boolean;
-  edgeBlurIntensity: number;
-  shinyTextEnabled: boolean;
-  noiseEnabled?: boolean;
-  noiseOpacity?: number;
-  noiseDensity?: number;
-  textStrokeEnabled?: boolean;
-  textStrokeWidth?: number;
-  textStrokeColor?: string;
-  textFillEnabled?: boolean;
-}
-
-/**
- * Props for the PresetManager component
- */
-interface PresetManagerProps {
-  text: string;
-  textColor: string;
-  fontFamily: string;
-  fontSize: string;
-  fontWeight: string;
-  scrollSpeed: number;
-  edgeBlurEnabled: boolean;
-  edgeBlurIntensity: number;
-  shinyTextEnabled: boolean;
-  noiseEnabled?: boolean;
-  noiseOpacity?: number;
-  noiseDensity?: number;
-  textStrokeEnabled?: boolean;
-  textStrokeWidth?: number;
-  textStrokeColor?: string;
-  textFillEnabled?: boolean;
-  onLoadPreset: (preset: Preset) => void;
-  onActivePresetChange?: (preset: Preset | null) => void; // Callback for active preset changes
-}
+import type { Preset, PresetManagerProps } from "./Preset/types";
 
 /**
  * Component for managing text display presets
@@ -116,7 +68,7 @@ export function PresetManager({
     if (savedPresets) {
       try {
         const parsedPresets = JSON.parse(savedPresets);
-        const updatedPresets = parsedPresets.map((preset: any) => ({
+        const updatedPresets = parsedPresets.map((preset: Preset) => ({
           ...preset,
           edgeBlurEnabled:
             preset.edgeBlurEnabled !== undefined
@@ -546,3 +498,6 @@ export function PresetManager({
     </div>
   );
 }
+
+// Export Preset type for backward compatibility
+export type { Preset } from "./Preset/types";
