@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils";
 interface Option {
   name: string;
   value: string;
-  [key: string]: any;
+  [key: string]: unknown;
 }
 
 /**
