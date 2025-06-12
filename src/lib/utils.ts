@@ -7,7 +7,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // debounce function
-export function debounce<T extends (...args: any[]) => any>(
+export function debounce<T extends (...args: unknown[]) => unknown>(
   func: T,
   wait: number = 300
 ): (...args: Parameters<T>) => void {
