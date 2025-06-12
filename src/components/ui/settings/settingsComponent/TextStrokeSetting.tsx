@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { cn } from "@/lib/utils";
 import { Baseline } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";

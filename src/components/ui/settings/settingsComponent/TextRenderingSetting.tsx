@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { FontFamilySetting } from "./FontFamilySetting";
 import { FontSizeSetting } from "./FontSizeSetting";
 import { FontWeightSetting } from "./FontWeightSetting";
