@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
 import { ScrollingTextScroller } from "@/components/ui/widgets/scrollingText/scrollingTextScroller";
 import "@/components/ui/widgets/shinyText/shinyText.css";
