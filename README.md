@@ -1,10 +1,11 @@
 
-![Sign](/public/signHeroDark.png)
-Aesthetic digital support sign generator
+# Sign
+![Sign](/public/sign-hero-dark.png)
 
 ## Introduction
 
-[Sign](https://soulsign.vercel.app) is an application for quickly creating aesthetically pleasing digital support signs, You can use it to create personalized support signs.
+[Sign](https://soulsign.vercel.app) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
+
 
 
 ### ***CLI Commands***  
