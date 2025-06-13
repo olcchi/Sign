@@ -201,7 +201,7 @@ export default function ShareDialog({
           </DialogTitle>
           <DialogDescription>
             {shareInfo
-              ? "生成一个6位PIN码来分享你的设置"
+              ? "生成一个6位PIN码来分享你的当前应援牌配置"
               : "生成一个6位PIN码来分享你的预设配置"}
           </DialogDescription>
         </DialogHeader>
