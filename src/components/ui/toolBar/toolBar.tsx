@@ -10,7 +10,7 @@ import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
 import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
-import { Card, CardContent } from "@/components/ui/layout/card";
+import { Card } from "@/components/ui/layout/card";
 import { Ellipsis, HelpCircle } from "lucide-react";
 import {
   colorOptions,
