@@ -35,7 +35,7 @@ import { cn } from "@/lib/utils";
 
 // Create a non-animated version of DialogContent
 const DialogContent = React.forwardRef<
-  React.ElementRef<typeof DialogPrimitive.Content>,
+  React.ComponentRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
@@ -214,7 +214,9 @@ export default function ShareDialog({
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="preset-details" className="rounded-lg">
                     <AccordionTrigger className="px-3 py-2 hover:no-underline">
-                      <div className="text-sm font-medium">{shareInfo.preset.name}</div>
+                      <div className="text-sm font-medium">
+                        {shareInfo.preset.name}
+                      </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-3 pb-3">
                       <div className="text-xs text-muted-foreground leading-relaxed space-y-1">
@@ -281,36 +283,7 @@ export default function ShareDialog({
                     </Button>
                   </div>
                 </div>
-
-                {/* Share URL copy */}
-                {/* <div className="space-y-2">
-                  <Label htmlFor="share-url">分享链接</Label>
-                  <div className="flex gap-2">
-                    <Input
-                      id="share-url"
-                      value={shareResult.shareUrl}
-                      readOnly
-                      className="text-sm"
-                    />
-                    <Button
-                      size="icon"
-                      variant="outline"
-                      onClick={() => copyToClipboard(shareResult.shareUrl)}
-                    >
-                      {copied ? <Check size={16} /> : <Copy size={16} />}
-                    </Button>
-                  </div>
-                </div> */}
               </div>
-
-              {/* Generate new button */}
-              {/* <Button
-                variant="outline"
-                onClick={() => setShareResult(null)}
-                className="w-full"
-              >
-                重新生成
-              </Button> */}
             </>
           )}
         </div>
