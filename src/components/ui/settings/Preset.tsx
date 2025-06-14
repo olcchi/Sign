@@ -43,6 +43,7 @@ export function PresetManager({
   noiseEnabled,
   noiseOpacity,
   noiseDensity,
+  noiseAnimated,
   textStrokeEnabled,
   textStrokeWidth,
   textStrokeColor,
@@ -88,6 +89,8 @@ export function PresetManager({
             preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
           noiseDensity:
             preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+          noiseAnimated:
+            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
           textStrokeEnabled:
             preset.textStrokeEnabled !== undefined
               ? preset.textStrokeEnabled
@@ -136,6 +139,7 @@ export function PresetManager({
         activePreset.noiseEnabled !== noiseEnabled ||
         activePreset.noiseOpacity !== noiseOpacity ||
         activePreset.noiseDensity !== noiseDensity ||
+        activePreset.noiseAnimated !== noiseAnimated ||
         activePreset.textStrokeEnabled !== textStrokeEnabled ||
         activePreset.textStrokeWidth !== textStrokeWidth ||
         activePreset.textStrokeColor !== textStrokeColor ||
@@ -157,6 +161,7 @@ export function PresetManager({
     noiseEnabled,
     noiseOpacity,
     noiseDensity,
+    noiseAnimated,
     textStrokeEnabled,
     textStrokeWidth,
     textStrokeColor,
@@ -193,6 +198,7 @@ export function PresetManager({
       noiseEnabled,
       noiseOpacity,
       noiseDensity,
+      noiseAnimated,
       textStrokeEnabled,
       textStrokeWidth,
       textStrokeColor,
@@ -225,6 +231,7 @@ export function PresetManager({
           noiseEnabled,
           noiseOpacity,
           noiseDensity,
+          noiseAnimated,
           textStrokeEnabled,
           textStrokeWidth,
           textStrokeColor,
@@ -296,7 +303,7 @@ export function PresetManager({
           }}
         >
           <Save size={14} className="mr-1" />
-          保存
+          保存当前
         </Button>
       </div>
 
