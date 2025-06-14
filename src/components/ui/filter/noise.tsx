@@ -9,6 +9,7 @@ interface NoiseProps {
   className?: string;
   color?: string;
   zIndex?: number;
+  animated?: boolean;
 }
 
 // Renders a customizable noise texture using canvas for visual interest and texture
@@ -19,6 +20,7 @@ export default function Noise({
   className,
   color = "#000000",
   zIndex = 20,
+  animated = false,
 }: NoiseProps) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
@@ -75,14 +77,42 @@ export default function Noise({
       drawNoise();
     }, 200);
 
-    // Initial render
+    let animationId: number;
+    let lastFrameTime = 0;
+    const targetFPS = 15;
+    const frameInterval = 1000 / targetFPS; // ~66.67ms per frame
+
+    const animate = (currentTime: number) => {
+      if (currentTime - lastFrameTime >= frameInterval) {
+        drawNoise();
+        lastFrameTime = currentTime;
+      }
+      
+      if (animated) {
+        animationId = requestAnimationFrame(animate);
+      }
+    };
+
+    // Initial setup
     updateCanvas();
-    drawNoise();
+    
+    if (animated) {
+      // Start animation loop
+      animationId = requestAnimationFrame(animate);
+    } else {
+      // Static noise - render once
+      drawNoise();
+    }
     
     window.addEventListener("resize", debouncedResize);
     
-    return () => window.removeEventListener("resize", debouncedResize);
-  }, [opacity, density, dotSize, color]);
+    return () => {
+      window.removeEventListener("resize", debouncedResize);
+      if (animationId) {
+        cancelAnimationFrame(animationId);
+      }
+    };
+  }, [opacity, density, dotSize, color, animated]);
 
   return (
     <canvas
