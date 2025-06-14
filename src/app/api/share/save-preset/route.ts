@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { supabaseConfigStorage } from '@/lib/supabase-storage';
-import { isValidPinCode } from '@/lib/share-api';
+import { PresetApiService } from '@/lib/preset-api';
 
 export async function POST(request: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    if (!isValidPinCode(pinCode)) {
+    if (!PresetApiService.isValidPinCode(pinCode)) {
       return NextResponse.json(
         { success: false, error: 'Invalid PIN code format' },
         { status: 400 }
