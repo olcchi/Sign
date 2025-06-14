@@ -86,6 +86,17 @@ export function EffectsSetting() {
                   }
                 />
               </div>
+              <div className="flex justify-between items-center">
+                <span className="text-sm">动画</span>
+                <ToggleButton
+                  isEnabled={effectsSettings.noiseAnimated}
+                  onToggle={() =>
+                    updateEffectsSettings({
+                      noiseAnimated: !effectsSettings.noiseAnimated,
+                    })
+                  }
+                />
+              </div>
             </div>
           )}
         </div>
