@@ -81,6 +81,7 @@ function SoulSignContent() {
           opacity={effectsSettings.noiseOpacity}
           density={effectsSettings.noiseDensity}
           color="#ffffff"
+          animated={effectsSettings.noiseAnimated}
         />
       )}
 
