@@ -1,5 +1,6 @@
 import { Preset } from "@/components/ui/settings/Preset/types";
 import { ApiResponse } from "@/types";
+import { presetToShareable } from "@/lib/preset-conversion";
 
 // Simple request queue to avoid rate limiting
 class RequestQueue {
@@ -38,6 +39,7 @@ export interface ShareablePreset {
   noiseEnabled?: boolean;
   noiseOpacity?: number;
   noiseDensity?: number;
+  noiseAnimated?: boolean;
   textStrokeEnabled?: boolean;
   textStrokeWidth?: number;
   textStrokeColor?: string;
@@ -70,26 +72,7 @@ export function createPresetShareUrl(pinCode: string): string {
 // Save shared preset with automatic cleanup
 export async function saveSharedPreset(pinCode: string, preset: Preset): Promise<ShareApiResponse> {
   try {
-    const shareablePreset: ShareablePreset = {
-      id: preset.id,
-      name: preset.name,
-      text: preset.text,
-      textColor: preset.textColor,
-      fontFamily: preset.fontFamily,
-      fontSize: preset.fontSize,
-      fontWeight: preset.fontWeight,
-      scrollSpeed: preset.scrollSpeed,
-      edgeBlurEnabled: preset.edgeBlurEnabled,
-      edgeBlurIntensity: preset.edgeBlurIntensity,
-      shinyTextEnabled: preset.shinyTextEnabled,
-      noiseEnabled: preset.noiseEnabled,
-      noiseOpacity: preset.noiseOpacity,
-      noiseDensity: preset.noiseDensity,
-      textStrokeEnabled: preset.textStrokeEnabled,
-      textStrokeWidth: preset.textStrokeWidth,
-      textStrokeColor: preset.textStrokeColor,
-      textFillEnabled: preset.textFillEnabled,
-    };
+    const shareablePreset = presetToShareable(preset);
 
     const response = await requestQueue.execute(() =>
       fetch('/api/share/save-preset', {
