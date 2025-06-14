@@ -23,6 +23,7 @@ interface PresetHandlers {
   onNoiseEnabledChange: (enabled: boolean) => void;
   onNoiseOpacityChange: (opacity: number) => void;
   onNoiseDensityChange: (density: number) => void;
+  onNoiseAnimatedChange: (animated: boolean) => void;
   onTextStrokeEnabledChange: (enabled: boolean) => void;
   onTextStrokeWidthChange: (width: number) => void;
   onTextStrokeColorChange: (color: string) => void;
@@ -54,6 +55,7 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
     onNoiseEnabledChange,
     onNoiseOpacityChange,
     onNoiseDensityChange,
+    onNoiseAnimatedChange,
     onTextStrokeEnabledChange,
     onTextStrokeWidthChange,
     onTextStrokeColorChange,
@@ -80,6 +82,9 @@ export function applyPreset(preset: Preset, handlers: PresetHandlers) {
   }
   if (preset.noiseDensity !== undefined) {
     onNoiseDensityChange(preset.noiseDensity);
+  }
+  if (preset.noiseAnimated !== undefined) {
+    onNoiseAnimatedChange(preset.noiseAnimated);
   }
 
   // Apply text styling properties conditionally
@@ -120,6 +125,7 @@ export function createPresetFromCurrentSettings(
     noiseEnabled: effectsSettings.noiseEnabled,
     noiseOpacity: effectsSettings.noiseOpacity,
     noiseDensity: effectsSettings.noiseDensity,
+    noiseAnimated: effectsSettings.noiseAnimated,
     textStrokeEnabled: textSettings.textStrokeEnabled,
     textStrokeWidth: textSettings.textStrokeWidth,
     textStrokeColor: textSettings.textStrokeColor,
