@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { loadSharedPreset, isValidPinCode } from "@/lib/share-api";
+import { PresetApiService } from "@/lib/preset-api";
 import { Preset } from "@/components/ui/settings/Preset";
 import { Button } from "@/components/ui/layout/button";
 import { Label } from "@/components/ui/label";
@@ -68,7 +68,7 @@ export default function ImportDialog({
   const handleLoadPreset = async (codeToLoad?: string) => {
     const currentPinCode = codeToLoad || pinCode;
 
-    if (!isValidPinCode(currentPinCode)) {
+    if (!PresetApiService.isValidPinCode(currentPinCode)) {
       setError("请输入6位数字PIN码");
       return;
     }
@@ -77,33 +77,10 @@ export default function ImportDialog({
     setError(null);
 
     try {
-      const result = await loadSharedPreset(currentPinCode);
+      const result = await PresetApiService.loadSharedPreset(currentPinCode);
 
-      if (result.success && result.preset) {
-        // Convert ShareablePreset to Preset format
-        const shareablePreset = result.preset;
-        const preset: Preset = {
-          id: shareablePreset.id,
-          name: shareablePreset.name,
-          text: shareablePreset.text,
-          textColor: shareablePreset.textColor,
-          fontFamily: shareablePreset.fontFamily,
-          fontSize: shareablePreset.fontSize,
-          fontWeight: shareablePreset.fontWeight,
-          scrollSpeed: shareablePreset.scrollSpeed,
-          edgeBlurEnabled: shareablePreset.edgeBlurEnabled,
-          edgeBlurIntensity: shareablePreset.edgeBlurIntensity,
-          shinyTextEnabled: shareablePreset.shinyTextEnabled,
-          noiseEnabled: shareablePreset.noiseEnabled,
-          noiseOpacity: shareablePreset.noiseOpacity,
-          noiseDensity: shareablePreset.noiseDensity,
-          textStrokeEnabled: shareablePreset.textStrokeEnabled,
-          textStrokeWidth: shareablePreset.textStrokeWidth,
-          textStrokeColor: shareablePreset.textStrokeColor,
-          textFillEnabled: shareablePreset.textFillEnabled,
-        };
-
-        onPresetLoaded(preset);
+      if (result.success && result.data) {
+        onPresetLoaded(result.data);
         setIsOpen(false);
         setPinCode("");
       } else {
@@ -122,7 +99,7 @@ export default function ImportDialog({
     setError(null);
 
     // Auto-load when 6 digits are entered
-    if (value.length === 6 && isValidPinCode(value)) {
+    if (value.length === 6 && PresetApiService.isValidPinCode(value)) {
       // Small delay to show the complete input before loading
       setTimeout(() => {
         handleLoadPreset(value); // Pass the current value directly
