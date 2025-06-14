@@ -56,7 +56,7 @@ export const fontSizeOptions = [
   { name: "M", value: "8rem" },
   { name: "L", value: "10rem" },
   { name: "XL", value: "16rem" },
-  { name: "2XL", value: "30rem" },
+  { name: "2XL", value: "min(30rem, 90vh)" },
 ];
 
 
