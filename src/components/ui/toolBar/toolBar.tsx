@@ -18,7 +18,7 @@ import {
   fontSizeOptions,
 } from "@/lib/settings-config";
 import { useBackgroundImage } from "@/lib/hooks/useBackgroundImage";
-import { applyPreset } from "@/lib/preset-utils";
+import { usePresetManager } from "@/lib/hooks/usePresetManager";
 import { useSettings } from "@/lib/contexts/SettingsContext";
 
 // Create motion variants of Card component
@@ -77,38 +77,8 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
     isOpen
   );
 
-  // Apply preset configuration to all settings
-  const loadPreset = (preset: Preset) => {
-    applyPreset(preset, {
-      onTextChange: (text) => updateTextSettings({ text }),
-      onColorChange: (color) => updateTextSettings({ textColor: color }),
-      onFontChange: (font) => updateTextSettings({ fontFamily: font }),
-      onFontSizeChange: (size) => updateTextSettings({ fontSize: size }),
-      onFontWeightChange: (weight) => updateTextSettings({ fontWeight: weight }),
-      onScrollSpeedChange: (speed) =>
-        updateTextSettings({ scrollSpeed: speed }),
-      onEdgeBlurEnabledChange: (enabled) =>
-        updateEffectsSettings({ edgeBlurEnabled: enabled }),
-      onEdgeBlurIntensityChange: (intensity) =>
-        updateEffectsSettings({ edgeBlurIntensity: intensity }),
-      onShinyTextEnabledChange: (enabled) =>
-        updateEffectsSettings({ shinyTextEnabled: enabled }),
-      onNoiseEnabledChange: (enabled) =>
-        updateEffectsSettings({ noiseEnabled: enabled }),
-      onNoiseOpacityChange: (opacity) =>
-        updateEffectsSettings({ noiseOpacity: opacity }),
-      onNoiseDensityChange: (density) =>
-        updateEffectsSettings({ noiseDensity: density }),
-      onTextStrokeEnabledChange: (enabled) =>
-        updateTextSettings({ textStrokeEnabled: enabled }),
-      onTextStrokeWidthChange: (width) =>
-        updateTextSettings({ textStrokeWidth: width }),
-      onTextStrokeColorChange: (color) =>
-        updateTextSettings({ textStrokeColor: color }),
-      onTextFillEnabledChange: (enabled) =>
-        updateTextSettings({ textFillEnabled: enabled }),
-    });
-  };
+  // Use unified preset manager
+  const { loadPreset } = usePresetManager();
 
   // Toolbar menu item configuration
   const toolbarItems = [
@@ -236,6 +206,7 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
                     noiseEnabled={effectsSettings.noiseEnabled}
                     noiseOpacity={effectsSettings.noiseOpacity}
                     noiseDensity={effectsSettings.noiseDensity}
+                    noiseAnimated={effectsSettings.noiseAnimated}
                     textStrokeEnabled={textSettings.textStrokeEnabled}
                     textStrokeWidth={textSettings.textStrokeWidth}
                     textStrokeColor={textSettings.textStrokeColor}
