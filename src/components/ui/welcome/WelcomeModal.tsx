@@ -62,8 +62,12 @@ export default function WelcomeModal({
             使用 Sign 创建美丽的电子应援牌
           </DialogTitle>
         </DialogHeader>
-        <div className="">
-          <p>快速创建</p>
+        <div>
+          <p className="text-sm leading-7 [&:not(:first-child)]:mt-6">
+            Sign 是一个快速创建和分享电子应援牌的工具。
+            <br />
+            使用 Sign，快速创建个性化的应援牌并分享给你的朋友。
+          </p>
         </div>
         <div className="space-y-4 text-white">
           <Button
