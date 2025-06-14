@@ -6,6 +6,8 @@
 # experimental
 src/experimental
 
+# dev logs
+/logs
 
 # dependencies
 /node_modules
