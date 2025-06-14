@@ -17,6 +17,7 @@ export interface Preset {
   noiseEnabled?: boolean;
   noiseOpacity?: number;
   noiseDensity?: number;
+  noiseAnimated?: boolean;
   textStrokeEnabled?: boolean;
   textStrokeWidth?: number;
   textStrokeColor?: string;
@@ -39,6 +40,7 @@ export interface PresetManagerProps {
   noiseEnabled?: boolean;
   noiseOpacity?: number;
   noiseDensity?: number;
+  noiseAnimated?: boolean;
   textStrokeEnabled?: boolean;
   textStrokeWidth?: number;
   textStrokeColor?: string;
