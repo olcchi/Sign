@@ -1,12 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  generatePinCode,
-  saveSharedPreset,
-  createPresetShareUrl,
-  ShareApiResponse,
-} from "@/lib/share-api";
+import { PresetApiService } from "@/lib/preset-api";
+import { ApiResponse } from "@/types";
 import { Preset } from "@/components/ui/settings/Preset";
 import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
 import {
@@ -117,15 +113,13 @@ export default function ShareDialog({
     try {
       const { preset } = getPresetToShare();
 
-      // Generate new PIN code and save preset
-      const pinCode = generatePinCode();
-      const result: ShareApiResponse = await saveSharedPreset(pinCode, preset);
+      // Use unified API service to share preset
+      const result: ApiResponse<{ pinCode: string; shareUrl: string }> = await PresetApiService.sharePreset(preset);
 
-      if (result.success) {
-        const shareUrl = createPresetShareUrl(pinCode);
+      if (result.success && result.data) {
         setShareResult({
-          pinCode,
-          shareUrl,
+          pinCode: result.data.pinCode,
+          shareUrl: result.data.shareUrl,
         });
       } else {
         setError(result.error || "分享失败，请重试");
