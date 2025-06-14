@@ -2,13 +2,13 @@
 
 import { useEffect, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
-import { loadSharedPreset, ShareablePreset } from "@/lib/share-api";
+import { PresetApiService } from "@/lib/preset-api";
+import { ShareablePreset } from "@/lib/share-api";
 import { SettingsProvider } from "@/lib/contexts/SettingsContext";
 import FullScreen from "@/components/ui/layout/fullScreen";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
 import { EdgeBlurEffect } from "@/components/ui/filter/EdgeBlurEffect";
 import { useRef } from "react";
-import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/filter/noise";
 import { Button } from "@/components/ui/layout/button";
@@ -77,6 +77,7 @@ function PreviewContent({ presetData }: { presetData: ShareablePreset }) {
           opacity={presetData.noiseOpacity || 0.5}
           density={presetData.noiseDensity || 0.5}
           color="#ffffff"
+          animated={presetData.noiseAnimated || false}
         />
       )}
 
@@ -152,10 +153,32 @@ export default function SharePresetPreviewPage() {
     setError(null);
 
     try {
-      const result = await loadSharedPreset(pinCode);
+      const result = await PresetApiService.loadSharedPreset(pinCode);
 
-      if (result.success && result.preset) {
-        setPresetData(result.preset);
+      if (result.success && result.data) {
+        // Convert Preset back to ShareablePreset for display
+        const shareableData: ShareablePreset = {
+          id: result.data.id,
+          name: result.data.name,
+          text: result.data.text,
+          textColor: result.data.textColor,
+          fontFamily: result.data.fontFamily,
+          fontSize: result.data.fontSize,
+          fontWeight: result.data.fontWeight,
+          scrollSpeed: result.data.scrollSpeed,
+          edgeBlurEnabled: result.data.edgeBlurEnabled,
+          edgeBlurIntensity: result.data.edgeBlurIntensity,
+          shinyTextEnabled: result.data.shinyTextEnabled,
+          noiseEnabled: result.data.noiseEnabled,
+          noiseOpacity: result.data.noiseOpacity,
+          noiseDensity: result.data.noiseDensity,
+          noiseAnimated: result.data.noiseAnimated,
+          textStrokeEnabled: result.data.textStrokeEnabled,
+          textStrokeWidth: result.data.textStrokeWidth,
+          textStrokeColor: result.data.textStrokeColor,
+          textFillEnabled: result.data.textFillEnabled,
+        };
+        setPresetData(shareableData);
       } else {
         setError(result.error || "加载预设失败");
       }
