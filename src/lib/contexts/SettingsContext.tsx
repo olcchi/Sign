@@ -42,6 +42,7 @@ export interface EffectsSettings {
   noiseEnabled: boolean;
   noiseOpacity: number;
   noiseDensity: number;
+  noiseAnimated: boolean;
 }
 
 // Global settings context definition, providing access to grouped settings
@@ -89,6 +90,7 @@ const defaultEffectsSettings: EffectsSettings = {
   noiseEnabled: false,
   noiseOpacity: noiseConfig.opacity.defaultValue,
   noiseDensity: noiseConfig.density.defaultValue,
+  noiseAnimated: false,
 };
 
 // Settings provider that improves code maintainability through grouped management
