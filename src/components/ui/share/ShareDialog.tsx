@@ -136,7 +136,11 @@ export default function ShareDialog({
   };
 
   // Get display information for what will be shared
-  const getShareInfo = () => {
+  const getShareInfo = (): {
+    title: string;
+    description: string[];
+    preset: Preset;
+  } | null => {
     try {
       const { preset, isCurrentSettings } = getPresetToShare();
 
@@ -194,9 +198,7 @@ export default function ShareDialog({
             </p>
           </DialogTitle>
           <DialogDescription>
-            {shareInfo
-              ? "生成一个6位PIN码来分享你的当前应援牌配置"
-              : "生成一个6位PIN码来分享你的预设配置"}
+            {shareInfo ? "生成一个6位PIN码来分享你的应援牌配置" : "没有可分享的内容"}
           </DialogDescription>
         </DialogHeader>
 
