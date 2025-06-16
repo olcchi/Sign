@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogHeader,
   DialogTitle,
+  DialogDescription,
   DialogPortal,
   DialogOverlay,
 } from "@/components/ui/dialog";
@@ -12,17 +13,33 @@ import { Button } from "@/components/ui/layout/button";
 import { X, ArrowRight, Sparkles, Share2, Palette, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 
+// Simple VisuallyHidden component for accessibility
+const VisuallyHidden = React.forwardRef<
+  HTMLSpanElement,
+  React.HTMLAttributes<HTMLSpanElement>
+>(({ className, ...props }, ref) => (
+  <span
+    ref={ref}
+    className={cn(
+      "absolute w-px h-px p-0 -m-px overflow-hidden whitespace-nowrap border-0",
+      className
+    )}
+    {...props}
+  />
+));
+VisuallyHidden.displayName = "VisuallyHidden";
+
 // Create a non-animated version of DialogContent similar to ShareDialog
 const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
 >(({ className, children, ...props }, ref) => (
   <DialogPortal>
-    <DialogOverlay className="fixed inset-0 z-[1000] bg-black/40 backdrop-blur-sm" />
+    <DialogOverlay className="fixed inset-0 z-[1000] bg-background/80 backdrop-blur-sm" />
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-[90%] md:w-full max-w-3xl h-fit border border-border/20 bg-[#080808] shadow-2xl rounded-xl max-h-[85vh] overflow-y-auto custom-scrollbar",
+        "fixed inset-0 z-[1001] m-auto w-[90%] md:w-full max-w-3xl h-fit border bg-background shadow-2xl rounded-lg max-h-[85vh] overflow-y-auto custom-scrollbar",
         className
       )}
       {...props}
@@ -30,8 +47,8 @@ const DialogContent = React.forwardRef<
       {/* Content */}
       <div className="relative z-10">{children}</div>
 
-      <DialogPrimitive.Close className="absolute right-6 top-6 rounded-full p-2 opacity-70 ring-offset-background transition-all hover:opacity-100 hover:bg-white/10 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-20">
-        <X className="h-4 w-4 text-white" />
+      <DialogPrimitive.Close className="absolute right-6 top-6 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-20">
+        <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
     </DialogPrimitive.Content>
@@ -54,37 +71,39 @@ export default function WelcomeModal({
     {
       icon: <Sparkles className="w-5 h-5" />,
       title: "快速创建",
-      description: "几秒钟内创建专业的电子应援牌"
+      description: "几秒钟内创建美丽的电子应援牌",
     },
     {
       icon: <Palette className="w-5 h-5" />,
-      title: "个性定制",
-      description: "丰富的字体、颜色和特效选择"
+      title: "多种样式",
+      description: "多种样式选择",
     },
     {
       icon: <Share2 className="w-5 h-5" />,
       title: "轻松分享",
-      description: "一键分享给朋友或保存到本地"
+      description: "一键分享给朋友或保存到本地",
     },
     {
       icon: <Zap className="w-5 h-5" />,
       title: "实时预览",
-      description: "所见即所得的编辑体验"
-    }
+      description: "所见即所得的编辑体验",
+    },
   ];
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className={className}>
+        <VisuallyHidden>
+          <DialogTitle>欢迎使用 Sign</DialogTitle>
+          <DialogDescription>快速创建并分享你的应援牌</DialogDescription>
+        </VisuallyHidden>
         <div className="p-8 space-y-8">
           {/* Hero Section */}
-          <div className="text-center space-y-6">
-            <div className="space-y-3">
-              <DialogTitle className="text-2xl md:text-3xl font-bold text-white leading-tight">
-                欢迎使用 Sign
-              </DialogTitle>
-              <p className="text-lg text-gray-300 max-w-md mx-auto leading-relaxed">
-                创建美丽的电子应援牌，为你喜爱的偶像加油助威
+          <div className="space-y-6">
+            <div className="space-y-3 flex flex-col items-center">
+              <SignHeroTitle />
+              <p className="text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
+                快速创建并分享你的应援牌
               </p>
             </div>
           </div>
@@ -94,22 +113,17 @@ export default function WelcomeModal({
             {features.map((feature, index) => (
               <div
                 key={index}
-                className="group relative p-4 rounded-lg border border-border/30 bg-white/5 hover:bg-white/10 transition-all duration-300 hover:border-border/50 overflow-hidden"
+                className="group relative p-4 rounded-lg border transition-all duration-300 hover:border-border/50 overflow-hidden"
               >
-                {/* Gradient blur background on hover */}
-                <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
-                  <div className="absolute inset-0 bg-gradient-to-br from-[#FF7C4F] via-[#F3ABED] to-[#107DCB] backdrop-blur-sm rounded-lg" />
-                </div>
-                
                 <div className="relative z-10 flex items-start gap-3">
-                  <div className="flex-shrink-0 p-2 rounded-md bg-white/10 text-white group-hover:bg-white/20 transition-colors">
+                  <div className="flex-shrink-0 p-2 rounded-md">
                     {feature.icon}
                   </div>
                   <div className="space-y-1">
-                    <h3 className="font-semibold text-white text-sm">
+                    <h3 className="font-semibold text-foreground text-sm">
                       {feature.title}
                     </h3>
-                    <p className="text-xs text-gray-400 leading-relaxed">
+                    <p className="text-xs text-muted-foreground leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -119,17 +133,16 @@ export default function WelcomeModal({
           </div>
 
           {/* Call to Action */}
-          <div className="space-y-4">
-            <div className="flex flex-col sm:flex-row gap-3 justify-center">
+          <div className="space-y-4 flex justify-center">
               <Button
+                variant="outline"
                 onClick={() => onOpenChange(false)}
-                size="lg"
-                className="bg-white text-black hover:bg-gray-100 font-semibold px-8 py-3 rounded-full transition-all duration-200"
+                className="w-40 py-3 rounded-full transition-all duration-200"
               >
-                开始创建
+                进入Sign
                 <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
-{/*               
+              {/*               
               <Button
                 variant="outline"
                 size="lg"
@@ -141,7 +154,6 @@ export default function WelcomeModal({
               >
                 了解更多
               </Button> */}
-            </div>
           </div>
         </div>
       </DialogContent>
