@@ -31,18 +31,18 @@ export const PanelHeader: React.FC<PanelHeaderProps> = ({ title, onClose }) => {
           aria-label={isDarkMode ? "切换亮色模式" : "切换暗色模式"}
         >
           {isDarkMode ? (
-            <Moon size={12} className="text-[#FCFAF2]" />
+            <Moon size={12} className="text-foreground" />
           ) : (
-            <Sun size={12} className="text-[#080808]" />
+            <Sun size={12} className="text-foreground" />
           )}
         </Switch>
         <Button
           className="absolute right-2"
           onClick={onClose}
-          variant={"ghost"}
-          size={"icon"}
-          aria-label="关闭"
-        >
+            variant={"ghost"}
+            size={"icon"}
+            aria-label="关闭"
+          >
           <X size={16} />
         </Button>
       </div>
