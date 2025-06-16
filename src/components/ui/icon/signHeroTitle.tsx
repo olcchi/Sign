@@ -10,12 +10,12 @@ export default function SignHeroTitle({ className }: SignHeroTitleProps) {
   return (
     <div
       className={cn(
-        "fixed top-20 left-20 flex gap-2 justify-center items-center",
+        "flex gap-2 justify-center items-center select-none text-foreground",
         className
       )}
     >
       <Sign className="w-6 h-6" />
-      <p className="font-[family-name:var(--font-dm-sans)] font-bold text-2xl text-[#FCFAF2]">
+      <p className="font-[family-name:var(--font-dm-sans)] font-bold text-2xl">
         Sign
       </p>
     </div>
