@@ -20,7 +20,7 @@ export function FontWeightSetting() {
   return (
     <div className="border-b overflow-hidden">
       <div className="flex justify-between items-center p-2">
-        <span className="text-xs font-bold">粗体</span>
+        <span className="text-sm">粗体</span>
         <ToggleButton
           isEnabled={isBold}
           onToggle={toggleBold}
