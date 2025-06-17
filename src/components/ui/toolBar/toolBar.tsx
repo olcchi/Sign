@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState } from "react";
+import { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
@@ -11,7 +11,8 @@ import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
 import { Card } from "@/components/ui/layout/card";
-import { Ellipsis, HelpCircle } from "lucide-react";
+import { Ellipsis, Maximize, Minimize, HelpCircle } from "lucide-react";
+import { useFullScreenStore } from "@/stores/fullScreenStore";
 import {
   colorOptions,
   fontOptions,
@@ -43,6 +44,9 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
 
   // Track current active preset
   const [activePreset, setActivePreset] = useState<Preset | null>(null);
+
+  // Fullscreen state
+  const { isFull, setIsFull } = useFullScreenStore();
 
   // Using custom hooks to separate state and logic for improved maintainability
   const {
@@ -80,8 +84,26 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
   // Use unified preset manager
   const { loadPreset } = usePresetManager();
 
+  // Fullscreen toggle function
+  const toggleFullscreen = () => {
+    if (isFull) {
+      document.exitFullscreen();
+    } else {
+      document.documentElement.requestFullscreen().catch((err) => {
+        console.error("Fullscreen failed:", err);
+      });
+    }
+    setIsFull(!isFull);
+  };
+
   // Toolbar menu item configuration
   const toolbarItems = [
+    {
+      id: "fullscreen",
+      label: isFull ? "退出全屏" : "进入全屏",
+      icon: isFull ? <Minimize size={20} color="#FFFFFB" /> : <Maximize size={20} color="#FFFFFB" />,
+      action: toggleFullscreen,
+    },
     {
       id: "help",
       label: "帮助",
@@ -102,7 +124,7 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
           openPanel();
         }
       },
-    },
+    },  
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
