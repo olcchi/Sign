@@ -284,7 +284,7 @@ const CardSwap: React.FC<CardSwapProps> = ({
   return (
     <div
       ref={container}
-      className={`absolute bottom-0 right-0 transform origin-bottom-right perspective-[900px] overflow-visible transition-transform duration-50 ${responsiveClass}`}
+      className={`absolute bottom-0 right-0 transform origin-bottom-right perspective-[900px] overflow-visible ${responsiveClass}`}
       style={{ width, height }}
     >
       {rendered}
