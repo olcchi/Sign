@@ -22,7 +22,7 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
   return (
     <div className="border-b overflow-hidden">
       <div className="flex justify-between items-center p-2">
-        <span className="text-xs font-bold">边框</span>
+        <span className="text-xs ">边框</span>
         <ToggleButton
           isEnabled={textSettings.textStrokeEnabled}
           onToggle={() => {
@@ -45,7 +45,7 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
       {textSettings.textStrokeEnabled && (
         <div className="p-2 space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold whitespace-nowrap">颜色</span>
+            <span className="text-xs whitespace-nowrap">颜色</span>
             <OptionButtonGroup
               options={colorOptions}
               selectedValue={textSettings.textStrokeColor}
@@ -59,7 +59,7 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
             />
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold whitespace-nowrap">宽度</span>
+            <span className="text-xs whitespace-nowrap">宽度</span>
             <Slider
               defaultValue={[textSettings.textStrokeWidth]}
               value={[textSettings.textStrokeWidth]}
