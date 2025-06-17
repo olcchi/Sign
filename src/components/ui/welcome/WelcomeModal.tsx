@@ -1,18 +1,20 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dialog,
-  DialogHeader,
   DialogTitle,
   DialogDescription,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/dialog";
+} from "@/components/ui/layout/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import SignHeroTitle from "@/components/ui/icon/signHeroTitle";
 import { Button } from "@/components/ui/layout/button";
 import { X, ArrowRight, Sparkles, Share2, Palette, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
-
+import SpotlightCard from "@/components/ui/spotlightCard";
+import { Olcchi } from "../icon/olcchi";
+import CardSwap, { Card } from "@/components/cardSwap";
+import { motion } from "motion/react";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -39,14 +41,46 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-[90%] md:w-full max-w-3xl h-fit border bg-background shadow-2xl rounded-lg max-h-[85vh] overflow-y-auto custom-scrollbar",
+        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-80 md:w-4/5 max-w-280 border bg-background shadow-2xl rounded-lg overflow-hidden",
         className
       )}
       {...props}
     >
-      {/* Content */}
-      <div className="relative z-10">{children}</div>
+      <motion.div
+        className="absolute w-120 h-120 lg:w-180 lg:h-180 rounded-full blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        animate={{
+          x: ["-25%", "25%", "-25%"],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          left: "0%",
+          bottom: "-50%",
+          zIndex: 1,
+        }}
+      />
+      <motion.div
+        className="absolute w-80 h-80 rounded-full  blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        animate={{
+          x: ["25%", "-25%", "25%"],
+        }}
+        transition={{
+          duration: 25,
+          repeat: Infinity,
+          ease: "linear",
+        }}
+        style={{
+          right: "0%",
+          top: "-25%",
+          zIndex: 1,
+        }}
+      />
 
+      {/* Content */}
+      <div className="relative z-10 h-full">{children}</div>
       <DialogPrimitive.Close className="absolute right-6 top-6 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-20">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
@@ -71,22 +105,18 @@ export default function WelcomeModal({
     {
       icon: <Sparkles className="w-5 h-5" />,
       title: "快速创建",
-      description: "几秒钟内创建美丽的电子应援牌",
     },
     {
       icon: <Palette className="w-5 h-5" />,
       title: "多种样式",
-      description: "多种样式选择",
     },
     {
       icon: <Share2 className="w-5 h-5" />,
       title: "轻松分享",
-      description: "一键分享给朋友或保存到本地",
     },
     {
       icon: <Zap className="w-5 h-5" />,
       title: "实时预览",
-      description: "所见即所得的编辑体验",
     },
   ];
 
@@ -97,63 +127,46 @@ export default function WelcomeModal({
           <DialogTitle>欢迎使用 Sign</DialogTitle>
           <DialogDescription>快速创建并分享你的应援牌</DialogDescription>
         </VisuallyHidden>
-        <div className="p-8 space-y-8">
-          {/* Hero Section */}
-          <div className="space-y-6">
-            <div className="space-y-3 flex flex-col items-center">
-              <SignHeroTitle />
-              <p className="text-lg text-muted-foreground max-w-md mx-auto leading-relaxed">
-                快速创建并分享你的应援牌
-              </p>
-            </div>
-          </div>
-
-          {/* Features Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-            {features.map((feature, index) => (
-              <div
-                key={index}
-                className="group relative p-4 rounded-lg border transition-all duration-300 hover:border-border/50 overflow-hidden"
-              >
-                <div className="relative z-10 flex items-start gap-3">
-                  <div className="flex-shrink-0 p-2 rounded-md">
-                    {feature.icon}
-                  </div>
-                  <div className="space-y-1">
-                    <h3 className="font-semibold text-foreground text-sm">
-                      {feature.title}
-                    </h3>
-                    <p className="text-xs text-muted-foreground leading-relaxed">
-                      {feature.description}
-                    </p>
-                  </div>
-                </div>
+        <div className="h-full flex flex-col md:flex-row">
+          {/* Left Content Area */}
+          <div className="p-5 flex w-full h-full flex-col gap-5 justify-center items-center ">
+            <div className="space-y-6 ">
+              <div className="space-y-3 flex flex-col">
+                <SignHeroTitle size="lg" />
+                <p className="text-muted-foreground max-w-md ">
+                  快速创建并分享你的应援牌
+                </p>
               </div>
-            ))}
+            </div>
+            <Button
+              variant="outline"
+              onClick={() => onOpenChange(false)}
+              className="w-40 py-3 rounded-full transition-all duration-200"
+            >
+              进入Sign
+              <ArrowRight className="w-4 h-4 ml-1" />
+            </Button>
           </div>
-
-          {/* Call to Action */}
-          <div className="space-y-4 flex justify-center">
-              <Button
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                className="w-40 py-3 rounded-full transition-all duration-200"
-              >
-                进入Sign
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
-              {/*               
-              <Button
-                variant="outline"
-                size="lg"
-                className="border-border/50 text-gray-300 hover:text-white hover:border-border px-8 py-3 rounded-full transition-all duration-200"
-                onClick={() => {
-                  // 占位：打开帮助或教程
-                  console.log("打开帮助");
-                }}
-              >
-                了解更多
-              </Button> */}
+          {/* Right CardSwap Area */}
+          <div className="relative w-full h-full">
+            <CardSwap
+              cardDistance={30}
+              verticalDistance={40}
+              delay={4000}
+              pauseOnHover={false}
+            >
+              {features.map((feature, index) => (
+                <Card key={index} className="overflow-hidden flex flex-col">
+                  <div className="flex items-center w-full h-10 border-b border-foreground gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
+                    {feature.icon}
+                    <p className="text-sm">{feature.title}</p>
+                  </div>
+                  <div className="flex-1 bg-[url(/sign-hero-bg.png)] bg-cover bg-center overflow-hidden min-h-32">
+                    {/* <img src={"/sign-hero-bg.png"} alt="" /> */}
+                  </div>
+                </Card>
+              ))}
+            </CardSwap>
           </div>
         </div>
       </DialogContent>
