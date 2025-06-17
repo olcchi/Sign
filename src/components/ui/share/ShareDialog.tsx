@@ -18,7 +18,7 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/dialog";
+} from "@/components/ui/layout/dialog";
 import {
   Accordion,
   AccordionContent,
@@ -194,11 +194,11 @@ export default function ShareDialog({
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
             <p className="text-sm font-bold">
-              {shareInfo?.title || "分享设置"}
+              {shareInfo?.title || "分享预设"}
             </p>
           </DialogTitle>
           <DialogDescription>
-            {shareInfo ? "生成一个6位PIN码来分享你的应援牌配置" : "没有可分享的内容"}
+            {shareInfo ? "生成一个6位PIN码来分享你的应援牌预设" : "没有可分享的预设"}
           </DialogDescription>
         </DialogHeader>
 
@@ -252,7 +252,7 @@ export default function ShareDialog({
                     生成中...
                   </>
                 ) : (
-                  <>生成分享PIN码</>
+                  <>生成预设分享PIN码</>
                 )}
               </Button>
             </>
