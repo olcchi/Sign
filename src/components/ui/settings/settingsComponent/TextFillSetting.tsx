@@ -20,7 +20,7 @@ export function TextFillSetting({ colorOptions }: TextFillSettingProps) {
   return (
     <div className="border-b overflow-hidden">
       <div className="flex justify-between items-center p-2">
-        <span className="text-xs font-bold">填充</span>
+        <span className="text-sm ">填充</span>
         <ToggleButton
           isEnabled={textSettings.textFillEnabled}
           onToggle={() => {
@@ -43,7 +43,7 @@ export function TextFillSetting({ colorOptions }: TextFillSettingProps) {
       {textSettings.textFillEnabled && (
         <div className="p-2 space-y-2">
           <div className="flex items-center gap-2">
-            <span className="text-xs font-bold whitespace-nowrap">颜色</span>
+            <span className="text-xs whitespace-nowrap">颜色</span>
             <OptionButtonGroup
               options={colorOptions}
               selectedValue={textSettings.textColor}
@@ -58,4 +58,4 @@ export function TextFillSetting({ colorOptions }: TextFillSettingProps) {
       )}
     </div>
   );
-} 
+}
