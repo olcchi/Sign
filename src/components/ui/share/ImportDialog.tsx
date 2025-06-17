@@ -18,7 +18,7 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/dialog";
+} from "@/components/ui/layout/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -33,7 +33,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-       "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
+        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
         className
       )}
       {...props}
@@ -124,10 +124,10 @@ export default function ImportDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className=" flex items-center gap-2">
-            加载设置
+            加载预设
           </DialogTitle>
           <DialogDescription className="text-sm">
-            输入PIN码以加载分享的设置
+            输入PIN码以加载应援牌预设
           </DialogDescription>
         </DialogHeader>
 
@@ -165,7 +165,7 @@ export default function ImportDialog({
           {isLoading && (
             <div className="flex items-center justify-center text-sm text-gray-600">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              正在加载设置...
+              正在加载应援牌配置...
             </div>
           )}
 
@@ -182,7 +182,7 @@ export default function ImportDialog({
                 加载中...
               </>
             ) : (
-              <>加载设置</>
+              <>加载预设</>
             )}
           </Button>
         </div>
