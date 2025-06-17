@@ -65,7 +65,7 @@ export function PresetManager({
 
   // Load saved presets
   useEffect(() => {
-    const savedPresets = localStorage.getItem("soulsign-presets");
+    const savedPresets = localStorage.getItem("sign-presets");
     if (savedPresets) {
       try {
         const parsedPresets = JSON.parse(savedPresets);
@@ -207,7 +207,7 @@ export function PresetManager({
 
     const updatedPresets = [newPreset, ...presets];
     setPresets(updatedPresets);
-    localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
+    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
 
     setPresetName("");
     setShowPresetInput(false);
@@ -242,7 +242,7 @@ export function PresetManager({
     });
 
     setPresets(updatedPresets);
-    localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
+    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
     setHasUnsavedChanges(false);
   };
 
@@ -258,7 +258,7 @@ export function PresetManager({
 
     const updatedPresets = presets.filter((preset) => preset.id !== id);
     setPresets(updatedPresets);
-    localStorage.setItem("soulsign-presets", JSON.stringify(updatedPresets));
+    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
 
     // Clear active preset if deleted
     if (activePresetId === id) {
@@ -334,7 +334,7 @@ export function PresetManager({
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="flex gap-2 px-2 mt-2"
+            className="w-full flex gap-2 px-2 mt-2"
           >
             <input
               ref={presetInputRef}
@@ -343,21 +343,21 @@ export function PresetManager({
               onChange={(e) => setPresetName(e.target.value)}
               onKeyDown={(e) => e.key === "Enter" && savePreset()}
               placeholder="预设名称..."
-              className="flex-1 px-2 py-1 text-xs bg-muted rounded-md focus:outline-none focus:border-zinc-700"
+              className="flex-1 min-w-0 px-2 py-1 text-xs bg-muted rounded-md focus:outline-none focus:border-zinc-700"
             />
             <Button
               size="sm"
               onClick={savePreset}
-              variant={"secondary"}
-              className="px-2 py-1 rounded-md text-xs"
+              variant={"outline"}
+              className="w-12 px-1 py-1 rounded-md text-xs flex-shrink-0"
             >
               确认
             </Button>
             <Button
               size="sm"
-              variant={"secondary"}
+              variant={"outline"}
               onClick={() => setShowPresetInput(false)}
-              className="px-2 py-1 rounded-md text-xs"
+              className="w-12 px-1 py-1 rounded-md text-xs flex-shrink-0"
             >
               取消
             </Button>
@@ -464,7 +464,7 @@ export function PresetManager({
                           <div className="flex items-center gap-1 px-1 py-1 rounded-md">
                             <Button
                               size="sm"
-                              variant={"ghost"}
+                              variant={"outline"}
                               className=" px-2 text-xs"
                               onClick={(e: React.MouseEvent) =>
                                 executeDeletePreset(preset.id, e)
@@ -475,7 +475,7 @@ export function PresetManager({
                             </Button>
                             <Button
                               size="sm"
-                              variant={"ghost"}
+                              variant={"outline"}
                               className=" px-2 text-xs"
                               onClick={(e: React.MouseEvent) =>
                                 cancelDeletePreset(e)
