@@ -118,7 +118,7 @@ export default function Noise({
     <canvas
       ref={canvasRef}
       className={cn(
-        "fixed inset-0 w-full h-full pointer-events-none",
+        "absolute inset-0 w-full h-full pointer-events-none",
         className
       )}
     />
