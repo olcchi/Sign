@@ -15,6 +15,8 @@ import SpotlightCard from "@/components/ui/spotlightCard";
 import { Olcchi } from "../icon/olcchi";
 import CardSwap, { Card } from "@/components/cardSwap";
 import { motion } from "motion/react";
+import Noise from "../filter/noise";
+import ShareDialog from "../share/ShareDialog";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -47,7 +49,7 @@ const DialogContent = React.forwardRef<
       {...props}
     >
       <motion.div
-        className="absolute w-120 h-120 lg:w-180 lg:h-180 rounded-full blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        className="absolute w-120 h-120 lg:w-180 lg:h-180 rounded-full opacity-60 blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
           x: ["-25%", "25%", "-25%"],
         }}
@@ -63,7 +65,7 @@ const DialogContent = React.forwardRef<
         }}
       />
       <motion.div
-        className="absolute w-80 h-80 rounded-full  blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        className="absolute w-80 h-80 rounded-full opacity-60 blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
           x: ["25%", "-25%", "25%"],
         }}
@@ -103,20 +105,20 @@ export default function WelcomeModal({
 }: WelcomeModalProps) {
   const features = [
     {
-      icon: <Sparkles className="w-5 h-5" />,
+      icon: <Sparkles className="w-5 h-5 stroke-1" />,
       title: "快速创建",
     },
     {
-      icon: <Palette className="w-5 h-5" />,
-      title: "多种样式",
+      icon: <Palette className="w-5 h-5 stroke-1" />,
+      title: "高自定义",
     },
     {
-      icon: <Share2 className="w-5 h-5" />,
-      title: "轻松分享",
+      icon: <Share2 className="w-5 h-5 stroke-1" />,
+      title: "快速分享",
     },
     {
-      icon: <Zap className="w-5 h-5" />,
-      title: "实时预览",
+      icon: <Zap className="w-5 h-5 stroke-1" />,
+      title: "即时生成",
     },
   ];
 
@@ -141,7 +143,7 @@ export default function WelcomeModal({
             <Button
               variant="outline"
               onClick={() => onOpenChange(false)}
-              className="w-40 py-3 rounded-full transition-all duration-200"
+              className=" w-40 py-3 rounded-full transition-all duration-200"
             >
               进入Sign
               <ArrowRight className="w-4 h-4 ml-1" />
@@ -153,7 +155,7 @@ export default function WelcomeModal({
               cardDistance={30}
               verticalDistance={40}
               delay={4000}
-              pauseOnHover={false}
+              pauseOnHover={true}
             >
               {features.map((feature, index) => (
                 <Card key={index} className="overflow-hidden flex flex-col">
@@ -161,8 +163,11 @@ export default function WelcomeModal({
                     {feature.icon}
                     <p className="text-sm">{feature.title}</p>
                   </div>
-                  <div className="flex-1 bg-[url(/sign-hero-bg.png)] bg-cover bg-center overflow-hidden min-h-32">
+                  <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                     {/* <img src={"/sign-hero-bg.png"} alt="" /> */}
+                    <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
+                    <Noise className="z-2" />
+                    <div className="absolute z-999">你好吗</div>
                   </div>
                 </Card>
               ))}
