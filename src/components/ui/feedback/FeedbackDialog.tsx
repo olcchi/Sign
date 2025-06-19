@@ -13,17 +13,17 @@ import {
 } from "@/components/ui/layout/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import {
-  Send,
   Loader2,
   AlertCircle,
   X,
-  Image,
   Check,
   Angry,
   Frown,
   Laugh,
   Meh,
   Smile,
+  CircleCheck,
+  Plus,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/inputs/textarea";
@@ -69,8 +69,8 @@ export default function FeedbackDialog({
   const [content, setContent] = useState("");
   const [rating, setRating] = useState<FeedbackRating | null>(null);
   const [userEmail, setUserEmail] = useState("");
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [imagePreview, setImagePreview] = useState<string | null>(null);
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [imagePreviews, setImagePreviews] = useState<string[]>([]);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [emailError, setEmailError] = useState<string | null>(null);
@@ -87,39 +87,66 @@ export default function FeedbackDialog({
 
   // Handle image selection
   const handleImageSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      // Check file size (max 2MB)
-      if (file.size > 2 * 1024 * 1024) {
-        setError("图片文件不能超过 2MB");
+    const files = event.target.files;
+    if (files) {
+      const newFiles = Array.from(files);
+      
+      // Check if adding these files would exceed the limit
+      if (selectedImages.length + newFiles.length > 4) {
+        setError(`最多只能添加4张图片，当前已有${selectedImages.length}张`);
         return;
       }
 
-      // Check file type
-      if (!file.type.startsWith("image/")) {
-        setError("请选择图片文件");
-        return;
+      const validFiles: File[] = [];
+      const validPreviews: string[] = [];
+
+      for (const file of newFiles) {
+        // Check file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+          setError("图片文件不能超过 2MB");
+          continue;
+        }
+
+        // Check file type
+        if (!file.type.startsWith("image/")) {
+          setError("请选择图片文件");
+          continue;
+        }
+
+        validFiles.push(file);
       }
 
-      setSelectedImage(file);
-      setError(null);
-
-      // Create preview
-      const reader = new FileReader();
-      reader.onload = (e) => {
-        setImagePreview(e.target?.result as string);
-      };
-      reader.readAsDataURL(file);
+      if (validFiles.length > 0) {
+        setError(null);
+        
+        // Create previews for valid files
+        validFiles.forEach((file) => {
+          const reader = new FileReader();
+          reader.onload = (e) => {
+            const preview = e.target?.result as string;
+            validPreviews.push(preview);
+            
+            // Update state when all previews are loaded
+            if (validPreviews.length === validFiles.length) {
+              setSelectedImages(prev => [...prev, ...validFiles]);
+              setImagePreviews(prev => [...prev, ...validPreviews]);
+            }
+          };
+          reader.readAsDataURL(file);
+        });
+      }
     }
-  };
-
-  // Remove selected image
-  const removeImage = () => {
-    setSelectedImage(null);
-    setImagePreview(null);
+    
+    // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
     }
+  };
+
+  // Remove selected image by index
+  const removeImage = (index: number) => {
+    setSelectedImages(prev => prev.filter((_, i) => i !== index));
+    setImagePreviews(prev => prev.filter((_, i) => i !== index));
   };
 
   // Email validation function
@@ -174,8 +201,10 @@ export default function FeedbackDialog({
         formData.append("user_email", userEmail.trim());
       }
 
-      if (selectedImage) {
-        formData.append("image", selectedImage);
+      if (selectedImages.length > 0) {
+        selectedImages.forEach((image, index) => {
+          formData.append(`image_${index}`, image);
+        });
       }
 
       const response = await fetch("/api/feedback", {
@@ -211,8 +240,8 @@ export default function FeedbackDialog({
       setContent("");
       setRating(null);
       setUserEmail("");
-      setSelectedImage(null);
-      setImagePreview(null);
+      setSelectedImages([]);
+      setImagePreviews([]);
       setIsSuccess(false);
       setError(null);
       setEmailError(null);
@@ -233,7 +262,7 @@ export default function FeedbackDialog({
             <p className="text-sm font-bold">意见反馈</p>
           </DialogTitle>
           <DialogDescription>
-            感谢您的反馈，我们会认真对待每一条反馈
+           请您提交你遇到的问题或建议
           </DialogDescription>
         </DialogHeader>
 
@@ -249,12 +278,11 @@ export default function FeedbackDialog({
                     return (
                       <Button
                         key={item.value}
-                        size='sm'
-                        variant='ghost'
+                        size="sm"
+                        variant="outline"
                         onClick={() => setRating(item.value)}
                         disabled={isLoading}
-                        className={cn(
-                        )}
+                        className={cn("p-0")}
                       >
                         <IconComponent
                           size={24}
@@ -276,7 +304,7 @@ export default function FeedbackDialog({
                   placeholder="请描述您遇到的问题或建议..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="min-h-[100px] resize-none"
+                  className="min-h-[100px] resize-none text-sm"
                   disabled={isLoading}
                 />
               </div>
@@ -286,46 +314,55 @@ export default function FeedbackDialog({
                     ref={fileInputRef}
                     type="file"
                     accept="image/*"
+                    multiple
                     onChange={handleImageSelect}
                     className="hidden"
                     disabled={isLoading}
                   />
-
-                  {!selectedImage ? (
-                    <Button
-                      type="button"
-                      variant="outline"
-                      onClick={() => fileInputRef.current?.click()}
-                      disabled={isLoading}
-                      className=""
-                    >
-                      添加图片
-                    </Button>
-                  ) : (
-                    <div className="space-y-2">
-                      <div className="relative">
+                  
+                  {selectedImages.length > 0 ? (
+                    <p className="text-xs text-muted-foreground">
+                      已添加 {selectedImages.length}/4 张图片
+                    </p>
+                  ):(
+                    <p className="text-xs text-muted-foreground">
+                      请添加图片
+                    </p>
+                  )}
+                  <div className="flex gap-2">
+                    {/* Existing images */}
+                    
+                    {selectedImages.map((file, index) => (
+                      <div key={index} className="relative group">
                         <img
-                          src={imagePreview!}
-                          alt="预览"
-                          className="w-full h-32 object-cover rounded-lg border"
+                          src={imagePreviews[index]}
+                          alt={`预览 ${index + 1}`}
+                          className="w-16 h-16 object-cover rounded-lg border"
                         />
                         <Button
                           type="button"
                           variant="destructive"
                           size="sm"
-                          onClick={removeImage}
+                          onClick={() => removeImage(index)}
                           disabled={isLoading}
-                          className="absolute top-2 right-2"
+                          className="absolute -top-1 -right-1 h-5 w-5 p-0 opacity-0 group-hover:opacity-100 transition-opacity"
                         >
-                          <X size={14} />
+                          <X size={10} />
                         </Button>
                       </div>
-                      <p className="text-xs text-muted-foreground">
-                        {selectedImage.name} (
-                        {(selectedImage.size / 1024).toFixed(1)} KB)
-                      </p>
-                    </div>
-                  )}
+                    ))}
+                    
+                    {/* Add image button - only show if less than 4 images */}
+                    {selectedImages.length < 4 && (
+                      <div
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-16 h-16 border-2 border-dashed border-muted-foreground/30 rounded-lg flex flex-col items-center justify-center cursor-pointer hover:border-muted-foreground/50 hover:bg-muted/20 transition-colors"
+                      >
+                        <Plus size={16} className="text-muted-foreground" />
+                      </div>
+                    )}
+                  </div>
+
                 </div>
               </div>
 
@@ -368,17 +405,15 @@ export default function FeedbackDialog({
             </>
           ) : (
             <>
-              <div className="text-center space-y-3 py-6">
-                <div className="w-16 h-16 bg-green-100 dark:bg-green-900/30 rounded-full flex items-center justify-center mx-auto">
-                  <Check
-                    size={32}
-                    className="text-green-600 dark:text-green-400"
-                  />
-                </div>
+              <div className="text-center flex flex-col items-center space-y-3 py-6">
+                <CircleCheck
+                  size={32}
+                  className="text-green-600 dark:text-green-400"
+                />
                 <div>
-                  <h3 className="text-lg font-semibold mb-2">
+                  <h2 className="text-sm font-semibold mb-2">
                     感谢您的反馈，我们会认真处理您的建议
-                  </h3>
+                  </h2>
                 </div>
               </div>
             </>
