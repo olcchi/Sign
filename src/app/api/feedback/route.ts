@@ -18,7 +18,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // 构建请求对象
+    // build request
     const feedbackRequest: CreateFeedbackRequest = {
       content,
       rating: rating ? parseInt(rating) as FeedbackRating : undefined,
@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
       image: image || undefined,
     }
 
-    // 使用服务层提交反馈
+
     const result = await feedbackStorage.submitFeedback(feedbackRequest)
 
     if (!result) {
