@@ -125,7 +125,6 @@ const CardSwap: React.FC<CardSwapProps> = ({
     updateResponsiveClass();
     window.addEventListener("resize", updateResponsiveClass);
     window.addEventListener("orientationchange", () => {
-      // 延迟处理方向变化，等待浏览器更新尺寸
       setTimeout(updateResponsiveClass, 100);
     });
 
