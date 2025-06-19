@@ -369,7 +369,7 @@ export default function FeedbackDialog({
               <div className="space-y-2">
                 <Input
                   type="email"
-                  placeholder="如果您接受回访，请留下邮箱"
+                  placeholder="请留下你的邮箱，我们会联系您"
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
@@ -412,7 +412,7 @@ export default function FeedbackDialog({
                 />
                 <div>
                   <h2 className="text-sm font-semibold mb-2">
-                    感谢您的反馈，我们会认真处理您的建议
+                    我们已经收到了你的反馈，感谢您。
                   </h2>
                 </div>
               </div>

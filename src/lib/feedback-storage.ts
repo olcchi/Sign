@@ -9,24 +9,30 @@ class FeedbackStorage {
     try {
       const supabase = await createClient()
       
-      let imageUrl: string | null = null
+      let imageUrls: string[] = []
 
-      if (request.image) {
-        const uploadResult = await this.uploadImage(request.image)
-        if (!uploadResult) {
-          throw new Error('图片上传失败')
+      if (request.images && request.images.length > 0) {
+        const uploadPromises = request.images.map(image => this.uploadImage(image))
+        const uploadResults = await Promise.all(uploadPromises)
+        
+        // Filter out failed uploads
+        imageUrls = uploadResults.filter(url => url !== null) as string[]
+        
+        if (uploadResults.some(result => result === null)) {
+          console.warn('Some images failed to upload')
         }
-        imageUrl = uploadResult
+      }
+
+      const insertData = {
+        content: request.content,
+        rating: request.rating || null,
+        image_url: imageUrls.length > 0 ? JSON.stringify(imageUrls) : null, // 存储所有图片URL的JSON数组
+        user_email: request.user_email || null,
       }
 
       const { data, error } = await supabase
         .from(this.tableName)
-        .insert({
-          content: request.content,
-          rating: request.rating || null,
-          image_url: imageUrl,
-          user_email: request.user_email || null,
-        })
+        .insert(insertData)
         .select()
         .single()
 
@@ -90,6 +96,20 @@ class FeedbackStorage {
     } catch (error) {
       console.error('Failed to get feedback list:', error)
       return []
+    }
+  }
+
+  // 解析图片URL的辅助方法
+  parseImageUrls(imageUrlField?: string): string[] {
+    if (!imageUrlField) return []
+    
+    try {
+      // 尝试解析为JSON数组
+      const parsed = JSON.parse(imageUrlField)
+      return Array.isArray(parsed) ? parsed : [imageUrlField]
+    } catch {
+      // 如果不是JSON，则作为单个URL处理
+      return [imageUrlField]
     }
   }
 

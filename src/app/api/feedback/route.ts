@@ -9,7 +9,15 @@ export async function POST(request: NextRequest) {
     const content = formData.get('content') as string
     const rating = formData.get('rating') as string | null
     const userEmail = formData.get('user_email') as string | null
-    const image = formData.get('image') as File | null
+    
+    // Collect all images (image_0, image_1, image_2, image_3)
+    const images: File[] = []
+    for (let i = 0; i < 4; i++) {
+      const image = formData.get(`image_${i}`) as File | null
+      if (image) {
+        images.push(image)
+      }
+    }
 
     if (!content) {
       return NextResponse.json(
@@ -23,9 +31,8 @@ export async function POST(request: NextRequest) {
       content,
       rating: rating ? parseInt(rating) as FeedbackRating : undefined,
       user_email: userEmail || undefined,
-      image: image || undefined,
+      images: images.length > 0 ? images : undefined,
     }
-
 
     const result = await feedbackStorage.submitFeedback(feedbackRequest)
 
