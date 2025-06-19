@@ -68,7 +68,7 @@ export default function FullScreen({ className, asButton = false }: FullScreenPr
   return (
     <div 
       className={cn(
-        "fixed top-4 left-4 z-998 transition-opacity duration-300", 
+        "transition-opacity duration-300", 
         isActive ? "opacity-100" : "opacity-10 hover:opacity-100",
         className
       )}
