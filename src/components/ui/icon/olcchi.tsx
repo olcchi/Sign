@@ -21,12 +21,12 @@ export function Olcchi({
   className,
 }: OlcchiProps) {
   return (
-    <div className={cn('fixed bottom-4 left-4 z-10 flex items-center gap-3 text-xs text-zinc-500/70', className)}>
+    <div className={cn('fixed bottom-4 left-4 z-10 flex items-center gap-3 ', className)}>
       <Link 
         href={personalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="font-medium hover:text-zinc-300 transition-colors border-b border-dashed border-zinc-700 pb-0.5"
+        className="text-xs hover:opacity-100 opacity-10 transition-opacity hover:underline font-mono"
       >
         @{id}
       </Link>
