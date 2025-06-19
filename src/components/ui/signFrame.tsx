@@ -1,9 +1,9 @@
 "use client";
+import { useRef } from "react";
 import ToolBar from "@/components/ui/toolBar/toolBar";
 import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
 import { EdgeBlurEffect } from "@/components/ui/filter/EdgeBlurEffect";
-import { Olcchi } from "@/components/ui/icon/olcchi";
-import { useRef, useState, useEffect } from "react";
+import FullScreen from "@/components/ui/layout/fullScreen";
 import Image from "next/image";
 import "@/components/ui/widgets/shinyText/shinyText.css";
 import Noise from "@/components/ui/filter/noise";
@@ -16,22 +16,12 @@ interface SignFrameProps {
 
 export default function SignFrame({ className }: SignFrameProps) {
   const textRef = useRef<HTMLDivElement>(null);
-  const [showWelcome, setShowWelcome] = useState(false);
   const {
     textSettings,
     backgroundSettings,
     effectsSettings,
     setIsTextScrolling,
   } = useSettings();
-
-  // Check if this is the first visit and show welcome modal
-  useEffect(() => {
-    const hasVisited = localStorage.getItem('sign-has-visited');
-    if (!hasVisited) {
-      setShowWelcome(true);
-      localStorage.setItem('sign-has-visited', 'true');
-    }
-  }, []);
 
   // Background style based on settings
   const backgroundStyle = {
@@ -40,16 +30,11 @@ export default function SignFrame({ className }: SignFrameProps) {
 
   return (
     <main
-      className={`relative w-screen h-[100dvh] overflow-hidden font-sans ${className || ''}`}
+      className={`relative w-screen h-[100dvh] overflow-hidden font-sans ${
+        className || ""
+      }`}
       style={backgroundStyle}
     >
-      {/* Welcome Modal */}
-      <WelcomeModal 
-        open={showWelcome} 
-        onOpenChange={setShowWelcome}
-      />
-
-      {/* Background image with dynamic positioning and scaling */}
       {backgroundSettings.backgroundImage && (
         <div className="absolute inset-0 z-0">
           <Image
@@ -67,14 +52,10 @@ export default function SignFrame({ className }: SignFrameProps) {
           />
         </div>
       )}
-
-      {/* Semi-transparent overlay improves text readability over images */}
       {backgroundSettings.backgroundImage &&
         backgroundSettings.overlayEnabled && (
           <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1"></div>
         )}
-
-      {/* Noise texture adds visual depth and dimension */}
       {effectsSettings.noiseEnabled && (
         <Noise
           className="z-30 mix-blend-overlay"
@@ -84,8 +65,6 @@ export default function SignFrame({ className }: SignFrameProps) {
           animated={effectsSettings.noiseAnimated}
         />
       )}
-
-      {/* Scrolling text component with dynamic settings */}
       <ScrollingText
         className="fixed inset-0 z-20 overflow-hidden flex items-center justify-center"
         fontFamily={textSettings.fontFamily}
@@ -102,21 +81,18 @@ export default function SignFrame({ className }: SignFrameProps) {
         textStrokeColor={textSettings.textStrokeColor}
         textFillEnabled={textSettings.textFillEnabled}
       />
-
-      {/* Edge blur effect for visual polish */}
       <EdgeBlurEffect
         className="pointer-events-none fixed inset-0 z-30"
         enabled={effectsSettings.edgeBlurEnabled}
         intensity={effectsSettings.edgeBlurIntensity}
       />
-
-      {/* Toolbar for user interactions */}
-      <ToolBar 
-        className="w-full h-full z-[999] relative flex" 
-        onShowWelcome={() => setShowWelcome(true)}
-      />
-
-      <Olcchi className="z-[999]" />
+      <WelcomeModal />
+      
+      {/* Top-right button group */}
+      <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
+        <FullScreen asButton={true} />
+        <ToolBar className="relative pointer-events-none" />
+      </div>
     </main>
   );
-} 
+}
