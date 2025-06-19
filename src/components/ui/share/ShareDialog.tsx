@@ -39,7 +39,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
+        "fixed inset-0 z-[1001] m-auto w-3/4 h-fit md:w-full max-w-lg max-h-[90vh] border bg-background p-6 shadow-lg rounded-lg overflow-hidden",
         className
       )}
       {...props}
@@ -202,7 +202,7 @@ export default function ShareDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4">
+        <div className="space-y-4 min-h-0 flex-1 overflow-hidden">
           {!shareResult ? (
             <>
               {/* Active preset info */}
@@ -214,7 +214,7 @@ export default function ShareDialog({
                         {shareInfo.preset.name}
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-3 pb-3">
+                    <AccordionContent className="px-3 pb-3 max-h-32 overflow-y-auto">
                       <div className="text-xs text-muted-foreground leading-relaxed space-y-1">
                         {shareInfo.description.map((detail, index) => (
                           <div key={index}>{detail}</div>
