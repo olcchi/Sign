@@ -11,8 +11,7 @@ import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
 import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
 import { useToolbarState } from "@/lib/hooks/useToolbarState";
 import { Card } from "@/components/ui/layout/card";
-import { Ellipsis, Maximize, Minimize, HelpCircle } from "lucide-react";
-import { useFullScreenStore } from "@/stores/fullScreenStore";
+import { Ellipsis } from "lucide-react";
 import {
   colorOptions,
   fontOptions,
@@ -27,11 +26,10 @@ const MotionCard = motion.create(Card);
 
 interface ToolBarProps {
   className?: string;
-  onShowWelcome?: () => void;
 }
 
 // Main configuration toolbar component that manages all display settings UI
-export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
+export default function ToolBar({ className }: ToolBarProps) {
   // Access settings from context
   const {
     textSettings,
@@ -44,9 +42,6 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
 
   // Track current active preset
   const [activePreset, setActivePreset] = useState<Preset | null>(null);
-
-  // Fullscreen state
-  const { isFull, setIsFull } = useFullScreenStore();
 
   // Using custom hooks to separate state and logic for improved maintainability
   const {
@@ -84,34 +79,8 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
   // Use unified preset manager
   const { loadPreset } = usePresetManager();
 
-  // Fullscreen toggle function
-  const toggleFullscreen = () => {
-    if (isFull) {
-      document.exitFullscreen();
-    } else {
-      document.documentElement.requestFullscreen().catch((err) => {
-        console.error("Fullscreen failed:", err);
-      });
-    }
-    setIsFull(!isFull);
-  };
-
   // Toolbar menu item configuration
   const toolbarItems = [
-    {
-      id: "fullscreen",
-      label: isFull ? "退出全屏" : "进入全屏",
-      icon: isFull ? <Minimize size={20} color="#FFFFFB" /> : <Maximize size={20} color="#FFFFFB" />,
-      action: toggleFullscreen,
-    },
-    {
-      id: "help",
-      label: "帮助",
-      icon: <HelpCircle color="#FFFFFB" />,
-      action: () => {
-        onShowWelcome?.();
-      },
-    },
     {
       id: "menu",
       label: "菜单",
@@ -128,9 +97,9 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
-    sm: "w-[80vw] top-16 right-4 h-auto max-h-[70vh]",
+    sm: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
     md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
-    lg: "lg:w-90 lg:top-16 lg:right-4",
+    lg: "lg:w-90 lg:top-12 lg:right-0",
   };
   // Animation configuration for toolbar transitions
   const transition = {
@@ -165,7 +134,7 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
         {/* toolbar buttons */}
         <div
           className={cn(
-            "absolute top-4 right-4",
+            "pointer-events-auto",
             "transition-opacity duration-300",
             isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
           )}
@@ -199,7 +168,7 @@ export default function ToolBar({ className, onShowWelcome }: ToolBarProps) {
                 toolBarPosition.sm,
                 toolBarPosition.md,
                 toolBarPosition.lg,
-                "absolute flex flex-col py-0 gap-0 "
+                "absolute flex flex-col py-0 gap-0 pointer-events-auto"
               )}
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
