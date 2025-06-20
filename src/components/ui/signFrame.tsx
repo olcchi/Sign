@@ -66,7 +66,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         />
       )}
       <ScrollingText
-        className="fixed inset-0 z-20 overflow-hidden flex items-center justify-center"
+        className="fixed inset-0 z-20 overflow-hidden flex-center"
         fontFamily={textSettings.fontFamily}
         text={textSettings.text}
         fontSize={textSettings.fontSize}
