@@ -12,11 +12,14 @@ import {
   DialogOverlay,
 } from "@/components/ui/layout/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
+import { cn } from "@/lib/utils";
+import { Textarea } from "@/components/ui/inputs/textarea";
+import { Input } from "@/components/ui/inputs/input";
+import { FeedbackRating } from "@/types/feedback";
 import {
   Loader2,
   AlertCircle,
   X,
-  Check,
   Angry,
   Frown,
   Laugh,
@@ -25,11 +28,6 @@ import {
   CircleCheck,
   Plus,
 } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/inputs/textarea";
-import { Input } from "@/components/ui/inputs/input";
-import { FeedbackRating } from "@/types/feedback";
-
 // Create a non-animated version of DialogContent
 const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
@@ -40,7 +38,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
+        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg min-w-fit translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
         className
       )}
       {...props}
@@ -262,7 +260,7 @@ export default function FeedbackDialog({
             <p className="text-sm font-bold">意见反馈</p>
           </DialogTitle>
           <DialogDescription>
-           请您提交你遇到的问题或建议
+           请您提交您遇到的问题或建议
           </DialogDescription>
         </DialogHeader>
 
@@ -369,7 +367,7 @@ export default function FeedbackDialog({
               <div className="space-y-2">
                 <Input
                   type="email"
-                  placeholder="请留下你的邮箱，我们会联系您"
+                  placeholder="请留下您的邮箱，我们会联系您"
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
@@ -412,7 +410,7 @@ export default function FeedbackDialog({
                 />
                 <div>
                   <h2 className="text-sm font-semibold mb-2">
-                    我们已经收到了你的反馈，感谢您。
+                    我们已经收到了您的反馈，感谢您。
                   </h2>
                 </div>
               </div>
