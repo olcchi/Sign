@@ -2,7 +2,7 @@ import { Maximize, Minimize } from "lucide-react";
 import { useFullScreenStore } from "@/stores/fullScreenStore";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
-import { useEffect, useState } from "react";
+import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 
 interface FullScreenProps {
   className?: string;
@@ -11,42 +11,7 @@ interface FullScreenProps {
 
 export default function FullScreen({ className, asButton = false }: FullScreenProps) {
   const { isFull, setIsFull } = useFullScreenStore();
-  const [isActive, setIsActive] = useState(true);
-  
-  // Handle user interaction and inactive state
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    
-    // User interaction event listener
-    const handleUserInteraction = () => {
-      setIsActive(true);
-      
-      // Clear existing timer
-      clearTimeout(timeoutId);
-      
-      // Set new timer, reduce opacity after 3 seconds
-      timeoutId = setTimeout(() => {
-        setIsActive(false);
-      }, 3000);
-    };
-    
-    // Initial startup
-    handleUserInteraction();
-    
-    // Add event listeners
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-    events.forEach(event => {
-      window.addEventListener(event, handleUserInteraction);
-    });
-    
-    // Cleanup function
-    return () => {
-      clearTimeout(timeoutId);
-      events.forEach(event => {
-        window.removeEventListener(event, handleUserInteraction);
-      });
-    };
-  }, []);
+  const isActive = useUserActivityTracking(3000);
 
   const toggleFullscreen = () => {
     if (isFull) {
@@ -68,8 +33,8 @@ export default function FullScreen({ className, asButton = false }: FullScreenPr
   return (
     <div 
       className={cn(
-        "transition-opacity duration-300", 
-        isActive ? "opacity-100" : "opacity-10 hover:opacity-100",
+        "activity-opacity", 
+        isActive ? "active" : "inactive",
         className
       )}
     >
