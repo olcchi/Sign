@@ -191,3 +191,29 @@
 .custom-scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: var(--border);
 }
+
+/* Unified utility classes for common patterns */
+@layer utilities {
+  /* Flex center pattern - used in multiple components */
+  .flex-center {
+    @apply flex items-center justify-center;
+  }
+  
+  /* Opacity fade transition - used across UI components */
+  .opacity-fade {
+    @apply transition-opacity duration-300;
+  }
+  
+  /* Activity-based opacity - for inactive state management */
+  .activity-opacity {
+    @apply transition-opacity duration-300;
+  }
+  
+  .activity-opacity.active {
+    @apply opacity-100;
+  }
+  
+  .activity-opacity.inactive {
+    @apply opacity-10 hover:opacity-100;
+  }
+}
