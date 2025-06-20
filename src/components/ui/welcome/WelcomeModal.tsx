@@ -15,6 +15,7 @@ import { Olcchi } from "../icon/olcchi";
 import CardSwap, { Card } from "@/components/ui/cardSwap";
 import { motion } from "motion/react";
 import Noise from "../filter/noise";
+import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -99,7 +100,7 @@ export default function WelcomeModal({
   className,
 }: WelcomeModalProps) {
   const [open, setOpen] = useState(false);
-  const [isActive, setIsActive] = useState(true);
+  const isActive = useUserActivityTracking(3000);
 
   // Check if this is the first visit and show welcome modal
   useEffect(() => {
@@ -108,41 +109,6 @@ export default function WelcomeModal({
       setOpen(true);
       localStorage.setItem('sign-has-visited', 'true');
     }
-  }, []);
-
-  // Handle user interaction and inactive state for trigger button
-  useEffect(() => {
-    let timeoutId: ReturnType<typeof setTimeout>;
-    
-    // User interaction event listener
-    const handleUserInteraction = () => {
-      setIsActive(true);
-      
-      // Clear existing timer
-      clearTimeout(timeoutId);
-      
-      // Set new timer, reduce opacity after 3 seconds
-      timeoutId = setTimeout(() => {
-        setIsActive(false);
-      }, 3000);
-    };
-    
-    // Initial startup
-    handleUserInteraction();
-    
-    // Add event listeners
-    const events = ['mousedown', 'mousemove', 'keypress', 'scroll', 'touchstart'];
-    events.forEach(event => {
-      window.addEventListener(event, handleUserInteraction);
-    });
-    
-    // Cleanup function
-    return () => {
-      clearTimeout(timeoutId);
-      events.forEach(event => {
-        window.removeEventListener(event, handleUserInteraction);
-      });
-    };
   }, []);
 
   const features = [
@@ -169,8 +135,8 @@ export default function WelcomeModal({
       {/* SignHeroTitle trigger */}
       <div 
         className={cn(
-          "fixed top-4 left-4 z-[999] transition-opacity duration-300 cursor-pointer", 
-          isActive ? "opacity-100" : "opacity-10 hover:opacity-100",
+          "fixed top-4 left-4 z-[999] activity-opacity cursor-pointer", 
+          isActive ? "active" : "inactive",
           className
         )}
         onClick={() => setOpen(true)}
