@@ -1,27 +1,8 @@
 import { Preset } from "@/components/ui/settings/Preset/types";
 import { ApiResponse } from "@/types";
 import { presetToShareable, shareableToPreset } from "@/lib/preset-conversion";
-
-// Simple request queue to avoid rate limiting
-class RequestQueue {
-  private lastRequestTime = 0;
-  private readonly minInterval = 600; // 0.6 seconds between requests
-
-  async execute<T>(requestFn: () => Promise<T>): Promise<T> {
-    const now = Date.now();
-    const timeSinceLastRequest = now - this.lastRequestTime;
-    
-    if (timeSinceLastRequest < this.minInterval) {
-      const delay = this.minInterval - timeSinceLastRequest;
-      await new Promise(resolve => setTimeout(resolve, delay));
-    }
-    
-    this.lastRequestTime = Date.now();
-    return requestFn();
-  }
-}
-
-const requestQueue = new RequestQueue();
+import { requestQueue } from "@/services/request-queue";
+import { getExpirationTime as getExpirationTimeUtil } from "@/lib/utils";
 
 // Unified preset API service
 export class PresetApiService {
@@ -32,9 +13,7 @@ export class PresetApiService {
 
   // Calculate expiration time (24 hours from now)
   static getExpirationTime(): string {
-    const now = new Date();
-    const expiration = new Date(now.getTime() + 24 * 60 * 60 * 1000); // 24 hours
-    return expiration.toISOString();
+    return getExpirationTimeUtil(24);
   }
 
   // Create shareable URL for preset
@@ -55,7 +34,7 @@ export class PresetApiService {
     try {
       const shareablePreset = presetToShareable(preset);
 
-      const response = await requestQueue.execute(() =>
+      const response = await requestQueue.add(() =>
         fetch('/api/share/save-preset', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
@@ -94,7 +73,7 @@ export class PresetApiService {
     }
 
     try {
-      const response = await requestQueue.execute(() =>
+      const response = await requestQueue.add(() =>
         fetch(`/api/share/load-preset/${pinCode}`, {
           method: 'GET',
           headers: { 'Content-Type': 'application/json' },
@@ -130,7 +109,7 @@ export class PresetApiService {
     }
 
     try {
-      const response = await requestQueue.execute(() =>
+      const response = await requestQueue.add(() =>
         fetch(`/api/share/delete-preset/${pinCode}`, {
           method: 'DELETE',
           headers: { 'Content-Type': 'application/json' },
