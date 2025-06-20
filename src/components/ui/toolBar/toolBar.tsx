@@ -135,8 +135,8 @@ export default function ToolBar({ className }: ToolBarProps) {
         <div
           className={cn(
             "pointer-events-auto",
-            "transition-opacity duration-300",
-            isActive || isOpen ? "opacity-100" : "opacity-10 hover:opacity-100"
+            "activity-opacity",
+            isActive || isOpen ? "active" : "inactive"
           )}
           ref={menuRef}
         >
