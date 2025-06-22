@@ -1,5 +1,8 @@
+"use client";
+
+import React, { useRef, useEffect, useState } from "react";
 import { motion } from "motion/react";
-import "./scrollingTextScroller.css";
+import "./scrolling-text-scroller.css";
 import { cn } from "@/lib/utils";
 
 interface ScrollingTextScrollerProps {

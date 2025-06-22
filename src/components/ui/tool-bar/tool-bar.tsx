@@ -1,15 +1,15 @@
 "use client";
 
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
-import { SettingItem } from "@/components/ui/settings/SettingItem";
+import { SettingItem } from "@/components/ui/settings/setting-item";
 import { PresetManager, Preset } from "@/components/ui/settings/Preset";
-import { ToolBarSettings } from "@/components/ui/settings/ToolBarSettings";
-import { PanelHeader } from "@/components/ui/settings/panel/PanelHeader";
-import { PanelContent } from "@/components/ui/settings/panel/PanelContent";
-import { useToolbarState } from "@/lib/hooks/useToolbarState";
+import { ToolBarSettings } from "@/components/ui/settings/tool-bar-settings";
+import { PanelHeader } from "@/components/ui/settings/panel/panel-header";
+import { PanelContent } from "@/components/ui/settings/panel/panel-content";
+import { Separator } from "@/components/ui/layout/separator";
 import { Card } from "@/components/ui/layout/card";
 import { Ellipsis } from "lucide-react";
 import {
@@ -19,7 +19,10 @@ import {
 } from "@/lib/settings-config";
 import { useBackgroundImage } from "@/lib/hooks/useBackgroundImage";
 import { usePresetManager } from "@/lib/hooks/usePresetManager";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { useSettings } from "@/lib/contexts/settings-context";
+import { useToolbarState } from "@/lib/hooks/useToolbarState";
+import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
+import useClickOutside from "@/lib/hooks/useClickOutside";
 
 // Create motion variants of Card component
 const MotionCard = motion.create(Card);

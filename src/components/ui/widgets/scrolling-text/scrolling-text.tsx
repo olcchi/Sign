@@ -1,8 +1,8 @@
 "use client";
 import { useState, useRef, useEffect, useCallback } from "react";
 import { cn } from "@/lib/utils";
-import { ScrollingTextScroller } from "@/components/ui/widgets/scrollingText/scrollingTextScroller";
-import "@/components/ui/widgets/shinyText/shinyText.css";
+import { ScrollingTextScroller } from "@/components/ui/widgets/scrolling-text/scrolling-text-scroller";
+import "@/components/ui/widgets/shiny-text/shiny-text.css";
 
 export interface ScrollingTextProps {
   text: string;

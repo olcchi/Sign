@@ -7,15 +7,17 @@ import {
   DialogOverlay,
 } from "@/components/ui/layout/dialog";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import SignHeroTitle from "@/components/ui/icon/signHeroTitle";
+import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
 import { Button } from "@/components/ui/layout/button";
 import { X, ArrowRight, Sparkles, Share2, Palette, Zap } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
-import CardSwap, { Card } from "@/components/ui/cardSwap";
+import CardSwap, { Card } from "@/components/ui/welcome/card-swap";
 import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
+import { AnimatedSign } from "@/components/ui/welcome/animated-sign";
+import { GlowEffect } from "./glowEffect";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -96,46 +98,45 @@ interface WelcomeModalProps {
   className?: string;
 }
 
-export default function WelcomeModal({
-  className,
-}: WelcomeModalProps) {
+export default function WelcomeModal({ className }: WelcomeModalProps) {
   const [open, setOpen] = useState(false);
   const isActive = useUserActivityTracking(3000);
 
   // Check if this is the first visit and show welcome modal
   useEffect(() => {
-    const hasVisited = localStorage.getItem('sign-has-visited');
+    const hasVisited = localStorage.getItem("sign-has-visited");
     if (!hasVisited) {
       setOpen(true);
-      localStorage.setItem('sign-has-visited', 'true');
+      localStorage.setItem("sign-has-visited", "true");
     }
   }, []);
 
+  const iconStyle = "w-5 h-5 stroke-1";
   const features = [
     {
-      icon: <Sparkles className="w-5 h-5 stroke-1" />,
+      icon: <Sparkles className={iconStyle} />,
       title: "快速创建",
     },
-    {
-      icon: <Palette className="w-5 h-5 stroke-1" />,
-      title: "高自定义",
-    },
-    {
-      icon: <Share2 className="w-5 h-5 stroke-1" />,
-      title: "快速分享",
-    },
-    {
-      icon: <Zap className="w-5 h-5 stroke-1" />,
-      title: "即时生成",
-    },
+    // {
+    //   icon: <Palette className={iconStyle} />,
+    //   title: "丰富选项",
+    // },
+    // {
+    //   icon: <Zap className={iconStyle} />,
+    //   title: "即时生成",
+    // },
+    // {
+    //   icon: <Share2 className={iconStyle} />,
+    //   title: "快速分享",
+    // },
   ];
 
   return (
     <>
       {/* SignHeroTitle trigger */}
-      <div 
+      <div
         className={cn(
-          "fixed top-4 left-4 z-[999] activity-opacity cursor-pointer", 
+          "fixed top-4 left-4 z-[999] activity-opacity cursor-pointer",
           isActive ? "active" : "inactive",
           className
         )}
@@ -144,15 +145,15 @@ export default function WelcomeModal({
         tabIndex={0}
         aria-label="打开Sign"
         onKeyDown={(e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
+          if (e.key === "Enter" || e.key === " ") {
             e.preventDefault();
             setOpen(true);
           }
         }}
       >
         <SignHeroTitle
-          size="sm" 
-          className="text-[#FFFFFB] hover:opacity-80 transition-opacity duration-200 select-none" 
+          size="sm"
+          className="text-[#FFFFFB] hover:opacity-80 transition-opacity duration-200 select-none"
         />
       </div>
 
@@ -174,14 +175,23 @@ export default function WelcomeModal({
                   </p>
                 </div>
               </div>
-              <Button
-                variant="outline"
-                onClick={() => setOpen(false)}
-                className=" w-40 py-3 rounded-full transition-all duration-200"
-              >
-                进入Sign
-                <ArrowRight className="w-4 h-4 ml-1" />
-              </Button>
+                              <div className="relative group">
+                  <Button
+                    variant="outline"
+                    onClick={() => setOpen(false)}
+                    className="relative w-40 py-3 bg-gradient-to-t  from-[#211E55] to-[#060606] transition-colors rounded-full duration-200"
+                  >
+                    进入Sign
+                    <ArrowRight className=" w-4 h-4 ml-1 transition-all ease-in-out duration-200 group-hover:translate-x-1" />
+                  </Button>
+                  <GlowEffect
+                    mode="rotate"
+                    blur="soft"
+                    scale={1.1}
+                    colors={["#211E55"]}
+                    className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
+                  />
+                </div>
             </div>
             {/* Right CardSwap Area */}
             <div className="relative w-full h-full">
@@ -193,15 +203,14 @@ export default function WelcomeModal({
               >
                 {features.map((feature, index) => (
                   <Card key={index} className="overflow-hidden flex flex-col">
-                    <div className="flex items-center w-full h-10 border-b border-foreground gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
+                    <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
                       {feature.icon}
                       <p className="text-sm">{feature.title}</p>
                     </div>
                     <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
-                      {/* <img src={"/sign-hero-bg.png"} alt="" /> */}
                       <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
-                      <Noise className="z-2" />
-                      <div className="absolute z-999">你好吗</div>
+                      <Noise density={0.05} className="z-2 bg-blend-overlay" />
+                      <AnimatedSign />
                     </div>
                   </Card>
                 ))}

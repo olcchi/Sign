@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { cn } from '@/lib/utils';
-import { ProgressiveBlur } from '@/components/ui/filter/progressiveBlur'
+import { ProgressiveBlur } from '@/components/ui/filter/progressive-blur'
 
 
 interface EdgeBlurEffectProps {

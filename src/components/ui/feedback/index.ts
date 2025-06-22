@@ -1,1 +1,1 @@
-export { default as FeedbackDialog } from './FeedbackDialog'; 
+export { default as FeedbackDialog } from "./feedback-dialog"; 

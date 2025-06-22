@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { ApiResponse } from "@/types";
 import { Preset } from "@/components/ui/settings/Preset";
-import { TextSettings, EffectsSettings } from "@/lib/contexts/SettingsContext";
+import { TextSettings, EffectsSettings } from "@/lib/contexts/settings-context";
 import {
   createPresetFromCurrentSettings,
   getPresetDetailedInfo,

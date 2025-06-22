@@ -21,8 +21,8 @@ import {
   AccordionContent,
 } from "@/components/ui/layout/accordion";
 import { cn } from "@/lib/utils";
-import { ShareSetting } from "@/components/ui/settings/settingsComponent/ShareSetting";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
+import { useSettings } from "@/lib/contexts/settings-context";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
 import type { Preset, PresetManagerProps } from "./Preset/types";
 

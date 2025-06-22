@@ -1,9 +1,9 @@
 "use client";
-import { FontFamilySetting } from "./FontFamilySetting";
-import { FontSizeSetting } from "./FontSizeSetting";
-import { FontWeightSetting } from "./FontWeightSetting";
-import { TextFillSetting } from "./TextFillSetting";
-import { TextStrokeSetting } from "./TextStrokeSetting";
+import { FontFamilySetting } from "./font-family-setting";
+import { FontSizeSetting } from "./font-size-setting";
+import { FontWeightSetting } from "./font-weight-setting";
+import { TextFillSetting } from "./text-fill-setting";
+import { TextStrokeSetting } from "./text-stroke-setting";
 
 interface TextRenderingSettingProps {
   colorOptions: Array<{

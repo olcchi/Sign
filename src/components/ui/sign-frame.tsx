@@ -1,14 +1,14 @@
 "use client";
 import { useRef } from "react";
-import ToolBar from "@/components/ui/toolBar/toolBar";
-import ScrollingText from "@/components/ui/widgets/scrollingText/scrollingText";
-import { EdgeBlurEffect } from "@/components/ui/filter/EdgeBlurEffect";
-import FullScreen from "@/components/ui/layout/fullScreen";
+import ToolBar from "@/components/ui/tool-bar/tool-bar";
+import ScrollingText from "@/components/ui/widgets/scrolling-text/scrolling-text";
+import { EdgeBlurEffect } from "@/components/ui/filter/edge-blur-effect";
+import FullScreen from "@/components/ui/layout/full-screen";
 import Image from "next/image";
-import "@/components/ui/widgets/shinyText/shinyText.css";
+import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import Noise from "@/components/ui/filter/noise";
-import { useSettings } from "@/lib/contexts/SettingsContext";
-import WelcomeModal from "@/components/ui/welcome/WelcomeModal";
+import { useSettings } from "@/lib/contexts/settings-context";
+import WelcomeModal from "@/components/ui/welcome/welcome-modal";
 
 interface SignFrameProps {
   className?: string;

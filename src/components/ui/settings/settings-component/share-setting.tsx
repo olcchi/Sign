@@ -3,8 +3,8 @@
 import React from "react";
 import { Preset } from "@/components/ui/settings/Preset";
 import { usePresetManager } from "@/lib/hooks/usePresetManager";
-import ShareDialog from "@/components/ui/share/ShareDialog";
-import ImportDialog from "@/components/ui/share/ImportDialog";
+import ShareDialog from "@/components/ui/share/share-dialog";
+import ImportDialog from "@/components/ui/share/import-dialog";
 import { Button } from "@/components/ui/layout/button";
 import { CloudUpload, CloudDownload } from "lucide-react";
 

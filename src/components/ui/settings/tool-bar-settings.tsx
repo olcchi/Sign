@@ -1,11 +1,14 @@
 "use client";
+import React from "react";
+import { Card } from "@/components/ui/layout/card";
 import {
   ContentSetting,
   TextRenderingSetting,
   ScrollSpeedSetting,
-  BackgroundImageSetting,
+  TextFillSetting,
   EffectsSetting,
-} from "@/components/ui/settings/settingsComponent";
+  BackgroundImageSetting,
+} from "@/components/ui/settings/settings-component";
 import { Preset } from "@/components/ui/settings/Preset";
 
 // Configurable options

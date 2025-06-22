@@ -5,8 +5,8 @@ import { ImagePlus, Trash2 } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/layout/button";
 import Image from "next/image";
-import { useSettings } from "@/lib/contexts/SettingsContext";
-import { ToggleButton } from "../ToggleButton";
+import { useSettings } from "@/lib/contexts/settings-context";
+import { ToggleButton } from "../toggle-button";
 
 interface BackgroundImageSettingProps {
   previewImage: string | null;

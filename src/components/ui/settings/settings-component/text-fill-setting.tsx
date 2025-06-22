@@ -1,9 +1,9 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Baseline } from "lucide-react";
-import { ToggleButton } from "@/components/ui/settings/ToggleButton";
-import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ToggleButton } from "@/components/ui/settings/toggle-button";
+import { OptionButtonGroup } from "@/components/ui/settings/option-button-group";
+import { useSettings } from "@/lib/contexts/settings-context";
 
 interface TextFillSettingProps {
   colorOptions: Array<{

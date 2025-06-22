@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/ui/layout/themeProvider";
+import { ThemeProvider } from "@/components/ui/layout/theme-provider";
 import {
   Geist,
   Geist_Mono,

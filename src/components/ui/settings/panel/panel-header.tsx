@@ -4,7 +4,7 @@ import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/layout/button";
 import { Switch } from "@/components/ui/layout/switch";
 import { Separator } from "@/components/ui/layout/separator";
-import FeedbackDialog from "@/components/ui/feedback/FeedbackDialog";
+import FeedbackDialog from "@/components/ui/feedback/feedback-dialog";
 
 interface PanelHeaderProps {
   title: string;

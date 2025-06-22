@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { useSettings } from "@/lib/contexts/settings-context";
 import { Preset } from "@/components/ui/settings/Preset/types";
 import { applyPreset } from "@/lib/preset-utils";
 

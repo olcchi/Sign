@@ -2,8 +2,8 @@
 
 import React from "react";
 import { Slider } from "@/components/ui/inputs/slider";
-import { ToggleButton } from "@/components/ui/settings/ToggleButton";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ToggleButton } from "@/components/ui/settings/toggle-button";
+import { useSettings } from "@/lib/contexts/settings-context";
 import { edgeBlurConfig, noiseConfig } from "@/lib/settings-config";
 
 export function EffectsSetting() {

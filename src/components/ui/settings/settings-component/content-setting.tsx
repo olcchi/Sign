@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Save, RotateCcw } from "lucide-react";
 import { Button } from "@/components/ui/layout/button";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { useSettings } from "@/lib/contexts/settings-context";
 import { Textarea } from "@/components/ui/inputs/textarea";
 
 interface ContentSettingProps {

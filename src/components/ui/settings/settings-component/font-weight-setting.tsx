@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { ToggleButton } from "@/components/ui/settings/ToggleButton";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ToggleButton } from "@/components/ui/settings/toggle-button";
+import { useSettings } from "@/lib/contexts/settings-context";
 
 export function FontWeightSetting() {
   const { textSettings, updateTextSettings } = useSettings();

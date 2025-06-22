@@ -1,8 +1,8 @@
 "use client";
 
 import React from "react";
-import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { OptionButtonGroup } from "@/components/ui/settings/option-button-group";
+import { useSettings } from "@/lib/contexts/settings-context";
 
 interface FontFamilySettingProps {
   fontOptions: Array<{

@@ -2,9 +2,9 @@
 import { cn } from "@/lib/utils";
 import { Baseline } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
-import { ToggleButton } from "@/components/ui/settings/ToggleButton";
-import { OptionButtonGroup } from "@/components/ui/settings/OptionButtonGroup";
-import { useSettings } from "@/lib/contexts/SettingsContext";
+import { ToggleButton } from "@/components/ui/settings/toggle-button";
+import { OptionButtonGroup } from "@/components/ui/settings/option-button-group";
+import { useSettings } from "@/lib/contexts/settings-context";
 import { textStrokeConfig } from "@/lib/settings-config";
 
 interface TextStrokeSettingProps {
