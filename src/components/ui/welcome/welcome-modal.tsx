@@ -9,7 +9,7 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
 import { Button } from "@/components/ui/layout/button";
-import { X, ArrowRight, Sparkles, Share2, Palette, Zap } from "lucide-react";
+import { X, ArrowRight, Sparkles, Share2, Palette, Zap, Component } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
 import CardSwap, { Card } from "@/components/ui/welcome/card-swap";
@@ -17,7 +17,8 @@ import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { AnimatedSign } from "@/components/ui/welcome/animated-sign";
-import { GlowEffect } from "./glowEffect";
+import { GlowEffect } from "./glow-effect";
+import { Circle202 } from "../icon/circle202";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -115,7 +116,10 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
   const features = [
     {
       icon: <Sparkles className={iconStyle} />,
-      title: "快速创建",
+      title: "绚丽文字",
+      content:<>
+      <AnimatedSign />
+      </>
     },
     // {
     //   icon: <Palette className={iconStyle} />,
@@ -175,23 +179,23 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                   </p>
                 </div>
               </div>
-                              <div className="relative group">
-                  <Button
-                    variant="outline"
-                    onClick={() => setOpen(false)}
-                    className="relative w-40 py-3 bg-gradient-to-t  from-[#211E55] to-[#060606] transition-colors rounded-full duration-200"
-                  >
-                    进入Sign
-                    <ArrowRight className=" w-4 h-4 ml-1 transition-all ease-in-out duration-200 group-hover:translate-x-1" />
-                  </Button>
-                  <GlowEffect
-                    mode="rotate"
-                    blur="soft"
-                    scale={1.1}
-                    colors={["#211E55"]}
-                    className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
-                  />
-                </div>
+              <div className="relative group">
+                <Button
+                  variant="outline"
+                  onClick={() => setOpen(false)}
+                  className="relative w-40 py-3 bg-gradient-to-t  from-[#211E55] to-[#060606] transition-colors rounded-full duration-200"
+                >
+                  进入Sign
+                  <ArrowRight className=" w-4 h-4 ml-1 transition-all ease-in-out duration-200 group-hover:translate-x-1" />
+                </Button>
+                <GlowEffect
+                  mode="pulse"
+                  blur="soft"
+                  scale={1.1}
+                  colors={["#423E8B","#211E55"]}
+                  className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
+                />
+              </div>
             </div>
             {/* Right CardSwap Area */}
             <div className="relative w-full h-full">
@@ -202,7 +206,7 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                 pauseOnHover={true}
               >
                 {features.map((feature, index) => (
-                  <Card key={index} className="overflow-hidden flex flex-col">
+                  <Card key={index} className="overflow-hidden flex flex-col select-none">
                     <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
                       {feature.icon}
                       <p className="text-sm">{feature.title}</p>
@@ -210,7 +214,12 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                     <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                       <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
                       <Noise density={0.05} className="z-2 bg-blend-overlay" />
-                      <AnimatedSign />
+                      <div className="absolute inset-0  z-0 opacity-30">
+                        <Circle202 className="w-full h-full text-purple-300/50"/>
+                      </div>
+                      <div className="relative z-10">
+                        {feature.content}
+                      </div>
                     </div>
                   </Card>
                 ))}
