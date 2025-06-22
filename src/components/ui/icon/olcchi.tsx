@@ -26,7 +26,7 @@ export function Olcchi({
         href={personalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs hover:opacity-100 opacity-10 transition-opacity hover:underline font-mono"
+        className="text-xs hover:opacity-100 opacity-30 md:opacity-10 hover:underline font-mono"
       >
         @{id}
       </Link>
@@ -36,7 +36,7 @@ export function Olcchi({
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-zinc-300 transition-colors"
+          className="hover:text-zinc-300"
           aria-label="GitHub"
         >
           <Github size={14} />
