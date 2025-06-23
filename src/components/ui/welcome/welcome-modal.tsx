@@ -9,16 +9,23 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
 import { Button } from "@/components/ui/layout/button";
-import { X, ArrowRight, Sparkles, Share2, Palette, Zap, Component } from "lucide-react";
+import {
+  X,
+  ArrowRight,
+  Sparkles,
+  Share2,
+  Palette,
+  Zap,
+  Component,
+} from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
-import CardSwap, { Card } from "@/components/ui/welcome/card-swap";
 import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
-import { AnimatedSign } from "@/components/ui/welcome/animated-sign";
-import { GlowEffect } from "./glow-effect";
+import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
 import { Circle202 } from "../icon/circle202";
+import { AnimatedShare } from "./animated-share";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -99,7 +106,7 @@ interface WelcomeModalProps {
   className?: string;
 }
 
-export default function WelcomeModal({ className }: WelcomeModalProps) {
+export function WelcomeModal({ className }: WelcomeModalProps) {
   const [open, setOpen] = useState(false);
   const isActive = useUserActivityTracking(3000);
 
@@ -114,17 +121,22 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
 
   const iconStyle = "w-5 h-5 stroke-1";
   const features = [
-    {
-      icon: <Sparkles className={iconStyle} />,
-      title: "绚丽文字",
-      content:<>
-      <AnimatedSign />
-      </>
-    },
     // {
-    //   icon: <Palette className={iconStyle} />,
-    //   title: "丰富选项",
+    //   icon: <Sparkles className={iconStyle} />,
+    //   title: "绚丽文字",
+    //   content:<>
+    //   <AnimatedSign />
+    //   </>
     // },
+    {
+      icon: <Palette className={iconStyle} />,
+      title: "快速分享",
+      content: (
+        <>
+          <AnimatedShare />
+        </>
+      ),
+    },
     // {
     //   icon: <Zap className={iconStyle} />,
     //   title: "即时生成",
@@ -192,7 +204,7 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                   mode="pulse"
                   blur="soft"
                   scale={1.1}
-                  colors={["#423E8B","#211E55"]}
+                  colors={["#423E8B", "#211E55"]}
                   className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
                 />
               </div>
@@ -203,10 +215,13 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                 cardDistance={30}
                 verticalDistance={40}
                 delay={4000}
-                pauseOnHover={true}
+                pauseOnHover={false}
               >
                 {features.map((feature, index) => (
-                  <Card key={index} className="overflow-hidden flex flex-col select-none">
+                  <Card
+                    key={index}
+                    className="overflow-hidden flex flex-col select-none"
+                  >
                     <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
                       {feature.icon}
                       <p className="text-sm">{feature.title}</p>
@@ -214,10 +229,7 @@ export default function WelcomeModal({ className }: WelcomeModalProps) {
                     <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                       <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
                       <Noise density={0.05} className="z-2 bg-blend-overlay" />
-                      <div className="absolute inset-0  z-0 opacity-30">
-                        <Circle202 className="w-full h-full text-purple-300/50"/>
-                      </div>
-                      <div className="relative z-10">
+                      <div className="relative w-full h-full">
                         {feature.content}
                       </div>
                     </div>
