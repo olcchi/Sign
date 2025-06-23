@@ -8,7 +8,7 @@ import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import Noise from "@/components/ui/filter/noise";
 import { useSettings } from "@/lib/contexts/settings-context";
-import WelcomeModal from "@/components/ui/welcome/welcome-modal";
+import {WelcomeModal} from "@/components/ui/welcome/welcome-modal";
 
 interface SignFrameProps {
   className?: string;
