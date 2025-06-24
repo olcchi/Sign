@@ -214,7 +214,7 @@ export default function ShareDialog({
                         {shareInfo.preset.name}
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-3 pb-3 max-h-32 overflow-y-auto">
+                    <AccordionContent className="px-3 pb-3 max-h-32 overflow-y-auto custom-scrollbar">
                       <div className="text-xs text-muted-foreground leading-relaxed space-y-1">
                         {shareInfo.description.map((detail, index) => (
                           <div key={index}>{detail}</div>
