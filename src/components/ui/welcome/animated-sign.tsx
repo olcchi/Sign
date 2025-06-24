@@ -70,7 +70,13 @@ export function AnimatedSign({ text = "Sign", interval = 1500 }: AnimatedSignPro
 
   useEffect(() => {
     const timer = setInterval(() => {
-      setCurrentStyleIndex((prevIndex) => (prevIndex + 1) % stylePresets.length);
+      setCurrentStyleIndex((prevIndex) => {
+        let nextIndex;
+        do {
+          nextIndex = Math.floor(Math.random() * stylePresets.length);
+        } while (nextIndex === prevIndex && stylePresets.length > 1);
+        return nextIndex;
+      });
     }, interval);
 
     return () => clearInterval(timer);
