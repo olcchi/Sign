@@ -1,4 +1,4 @@
-export const Cursor = (className:string) => {
+export const Cursor = ({ className }: { className?: string }) => {
   return (
     <svg
       width="74"
