@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { Preset } from "@/components/ui/settings/Preset";
+import { BaseDialogProps } from "@/types";
 import { Button } from "@/components/ui/layout/button";
 import { Label } from "@/components/ui/label";
 import {
@@ -48,10 +49,8 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = "DialogContent";
 
-interface ImportDialogProps {
-  children: React.ReactNode;
+interface ImportDialogProps extends BaseDialogProps {
   onPresetLoaded: (preset: Preset) => void;
-  className?: string;
 }
 
 export default function ImportDialog({
