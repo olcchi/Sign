@@ -2,7 +2,6 @@ import { Preset } from "@/components/ui/settings/Preset/types";
 import { ApiResponse } from "@/types";
 import { presetToShareable } from "@/lib/preset-conversion";
 import { requestQueue } from "@/services/request-queue";
-import { getExpirationTime as getExpirationTimeUtil } from "@/lib/utils";
 
 // Preset sharing interface
 export interface ShareablePreset {
@@ -33,11 +32,6 @@ export interface ShareApiResponse extends ApiResponse<void> {}
 // Generate a random 6-digit PIN code
 export function generatePinCode(): string {
   return Math.floor(100000 + Math.random() * 900000).toString();
-}
-
-// Calculate expiration time (24 hours from now)
-export function getExpirationTime(): string {
-  return getExpirationTimeUtil(24);
 }
 
 // Create shareable URL for preset
@@ -85,66 +79,5 @@ export async function saveSharedPreset(pinCode: string, preset: Preset): Promise
   }
 }
 
-// Validate PIN code format
-export function isValidPinCode(pinCode: string): boolean {
-  return /^\d{6}$/.test(pinCode);
-}
-
-// Load shared preset by PIN code
-export async function loadSharedPreset(pinCode: string): Promise<{
-  success: boolean;
-  preset?: ShareablePreset;
-  error?: string;
-}> {
-  if (!isValidPinCode(pinCode)) {
-    return { success: false, error: 'Invalid PIN code format' };
-  }
-
-  try {
-    const response = await requestQueue.add(() =>
-      fetch(`/api/share/load-preset/${pinCode}`, {
-        method: 'GET',
-        headers: { 'Content-Type': 'application/json' },
-      })
-    );
-
-    if (!response.ok) {
-      if (response.status === 404) {
-        return { success: false, error: '预设不存在或已过期' };
-      }
-      return { success: false, error: `网络错误 ${response.status}` };
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error('Failed to load shared preset:', error);
-    return { success: false, error: '网络错误' };
-  }
-}
-
-// Delete shared preset by PIN code
-export async function deleteSharedPreset(pinCode: string): Promise<ShareApiResponse> {
-  if (!isValidPinCode(pinCode)) {
-    return { success: false, error: '无效的PIN码格式' };
-  }
-
-  try {
-    const response = await requestQueue.add(() =>
-      fetch(`/api/share/delete-preset/${pinCode}`, {
-        method: 'DELETE',
-        headers: { 'Content-Type': 'application/json' },
-      })
-    );
-
-    if (!response.ok) {
-      return { success: false, error: `HTTP ${response.status}` };
-    }
-
-    const result = await response.json();
-    return result;
-  } catch (error) {
-    console.error('Failed to delete shared preset:', error);
-    return { success: false, error: '网络错误' };
-  }
-} 
+// These functions have been moved to PresetApiService in preset-api.ts
+// Use PresetApiService.isValidPinCode(), loadSharedPreset(), deleteSharedPreset() instead 
