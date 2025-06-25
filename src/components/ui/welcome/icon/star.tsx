@@ -1,4 +1,3 @@
-import React from "react";
 export const Star = ({ className }: { className?: string }) => {
   return (
     <svg
