@@ -17,8 +17,9 @@ export function FontFamilySetting({ fontOptions }: FontFamilySettingProps) {
 
   return (
     <div className="border-b overflow-hidden">
-      <div className="flex items-center p-2">
+      <div className="flex items-center justify-between p-2">
         <span className="text-sm">样式</span>
+      </div>
       <div className="p-2">
         <OptionButtonGroup
           options={fontOptions}
@@ -28,7 +29,6 @@ export function FontFamilySetting({ fontOptions }: FontFamilySettingProps) {
             <span style={{ fontFamily: option.value }}>{option.name}</span>
           )}
         />
-      </div>
       </div>
     </div>
   );

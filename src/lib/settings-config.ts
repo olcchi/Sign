@@ -32,22 +32,22 @@ export const colorOptions = [
   },
 ];
 
-// Typography options
+// Typography options - Updated to use Noto font family
 export const fontOptions = [
   {
     name: "无衬线",
-    value: "var(--font-geist-sans)",
-    fontFamily: "text-[var(--font-geist-sans)]",
+    value: "var(--font-noto-sans)",
+    fontFamily: "text-[var(--font-noto-sans)]",
   },
-  // {
-  //   name: "Brush",
-  //   value: "var(--font-kolker-brush)",
-  //   fontFamily: "text-[var(--font-kolker-brush)]",
-  // },
   {
     name: "衬线",
-    value: "var(--font-dm-serif-text)",
-    fontFamily: "text-[var(--font-dm-serif-text)]",
+    value: "var(--font-noto-serif)",
+    fontFamily: "text-[var(--font-noto-serif)]",
+  },
+  {
+    name: "等宽",
+    value: "var(--font-noto-sans-mono)",
+    fontFamily: "text-[var(--font-noto-sans-mono)]",
   },
 ];
 
