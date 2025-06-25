@@ -25,7 +25,7 @@ import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
 import { Circle202 } from "../icon/circle202";
-import { AnimatedShare } from "./animated-share";
+import AnimatedShare from "./animated-share";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -55,10 +55,12 @@ const DialogContent = React.forwardRef<
         "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-80 md:w-4/5 max-w-280 border bg-background shadow-2xl rounded-lg overflow-hidden",
         className
       )}
+      onPointerDownOutside={(e) => e.preventDefault()}
+      onEscapeKeyDown={(e) => e.preventDefault()}
       {...props}
     >
       <motion.div
-        className="absolute w-120 h-120 lg:w-180 lg:h-180 rounded-full opacity-60 blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        className="absolute w-120 h-120 lg:w-180 lg:h-180 rounded-full opacity-60 blur-2xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
           x: ["-25%", "25%", "-25%"],
         }}
@@ -74,7 +76,7 @@ const DialogContent = React.forwardRef<
         }}
       />
       <motion.div
-        className="absolute w-80 h-80 rounded-full opacity-60 blur-xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
+        className="absolute w-80 h-80 rounded-full opacity-40 blur-2xl xl:blur-4xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
           x: ["25%", "-25%", "25%"],
         }}
@@ -107,30 +109,39 @@ interface WelcomeModalProps {
 }
 
 export function WelcomeModal({ className }: WelcomeModalProps) {
-  const [open, setOpen] = useState(false);
+  // Check if this is the first visit immediately during initialization
+  const [open, setOpen] = useState(() => {
+    // Only check localStorage on client side to avoid SSR hydration mismatch
+    if (typeof window !== "undefined") {
+      const hasVisited = localStorage.getItem("sign-has-visited");
+      if (!hasVisited) {
+        localStorage.setItem("sign-has-visited", "true");
+        return true;
+      }
+    }
+    return false;
+  });
+
+  const [isClient, setIsClient] = useState(false);
   const isActive = useUserActivityTracking(3000);
 
-  // Check if this is the first visit and show welcome modal
+  // Ensure we're on the client side to prevent SSR hydration issues
   useEffect(() => {
-    const hasVisited = localStorage.getItem("sign-has-visited");
-    if (!hasVisited) {
-      setOpen(true);
-      localStorage.setItem("sign-has-visited", "true");
-    }
+    setIsClient(true);
   }, []);
 
   const iconStyle = "w-5 h-5 stroke-1";
   const features = [
     // {
     //   icon: <Sparkles className={iconStyle} />,
-    //   title: "绚丽文字",
+    //   title: "文字变体",
     //   content:<>
     //   <AnimatedSign />
     //   </>
     // },
     {
-      icon: <Palette className={iconStyle} />,
-      title: "快速分享",
+      icon: <Share2 className={iconStyle} />,
+      title: "快捷分享",
       content: (
         <>
           <AnimatedShare />
@@ -173,73 +184,78 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
         />
       </div>
 
-      {/* Welcome Modal Dialog */}
-      <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className={className}>
-          <VisuallyHidden>
-            <DialogTitle>欢迎使用 Sign</DialogTitle>
-            <DialogDescription>快速创建并分享你的应援牌</DialogDescription>
-          </VisuallyHidden>
-          <div className="h-full flex flex-col md:flex-row">
-            {/* Left Content Area */}
-            <div className="relative p-5 flex w-full h-full flex-col gap-5 justify-center items-center ">
-              <div className="space-y-6 ">
-                <div className="space-y-3 flex flex-col">
-                  <SignHeroTitle size="lg" />
-                  <p className="text-muted-foreground max-w-md ">
-                    快速创建并分享你的应援牌
-                  </p>
+      {/* Welcome Modal Dialog - Only render on client side */}
+      {isClient && (
+        <Dialog open={open} onOpenChange={setOpen}>
+          <DialogContent className={className}>
+            <VisuallyHidden>
+              <DialogTitle>欢迎使用 Sign</DialogTitle>
+              <DialogDescription>快速创建并分享你的应援牌</DialogDescription>
+            </VisuallyHidden>
+            <div className="h-full flex flex-col md:flex-row">
+              {/* Left Content Area */}
+              <div className="relative p-5 flex w-full h-full flex-col gap-5 justify-center items-center ">
+                <div className="space-y-6 ">
+                  <div className="space-y-3 flex flex-col">
+                    <SignHeroTitle size="lg" />
+                    <p className="text-muted-foreground max-w-md ">
+                      快速创建并分享你的应援牌
+                    </p>
+                  </div>
+                </div>
+                <div className="relative group">
+                  <Button
+                    variant="outline"
+                    onClick={() => setOpen(false)}
+                    className="relative w-40 py-3 bg-gradient-to-t  from-[#1E1B3E] to-[#060606] transition-colors rounded-full duration-200"
+                  >
+                    进入Sign
+                    <ArrowRight className=" w-4 h-4 ml-1 transition-all ease-in-out duration-200 group-hover:translate-x-1" />
+                  </Button>
+                  <GlowEffect
+                    mode="pulse"
+                    blur="soft"
+                    scale={1.1}
+                    colors={["#423E8B", "#211E55"]}
+                    className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
+                  />
                 </div>
               </div>
-              <div className="relative group">
-                <Button
-                  variant="outline"
-                  onClick={() => setOpen(false)}
-                  className="relative w-40 py-3 bg-gradient-to-t  from-[#211E55] to-[#060606] transition-colors rounded-full duration-200"
+              {/* Right CardSwap Area */}
+              <div className="relative w-full h-full">
+                <CardSwap
+                  cardDistance={30}
+                  verticalDistance={40}
+                  delay={4000}
+                  pauseOnHover={false}
                 >
-                  进入Sign
-                  <ArrowRight className=" w-4 h-4 ml-1 transition-all ease-in-out duration-200 group-hover:translate-x-1" />
-                </Button>
-                <GlowEffect
-                  mode="pulse"
-                  blur="soft"
-                  scale={1.1}
-                  colors={["#423E8B", "#211E55"]}
-                  className=" absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
-                />
+                  {features.map((feature, index) => (
+                    <Card
+                      key={index}
+                      className="overflow-hidden flex flex-col select-none"
+                    >
+                      <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
+                        {feature.icon}
+                        <p className="text-sm">{feature.title}</p>
+                      </div>
+                      <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
+                        <Noise
+                          density={0.05}
+                          className="z-2 bg-blend-overlay"
+                        />
+                        <div className="relative w-full h-full">
+                          {feature.content}
+                        </div>
+                      </div>
+                    </Card>
+                  ))}
+                </CardSwap>
               </div>
             </div>
-            {/* Right CardSwap Area */}
-            <div className="relative w-full h-full">
-              <CardSwap
-                cardDistance={30}
-                verticalDistance={40}
-                delay={4000}
-                pauseOnHover={false}
-              >
-                {features.map((feature, index) => (
-                  <Card
-                    key={index}
-                    className="overflow-hidden flex flex-col select-none"
-                  >
-                    <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
-                      {feature.icon}
-                      <p className="text-sm">{feature.title}</p>
-                    </div>
-                    <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
-                      <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
-                      <Noise density={0.05} className="z-2 bg-blend-overlay" />
-                      <div className="relative w-full h-full">
-                        {feature.content}
-                      </div>
-                    </div>
-                  </Card>
-                ))}
-              </CardSwap>
-            </div>
-          </div>
-        </DialogContent>
-      </Dialog>
+          </DialogContent>
+        </Dialog>
+      )}
     </>
   );
 }
