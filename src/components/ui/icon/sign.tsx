@@ -1,5 +1,3 @@
-import React from "react";
-
 interface SignProps {
   className?: string;
   colorFull?: boolean;
