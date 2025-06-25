@@ -26,6 +26,7 @@ import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
 import { Circle202 } from "../icon/circle202";
 import AnimatedShare from "./animated-share";
+import AnimatedEffect from "./animated-effect";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -132,13 +133,15 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
 
   const iconStyle = "w-5 h-5 stroke-1";
   const features = [
-    // {
-    //   icon: <Sparkles className={iconStyle} />,
-    //   title: "文字变体",
-    //   content:<>
-    //   <AnimatedSign />
-    //   </>
-    // },
+    {
+      icon: <Sparkles className={iconStyle} />,
+      title: "文字变体",
+      content: (
+        <>
+          <AnimatedSign />
+        </>
+      ),
+    },
     {
       icon: <Share2 className={iconStyle} />,
       title: "快捷分享",
@@ -150,11 +153,12 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
     },
     // {
     //   icon: <Zap className={iconStyle} />,
-    //   title: "即时生成",
-    // },
-    // {
-    //   icon: <Share2 className={iconStyle} />,
-    //   title: "快速分享",
+    //   title: "质感特效",
+    //   content: (
+    //     <>
+    //       <AnimatedEffect />
+    //     </>
+    //   ),
     // },
   ];
 
@@ -244,7 +248,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                           density={0.05}
                           className="z-2 bg-blend-overlay"
                         />
-                        <div className="relative w-full h-full">
+                        <div className="relative p-5 w-full h-full">
                           {feature.content}
                         </div>
                       </div>
