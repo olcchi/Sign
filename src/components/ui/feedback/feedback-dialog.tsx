@@ -15,7 +15,7 @@ import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/inputs/textarea";
 import { Input } from "@/components/ui/inputs/input";
-import { FeedbackRating } from "@/types/feedback";
+import { FeedbackRating, BaseDialogProps } from "@/types";
 import {
   Loader2,
   AlertCircle,
@@ -53,9 +53,8 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = "DialogContent";
 
-interface FeedbackDialogProps {
-  children: React.ReactNode;
-  className?: string;
+interface FeedbackDialogProps extends BaseDialogProps {
+  // 反馈对话框特有的属性可以在这里添加
 }
 
 export default function FeedbackDialog({
