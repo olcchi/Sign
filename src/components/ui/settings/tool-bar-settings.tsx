@@ -1,5 +1,4 @@
 "use client";
-import React from "react";
 import { Card } from "@/components/ui/layout/card";
 import {
   ContentSetting,
@@ -73,10 +72,10 @@ export function ToolBarSettings({
 }: ToolBarSettingsProps) {
   // Create setting components using the extracted components
   const contentSetting = ContentSetting({ isOpen });
-  const textRenderingSetting = TextRenderingSetting({ 
+  const textRenderingSetting = TextRenderingSetting({
     colorOptions,
     fontOptions,
-    fontSizeOptions
+    fontSizeOptions,
   });
   const scrollSpeedSetting = ScrollSpeedSetting();
   const backgroundImageSetting = BackgroundImageSetting({
