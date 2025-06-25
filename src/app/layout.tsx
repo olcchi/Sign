@@ -1,39 +1,30 @@
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/ui/layout/theme-provider";
 import {
-  Geist,
-  Geist_Mono,
-  DM_Serif_Text,
-  DM_Sans,
-  Kolker_Brush,
+  Noto_Sans,
+  Noto_Sans_Mono,
+  Noto_Serif,
   Noto_Sans_SC, // chinese font
 } from "next/font/google";
 import "./globals.css";
 
 // Font configurations with CSS variable assignments for consistent typography
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const notoSans = Noto_Sans({
+  variable: "--font-noto-sans",
   subsets: ["latin"],
+  weight: "variable",
+  axes: ["wdth"],
 });
-const dmSans = DM_Sans({
-  variable: "--font-dm-sans",
+const notoSansMono = Noto_Sans_Mono({
+  variable: "--font-noto-sans-mono",
   subsets: ["latin"],
-});
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const dmSerifText = DM_Serif_Text({
-  weight: "400",
-  variable: "--font-dm-serif-text",
-  subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
-const KolkerBrush = Kolker_Brush({
-  weight: "400",
-  variable: "--font-kolker-brush",
+const notoSerif = Noto_Serif({
+  variable: "--font-noto-serif",
   subsets: ["latin"],
+  weight: ["400", "500", "600", "700"],
 });
 
 // Chinese font configuration for consistent Chinese text rendering
@@ -68,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${dmSerifText.variable} ${KolkerBrush.variable} ${dmSans.variable} ${notoSansSC.variable} antialiased`}
+        className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} ${notoSansSC.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
