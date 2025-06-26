@@ -38,7 +38,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg min-w-fit translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
+        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 max-h-3/4 overflow-y-auto custom-scrollbar md:w-full max-w-lg min-w-fit translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
         className
       )}
       {...props}
@@ -53,9 +53,7 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = "DialogContent";
 
-interface FeedbackDialogProps extends BaseDialogProps {
-  // 反馈对话框特有的属性可以在这里添加
-}
+interface FeedbackDialogProps extends BaseDialogProps {}
 
 export default function FeedbackDialog({
   children,
@@ -87,7 +85,7 @@ export default function FeedbackDialog({
     const files = event.target.files;
     if (files) {
       const newFiles = Array.from(files);
-      
+
       // Check if adding these files would exceed the limit
       if (selectedImages.length + newFiles.length > 4) {
         setError(`最多只能添加4张图片，当前已有${selectedImages.length}张`);
@@ -115,25 +113,25 @@ export default function FeedbackDialog({
 
       if (validFiles.length > 0) {
         setError(null);
-        
+
         // Create previews for valid files
         validFiles.forEach((file) => {
           const reader = new FileReader();
           reader.onload = (e) => {
             const preview = e.target?.result as string;
             validPreviews.push(preview);
-            
+
             // Update state when all previews are loaded
             if (validPreviews.length === validFiles.length) {
-              setSelectedImages(prev => [...prev, ...validFiles]);
-              setImagePreviews(prev => [...prev, ...validPreviews]);
+              setSelectedImages((prev) => [...prev, ...validFiles]);
+              setImagePreviews((prev) => [...prev, ...validPreviews]);
             }
           };
           reader.readAsDataURL(file);
         });
       }
     }
-    
+
     // Reset file input
     if (fileInputRef.current) {
       fileInputRef.current.value = "";
@@ -142,8 +140,8 @@ export default function FeedbackDialog({
 
   // Remove selected image by index
   const removeImage = (index: number) => {
-    setSelectedImages(prev => prev.filter((_, i) => i !== index));
-    setImagePreviews(prev => prev.filter((_, i) => i !== index));
+    setSelectedImages((prev) => prev.filter((_, i) => i !== index));
+    setImagePreviews((prev) => prev.filter((_, i) => i !== index));
   };
 
   // Email validation function
@@ -258,9 +256,7 @@ export default function FeedbackDialog({
           <DialogTitle className="flex items-center gap-2">
             <p className="text-sm font-bold">意见反馈</p>
           </DialogTitle>
-          <DialogDescription>
-           请您提交您遇到的问题或建议
-          </DialogDescription>
+          <DialogDescription>请您提交遇到的问题或建议</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -298,7 +294,7 @@ export default function FeedbackDialog({
               <div className="space-y-2">
                 <label className="text-sm font-medium">反馈内容 *</label>
                 <Textarea
-                  placeholder="请描述您遇到的问题或建议..."
+                  placeholder="请描述遇到的问题或建议..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
                   className="min-h-[100px] resize-none text-sm"
@@ -316,19 +312,17 @@ export default function FeedbackDialog({
                     className="hidden"
                     disabled={isLoading}
                   />
-                  
+
                   {selectedImages.length > 0 ? (
                     <p className="text-xs text-muted-foreground">
                       已添加 {selectedImages.length}/4 张图片
                     </p>
-                  ):(
-                    <p className="text-xs text-muted-foreground">
-                      请添加图片
-                    </p>
+                  ) : (
+                    <p className="text-xs text-muted-foreground">请添加图片</p>
                   )}
                   <div className="flex gap-2">
                     {/* Existing images */}
-                    
+
                     {selectedImages.map((file, index) => (
                       <div key={index} className="relative group">
                         <img
@@ -348,7 +342,7 @@ export default function FeedbackDialog({
                         </Button>
                       </div>
                     ))}
-                    
+
                     {/* Add image button - only show if less than 4 images */}
                     {selectedImages.length < 4 && (
                       <div
@@ -359,14 +353,13 @@ export default function FeedbackDialog({
                       </div>
                     )}
                   </div>
-
                 </div>
               </div>
 
               <div className="space-y-2">
                 <Input
                   type="email"
-                  placeholder="请留下您的邮箱，我们会联系您"
+                  placeholder="请留下您的邮箱，用于反馈交流"
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
