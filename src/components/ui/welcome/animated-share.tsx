@@ -14,8 +14,8 @@ function AnimatedShare() {
           italic={false}
           minFontSize={36}
           simulateMouseMovement
-          simulationPadding={-100}
-          simulationSpeed={6000}
+          simulationPadding={-80}
+          simulationSpeed={4000}
         />
       </div>
 
