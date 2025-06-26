@@ -1,6 +1,18 @@
 import { Preset } from "@/components/ui/settings/Preset/types";
 import { ShareablePreset } from "@/lib/share-api";
 
+// Font mapping for backward compatibility with old presets
+const FONT_MAPPING = {
+  "var(--font-noto-serif)": "var(--font-serif)",
+  "var(--font-dm-serif-display)": "var(--font-serif)",
+  "Noto Serif": "var(--font-serif)",
+} as const;
+
+// Map old font values to new ones for backward compatibility
+function mapFontFamily(fontFamily: string): string {
+  return FONT_MAPPING[fontFamily as keyof typeof FONT_MAPPING] || fontFamily;
+}
+
 // Default values for preset properties to ensure consistency
 const DEFAULT_PRESET_VALUES = {
   noiseEnabled: false,
@@ -20,7 +32,7 @@ export function presetToShareable(preset: Preset): ShareablePreset {
     name: preset.name,
     text: preset.text,
     textColor: preset.textColor,
-    fontFamily: preset.fontFamily,
+    fontFamily: mapFontFamily(preset.fontFamily),
     fontSize: preset.fontSize,
     fontWeight: preset.fontWeight,
     scrollSpeed: preset.scrollSpeed,
@@ -45,7 +57,7 @@ export function shareableToPreset(shareable: ShareablePreset): Preset {
     name: shareable.name,
     text: shareable.text,
     textColor: shareable.textColor,
-    fontFamily: shareable.fontFamily,
+    fontFamily: mapFontFamily(shareable.fontFamily),
     fontSize: shareable.fontSize,
     fontWeight: shareable.fontWeight,
     scrollSpeed: shareable.scrollSpeed,
@@ -70,7 +82,7 @@ export function normalizePreset(preset: Partial<Preset>): Preset {
     name: preset.name || '',
     text: preset.text || '',
     textColor: preset.textColor || '#FFFFFF',
-    fontFamily: preset.fontFamily || 'Inter',
+    fontFamily: mapFontFamily(preset.fontFamily || 'var(--font-serif)'),
     fontSize: preset.fontSize || '2xl',
     fontWeight: preset.fontWeight || '400',
     scrollSpeed: preset.scrollSpeed ?? 50,
