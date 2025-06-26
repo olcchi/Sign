@@ -32,7 +32,7 @@ export const colorOptions = [
   },
 ];
 
-// Typography options - Updated to use Noto font family
+// Typography options - Updated to use DM Serif Display font family
 export const fontOptions = [
   {
     name: "无衬线",
@@ -41,8 +41,8 @@ export const fontOptions = [
   },
   {
     name: "衬线",
-    value: "var(--font-noto-serif)",
-    fontFamily: "text-[var(--font-noto-serif)]",
+    value: "var(--font-serif)",
+    fontFamily: "text-[var(--font-serif)]",
   },
   {
     name: "等宽",
