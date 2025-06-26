@@ -230,7 +230,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                 <CardSwap
                   cardDistance={30}
                   verticalDistance={40}
-                  delay={4000}
+                  delay={6000}
                   pauseOnHover={false}
                 >
                   {features.map((feature, index) => (
