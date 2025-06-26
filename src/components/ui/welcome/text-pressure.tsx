@@ -16,13 +16,16 @@ interface TextPressureProps {
   strokeWidth?: number;
   className?: string;
   minFontSize?: number;
-  animationDuration?: number;
+  simulateMouseMovement?: boolean;
+  simulationSpeed?: number;
+  simulationEasing?: 'sine' | 'linear' | 'easeInOut';
+  simulationPadding?: number;
 }
 
 const TextPressure: React.FC<TextPressureProps> = ({
-  text = "Sign",
-  fontFamily = 'Compressa VF',
-  fontUrl = 'https://res.cloudinary.com/dr6lvwubh/raw/upload/v1529908256/CompressaPRO-GX.woff2',
+  text = "Compressa",
+  fontFamily = " ",
+  fontUrl = " ",
   width = true,
   weight = true,
   italic = true,
@@ -35,24 +38,101 @@ const TextPressure: React.FC<TextPressureProps> = ({
   strokeWidth = 2,
   className = "",
   minFontSize = 24,
-  animationDuration = 8000,
+  simulateMouseMovement = false,
+  simulationSpeed = 3000,
+  simulationEasing = 'sine',
+  simulationPadding = 50,
 }) => {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const titleRef = useRef<HTMLHeadingElement | null>(null);
   const spansRef = useRef<(HTMLSpanElement | null)[]>([]);
 
+  const mouseRef = useRef({ x: 0, y: 0 });
+  const cursorRef = useRef({ x: 0, y: 0 });
+  
+  const animationStartTimeRef = useRef<number>(0);
+  const containerBoundsRef = useRef({ left: 0, top: 0, width: 0, height: 0 });
+
   const [fontSize, setFontSize] = useState(minFontSize);
   const [scaleY, setScaleY] = useState(1);
   const [lineHeight, setLineHeight] = useState(1);
-  const [animationProgress, setAnimationProgress] = useState(0);
 
   const chars = text.split("");
 
-  const getAnimationPosition = (progress: number, containerWidth: number) => {
-    const normalizedProgress = (progress % 1) * 2 * Math.PI;
-    const position = (Math.sin(normalizedProgress) + 1) / 2;
-    return position * containerWidth;
+  const dist = (a: { x: number; y: number }, b: { x: number; y: number }) => {
+    const dx = b.x - a.x;
+    const dy = b.y - a.y;
+    return Math.sqrt(dx * dx + dy * dy);
   };
+
+  const getEasedValue = (progress: number, easingType: string): number => {
+    switch (easingType) {
+      case 'linear':
+        return progress;
+      case 'easeInOut':
+        return progress < 0.5 
+          ? 2 * progress * progress 
+          : 1 - Math.pow(-2 * progress + 2, 2) / 2;
+      case 'sine':
+      default:
+        return Math.sin(progress * Math.PI * 2);
+    }
+  };
+
+  const updateContainerBounds = () => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      containerBoundsRef.current = {
+        left: rect.left,
+        top: rect.top,
+        width: rect.width,
+        height: rect.height
+      };
+    }
+  };
+
+  useEffect(() => {
+    if (simulateMouseMovement) {
+      updateContainerBounds();
+      animationStartTimeRef.current = Date.now();
+      
+      const bounds = containerBoundsRef.current;
+      const centerX = bounds.left + bounds.width / 2;
+      const centerY = bounds.top + bounds.height / 2;
+      
+      mouseRef.current.x = centerX;
+      mouseRef.current.y = centerY;
+      cursorRef.current.x = centerX;
+      cursorRef.current.y = centerY;
+    } else {
+      const handleMouseMove = (e: MouseEvent) => {
+        cursorRef.current.x = e.clientX;
+        cursorRef.current.y = e.clientY;
+      };
+      const handleTouchMove = (e: TouchEvent) => {
+        const t = e.touches[0];
+        cursorRef.current.x = t.clientX;
+        cursorRef.current.y = t.clientY;
+      };
+
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("touchmove", handleTouchMove, { passive: false });
+
+      if (containerRef.current) {
+        const { left, top, width, height } =
+          containerRef.current.getBoundingClientRect();
+        mouseRef.current.x = left + width / 2;
+        mouseRef.current.y = top + height / 2;
+        cursorRef.current.x = mouseRef.current.x;
+        cursorRef.current.y = mouseRef.current.y;
+      }
+
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+        window.removeEventListener("touchmove", handleTouchMove);
+      };
+    }
+  }, [simulateMouseMovement]);
 
   const setSize = () => {
     if (!containerRef.current || !titleRef.current) return;
@@ -81,28 +161,45 @@ const TextPressure: React.FC<TextPressureProps> = ({
 
   useEffect(() => {
     setSize();
-    window.addEventListener("resize", setSize);
-    return () => window.removeEventListener("resize", setSize);
-  }, [scale, text]);
+    const handleResize = () => {
+      setSize();
+      if (simulateMouseMovement) {
+        updateContainerBounds();
+      }
+    };
+    
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, [scale, text, simulateMouseMovement]);
 
   useEffect(() => {
     let rafId: number;
-    let startTime: number;
+    const animate = () => {
+      if (simulateMouseMovement) {
+        const currentTime = Date.now();
+        const elapsed = currentTime - animationStartTimeRef.current;
+        const progress = (elapsed % simulationSpeed) / simulationSpeed;
+        
+        const bounds = containerBoundsRef.current;
+        const easedProgress = getEasedValue(progress, simulationEasing);
+        
+        const minX = bounds.left + simulationPadding;
+        const maxX = bounds.left + bounds.width - simulationPadding;
+        const centerX = (minX + maxX) / 2;
+        const amplitude = (maxX - minX) / 2;
+        
+        const targetX = centerX + amplitude * easedProgress;
+        const targetY = bounds.top + bounds.height / 2;
+        
+        cursorRef.current.x = targetX;
+        cursorRef.current.y = targetY;
+      }
 
-    const animate = (timestamp: number) => {
-      if (!startTime) startTime = timestamp;
+      mouseRef.current.x += (cursorRef.current.x - mouseRef.current.x) / 15;
+      mouseRef.current.y += (cursorRef.current.y - mouseRef.current.y) / 15;
 
-      const elapsed = timestamp - startTime;
-      const progress = (elapsed % animationDuration) / animationDuration;
-      setAnimationProgress(progress);
-
-      if (titleRef.current && containerRef.current) {
-        const containerRect = containerRef.current.getBoundingClientRect();
+      if (titleRef.current) {
         const titleRect = titleRef.current.getBoundingClientRect();
-
-        const animationX = getAnimationPosition(progress, containerRect.width);
-        const animationY = containerRect.height / 2;
-
         const maxDist = titleRect.width / 2;
 
         spansRef.current.forEach((span) => {
@@ -114,9 +211,7 @@ const TextPressure: React.FC<TextPressureProps> = ({
             y: rect.y + rect.height / 2,
           };
 
-          const dx = animationX - (charCenter.x - containerRect.left);
-          const dy = animationY - (charCenter.y - containerRect.top);
-          const d = Math.sqrt(dx * dx + dy * dy);
+          const d = dist(mouseRef.current, charCenter);
 
           const getAttr = (
             distance: number,
@@ -140,25 +235,21 @@ const TextPressure: React.FC<TextPressureProps> = ({
       rafId = requestAnimationFrame(animate);
     };
 
-    rafId = requestAnimationFrame(animate);
+    animate();
     return () => cancelAnimationFrame(rafId);
-  }, [width, weight, italic, alpha, chars.length, animationDuration]);
+  }, [width, weight, italic, alpha, chars.length, simulateMouseMovement, simulationSpeed, simulationEasing, simulationPadding]);
 
   return (
     <div
       ref={containerRef}
-      className="relative w-full h-full flex items-center overflow-hidden bg-transparent"
+      className="relative w-full h-full overflow-hidden bg-transparent"
     >
-      {fontUrl && (
-        <style>{`
-          @font-face {
-            font-family: '${fontFamily}';
-            src: url('${fontUrl}');
-            font-style: normal;
-          }
-        `}</style>
-      )}
       <style>{`
+        @font-face {
+          font-family: '${fontFamily}';
+          src: url('${fontUrl}');
+          font-style: normal;
+        }
         .stroke span {
           position: relative;
           color: ${textColor};
@@ -209,3 +300,46 @@ const TextPressure: React.FC<TextPressureProps> = ({
 };
 
 export default TextPressure;
+
+/*
+使用示例：
+
+// 基础用法（保持原有的鼠标跟踪）
+<TextPressure text="Hello World" />
+
+// 启用模拟鼠标移动
+<TextPressure 
+  text="Auto Animation"
+  simulateMouseMovement={true}
+  simulationSpeed={2000}        // 2秒完成一个往复周期
+  simulationEasing="sine"       // 正弦波缓动（默认）
+  simulationPadding={30}        // 距离边缘30px
+/>
+
+// 不同的缓动效果
+<TextPressure 
+  text="Linear Motion"
+  simulateMouseMovement={true}
+  simulationEasing="linear"     // 线性移动
+/>
+
+<TextPressure 
+  text="Smooth Motion"
+  simulateMouseMovement={true}
+  simulationEasing="easeInOut"  // 缓入缓出
+/>
+
+// 结合其他效果
+<TextPressure 
+  text="Full Effects"
+  simulateMouseMovement={true}
+  simulationSpeed={4000}
+  width={true}
+  weight={true}
+  italic={true}
+  alpha={true}
+  stroke={true}
+  textColor="#00FF00"
+  strokeColor="#FF0000"
+/>
+*/
