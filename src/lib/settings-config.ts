@@ -30,6 +30,18 @@ export const colorOptions = [
     bg: "bg-[#CC543A]",
     textColor: "text-[#CC543A]",
   },
+  {
+    name: "CHITOSEMIDORI",
+    value: "#36563C",
+    bg: "bg-[#36563C]",
+    textColor: "text-[#36563C]",
+  },
+  {
+    name: "TETSUKON",
+    value: "#261E47",
+    bg: "bg-[#261E47]",
+    textColor: "text-[#261E47]",
+  },
 ];
 
 // Typography options - Updated to use DM Serif Display font family
