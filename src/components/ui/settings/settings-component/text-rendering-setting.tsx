@@ -29,12 +29,14 @@ export function TextRenderingSetting({
   fontSizeOptions,
 }: TextRenderingSettingProps) {
   return {
-    title: "字体渲染",
+    title: "字体",
     component: (
       <div className="space-y-2">
         <FontFamilySetting fontOptions={fontOptions} />
-        <FontSizeSetting fontSizeOptions={fontSizeOptions} />
-        <FontWeightSetting />
+        <div className="grid grid-cols-2 gap-2">
+          <FontWeightSetting />
+          <FontSizeSetting fontSizeOptions={fontSizeOptions} />
+        </div>
         <TextFillSetting colorOptions={colorOptions} />
         <TextStrokeSetting colorOptions={colorOptions} />
       </div>

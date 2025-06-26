@@ -1,32 +1,39 @@
 "use client";
 
 import React from "react";
-import { ToggleButton } from "@/components/ui/settings/toggle-button";
 import { useSettings } from "@/lib/contexts/settings-context";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/layout/select";
 
 export function FontWeightSetting() {
   const { textSettings, updateTextSettings } = useSettings();
 
-  // Check if current font weight is bold
-  const isBold = textSettings.fontWeight === "700";
+  // Convert font weight to select value
+  const getSelectValue = () => {
+    return textSettings.fontWeight === "700" ? "bold" : "normal";
+  };
 
-  // Toggle between normal and bold
-  const toggleBold = () => {
+  // Handle select change
+  const handleValueChange = (value: string) => {
     updateTextSettings({
-      fontWeight: isBold ? "400" : "700",
+      fontWeight: value === "bold" ? "700" : "400",
     });
   };
 
   return (
-    <div className="border-b overflow-hidden">
-      <div className="flex justify-between items-center p-2">
-        <span className="text-sm">粗体</span>
-        <ToggleButton
-          isEnabled={isBold}
-          onToggle={toggleBold}
-          variant={isBold ? "default" : "ghost"}
-        />
-      </div>
-    </div>
+    <Select value={getSelectValue()} onValueChange={handleValueChange}>
+      <SelectTrigger className="w-full">
+        <SelectValue />
+      </SelectTrigger>
+      <SelectContent>
+        <SelectItem value="normal">正常</SelectItem>
+        <SelectItem value="bold">粗体</SelectItem>
+      </SelectContent>
+    </Select>
   );
 } 
