@@ -25,7 +25,7 @@ export interface ScrollingTextProps {
 export default function ScrollingText({
   text,
   fontSize,
-  fontFamily = "var(--font-dm-serif-text)",
+  fontFamily = "var(--font-serif)",
   fontWeight = "400",
   color = "#FFFFFB",
   className = "",
