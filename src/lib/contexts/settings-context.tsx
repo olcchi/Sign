@@ -63,8 +63,8 @@ const SettingsContext = createContext<SettingsContextType | undefined>(undefined
 const defaultTextSettings: TextSettings = {
   text: "Sign",
   textColor: colorOptions[0].value, // Use first color option
-  fontFamily: fontOptions[0].value, // Use first font option
-  fontSize: fontSizeOptions[2].value, // Use "L" size (10rem)
+  fontFamily: fontOptions[1].value, // Use second font option (DM Serif Display)
+  fontSize: fontSizeOptions[3].value, // Use "XL" size (10rem)
   fontWeight: "400",
   scrollSpeed: parseInt(scrollSpeedOptions[2].value), // Use "1x" speed (10)
   textStrokeEnabled: false,
