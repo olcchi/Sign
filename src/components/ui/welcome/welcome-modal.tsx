@@ -14,9 +14,6 @@ import {
   ArrowRight,
   Sparkles,
   Share2,
-  Palette,
-  Zap,
-  Component,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
@@ -24,7 +21,6 @@ import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
-import { Circle202 } from "../icon/circle202";
 import AnimatedShare from "./animated-share";
 import AnimatedEffect from "./animated-effect";
 // Simple VisuallyHidden component for accessibility
