@@ -3,8 +3,8 @@ import { ThemeProvider } from "@/components/ui/layout/theme-provider";
 import {
   Noto_Sans,
   Noto_Sans_Mono,
-  Noto_Serif,
   Noto_Sans_SC, // chinese font
+  DM_Serif_Display,
 } from "next/font/google";
 import "./globals.css";
 
@@ -21,17 +21,17 @@ const notoSansMono = Noto_Sans_Mono({
   weight: ["400", "500", "600", "700"],
 });
 
-const notoSerif = Noto_Serif({
-  variable: "--font-noto-serif",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-});
-
 // Chinese font configuration for consistent Chinese text rendering
 const notoSansSC = Noto_Sans_SC({
   weight: ["300", "400", "500", "700"],
   variable: "--font-noto-sans-sc",
   subsets: ["latin"],
+});
+
+const DMSerifDisplay = DM_Serif_Display({
+  variable: "--font-dm-serif-display",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 // SEO and site metadata configuration
@@ -59,7 +59,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${notoSans.variable} ${notoSansMono.variable} ${notoSerif.variable} ${notoSansSC.variable} antialiased`}
+        className={`${notoSans.variable} ${notoSansMono.variable} ${notoSansSC.variable} ${DMSerifDisplay.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"

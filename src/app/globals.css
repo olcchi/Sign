@@ -38,7 +38,7 @@
   --sidebar-border: oklch(0.94 0 0);
   --sidebar-ring: oklch(0 0 0);
   --font-sans: "Noto Sans", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --font-serif: "Noto Serif", "Songti SC", "SimSun", Georgia, serif;
+  --font-serif: "DM Serif Display", "Songti SC", "SimSun", Georgia, serif;
   --font-mono: "Noto Sans Mono", "SF Mono", "Consolas", monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
@@ -85,7 +85,7 @@
   --sidebar-border: oklch(0.32 0 0);
   --sidebar-ring: oklch(0.72 0 0);
   --font-sans: "Noto Sans", "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
-  --font-serif: "Noto Serif", "Songti SC", "SimSun", Georgia, serif;
+  --font-serif: "DM Serif Display", "Songti SC", "SimSun", Georgia, serif;
   --font-mono: "Noto Sans Mono", "SF Mono", "Consolas", monospace;
   --radius: 0.5rem;
   --shadow-2xs: 0px 1px 2px 0px hsl(0 0% 0% / 0.00);
