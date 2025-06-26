@@ -38,7 +38,7 @@ export function AnimatedSign({
       hasFill: false,
     },
     {
-      color: colorOptions[3].value,
+      color: colorOptions[6].value,
       fontFamily: fontOptions[0].value,
       fontSize: fontSizeOptions[3].value,
       textStroke: true,
@@ -47,12 +47,12 @@ export function AnimatedSign({
       hasFill: true,
     },
     {
-      color: colorOptions[4].value,
+      color: colorOptions[5].value,
       fontFamily: fontOptions[1].value,
       fontSize: fontSizeOptions[3].value,
       textStroke: true,
       strokeWidth: 1,
-      strokeColor: colorOptions[2].value,
+      strokeColor: colorOptions[5].value,
       hasFill: false,
     },
     {
@@ -65,7 +65,7 @@ export function AnimatedSign({
       hasFill: false,
     },
     {
-      color: colorOptions[4].value,
+      color: colorOptions[2].value,
       fontFamily: fontOptions[1].value,
       fontSize: fontSizeOptions[3].value,
       textStroke: true,
