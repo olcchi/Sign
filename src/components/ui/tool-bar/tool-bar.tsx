@@ -96,13 +96,13 @@ export default function ToolBar({ className }: ToolBarProps) {
           openPanel();
         }
       },
-    },  
+    },
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
     sm: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
     md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
-    lg: "lg:w-90 lg:top-12 lg:right-0",
+    lg: "lg:w-80 lg:top-12 lg:right-0",
   };
   // Animation configuration for toolbar transitions
   const transition = {
