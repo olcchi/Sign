@@ -11,10 +11,7 @@ export class PresetApiService {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
 
-  // Calculate expiration time (24 hours from now)
-  static getExpirationTime(): string {
-    return getExpirationTimeUtil(24);
-  }
+
 
   // Validate PIN code format
   static isValidPinCode(pinCode: string): boolean {
