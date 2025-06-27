@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseConfigStorage } from '@/lib/supabase-storage';
+import { supabaseConfigStorage } from '@/lib/preset-storage';
 
 export async function GET(
   request: NextRequest,

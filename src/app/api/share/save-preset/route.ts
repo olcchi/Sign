@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { supabaseConfigStorage } from '@/lib/supabase-storage';
+import { supabaseConfigStorage } from '@/lib/preset-storage';
 import { PresetApiService } from '@/lib/preset-api';
 
 export async function POST(request: NextRequest) {

@@ -2,7 +2,7 @@ import { PresetType } from "@/types";
 import { ApiResponse } from "@/types";
 import { presetToShareable, shareableToPreset } from "@/lib/preset-conversion";
 import { requestQueue } from "@/services/request-queue";
-import { getExpirationTime as getExpirationTimeUtil } from "@/lib/utils";
+
 
 // Unified preset API service
 export class PresetApiService {
@@ -10,8 +10,6 @@ export class PresetApiService {
   static generatePinCode(): string {
     return Math.floor(100000 + Math.random() * 900000).toString();
   }
-
-
 
   // Validate PIN code format
   static isValidPinCode(pinCode: string): boolean {
