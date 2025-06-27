@@ -9,8 +9,8 @@ function AnimatedShare() {
           flex={true}
           alpha={true}
           stroke={false}
-          width={false}
-          weight={false}
+          width={true}
+          weight={true}
           italic={false}
           minFontSize={36}
           simulateMouseMovement
