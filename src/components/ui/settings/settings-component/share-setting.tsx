@@ -1,6 +1,5 @@
 "use client";
 
-import React from "react";
 import { PresetType } from "@/types";
 import { usePresetManager } from "@/lib/hooks/usePresetManager";
 import ShareDialog from "@/components/ui/share/share-dialog";

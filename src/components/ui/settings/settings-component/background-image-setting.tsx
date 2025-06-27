@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { ImagePlus, Trash2 } from "lucide-react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { Button } from "@/components/ui/layout/button";
@@ -62,7 +60,7 @@ export function BackgroundImageSetting({
               className="relative w-full h-20 rounded-md overflow-hidden border"
               ref={previewContainerRef}
             >
-              <div className="absolute bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 z-30 inset-0">
+                                <div className="absolute bg-black/30 flex-center opacity-0 hover:opacity-100 z-30 inset-0">
                 <Button
                   variant="ghost"
                   onClick={triggerFileUpload}

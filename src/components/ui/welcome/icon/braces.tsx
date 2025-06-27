@@ -7,7 +7,7 @@ export const Braces = ({
 }) => {
   return (
     <div
-      className={`w-full h-full flex items-center justify-center ${className}`}
+              className={`w-full h-full flex-center ${className}`}
     >
       <svg
         className="scale-x-[-1] h-full"

@@ -22,7 +22,6 @@ import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
 import AnimatedShare from "./animated-share";
-import AnimatedEffect from "./animated-effect";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -147,15 +146,6 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
         </>
       ),
     },
-    // {
-    //   icon: <Zap className={iconStyle} />,
-    //   title: "质感特效",
-    //   content: (
-    //     <>
-    //       <AnimatedEffect />
-    //     </>
-    //   ),
-    // },
   ];
 
   return (

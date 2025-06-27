@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { Slider } from "@/components/ui/inputs/slider";
 import { ToggleButton } from "@/components/ui/settings/toggle-button";
 import { useSettings } from "@/lib/contexts/settings-context";

@@ -162,7 +162,7 @@ export default function ImportDialog({
 
           {/* Loading State */}
           {isLoading && (
-            <div className="flex items-center justify-center text-sm text-gray-600">
+                          <div className="flex-center text-sm text-gray-600">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               正在加载应援牌配置...
             </div>

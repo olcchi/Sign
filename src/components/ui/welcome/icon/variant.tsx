@@ -1,4 +1,3 @@
-import React from "react";
 export const Variant = ({ className }: { className: string }) => {
   return (
     <svg

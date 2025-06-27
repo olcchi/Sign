@@ -1,6 +1,4 @@
 "use client";
-
-import React from "react";
 import { OptionButtonGroup } from "@/components/ui/settings/option-button-group";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { scrollSpeedOptions } from "@/lib/settings-config";
