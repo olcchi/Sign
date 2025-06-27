@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/layout/select";
+} from "@/components/ui/inputs/select";
 
 interface TextStrokeSettingProps {
   colorOptions: Array<{

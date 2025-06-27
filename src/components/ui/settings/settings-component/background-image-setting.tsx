@@ -63,14 +63,14 @@ export function BackgroundImageSetting({
               ref={previewContainerRef}
             >
               <div className="absolute bg-black/30 flex items-center justify-center opacity-0 hover:opacity-100 z-30 inset-0">
-              <Button 
-                variant="ghost" 
-                onClick={triggerFileUpload}
-                className="text-xs text-white"
-              >
-                <ImagePlus size={12} />
-                <p className="text-xs whitespace-nowrap">更换图片</p>
-              </Button>
+                <Button
+                  variant="ghost"
+                  onClick={triggerFileUpload}
+                  className="text-xs text-white"
+                >
+                  <ImagePlus size={12} />
+                  <p className="text-xs whitespace-nowrap">更换图片</p>
+                </Button>
               </div>
               <Image
                 src={previewImage || backgroundSettings.backgroundImage}
@@ -79,9 +79,6 @@ export function BackgroundImageSetting({
                 sizes="50px"
                 style={{
                   objectFit: "cover",
-                  // objectPosition: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
-                  // transform: `scale(${backgroundSettings.backgroundZoom})`,
-                  // transformOrigin: "50% 50%",
                 }}
               />
             </div>

@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/layout/select";
+} from "@/components/ui/inputs/select";
 
 export function FontWeightSetting() {
   const { textSettings, updateTextSettings } = useSettings();

@@ -14,7 +14,7 @@ interface ShareSettingProps {
 
 // Share setting component for preset sharing functionality
 export function ShareSetting({ activePreset }: ShareSettingProps) {
-  const { loadPreset, textSettings, effectsSettings } = usePresetManager();
+  const { textSettings, effectsSettings } = usePresetManager();
 
   return (
     <div className="space-y-3 flex-col gap-2">
@@ -31,11 +31,11 @@ export function ShareSetting({ activePreset }: ShareSettingProps) {
           </Button>
         </ShareDialog>
 
-        {/* Load shared preset */}
-        <ImportDialog onPresetLoaded={loadPreset}>
+        {/* Import shared preset */}
+        <ImportDialog>
           <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
             <CloudDownload className="mr-2 h-3 w-3" />
-            加载预设
+            导入预设
           </Button>
         </ImportDialog>
       </div>
