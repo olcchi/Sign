@@ -1,5 +1,4 @@
-import { PresetType } from "@/components/ui/settings/preset-manager/types";
-import { ShareablePreset } from "@/types";
+import { PresetType, ShareablePreset } from "@/types";
 
 // Font mapping for backward compatibility with old presets
 const FONT_MAPPING = {
@@ -25,54 +24,14 @@ const DEFAULT_PRESET_VALUES = {
   textFillEnabled: true,
 } as const;
 
-// Convert Preset to ShareablePreset for sharing/saving
+// Normalize and prepare preset for sharing/saving
 export function presetToShareable(preset: PresetType): ShareablePreset {
-  return {
-    id: preset.id,
-    name: preset.name,
-    text: preset.text,
-    textColor: preset.textColor,
-    fontFamily: mapFontFamily(preset.fontFamily),
-    fontSize: preset.fontSize,
-    fontWeight: preset.fontWeight,
-    scrollSpeed: preset.scrollSpeed,
-    edgeBlurEnabled: preset.edgeBlurEnabled,
-    edgeBlurIntensity: preset.edgeBlurIntensity,
-    shinyTextEnabled: preset.shinyTextEnabled,
-    noiseEnabled: preset.noiseEnabled ?? DEFAULT_PRESET_VALUES.noiseEnabled,
-    noiseOpacity: preset.noiseOpacity ?? DEFAULT_PRESET_VALUES.noiseOpacity,
-    noiseDensity: preset.noiseDensity ?? DEFAULT_PRESET_VALUES.noiseDensity,
-    noiseAnimated: preset.noiseAnimated ?? DEFAULT_PRESET_VALUES.noiseAnimated,
-    textStrokeEnabled: preset.textStrokeEnabled ?? DEFAULT_PRESET_VALUES.textStrokeEnabled,
-    textStrokeWidth: preset.textStrokeWidth ?? DEFAULT_PRESET_VALUES.textStrokeWidth,
-    textStrokeColor: preset.textStrokeColor ?? DEFAULT_PRESET_VALUES.textStrokeColor,
-    textFillEnabled: preset.textFillEnabled ?? DEFAULT_PRESET_VALUES.textFillEnabled,
-  };
+  return normalizePreset(preset);
 }
 
-// Convert ShareablePreset to Preset for loading/applying
+// Process shared preset for local use
 export function shareableToPreset(shareable: ShareablePreset): PresetType {
-  return {
-    id: shareable.id,
-    name: shareable.name,
-    text: shareable.text,
-    textColor: shareable.textColor,
-    fontFamily: mapFontFamily(shareable.fontFamily),
-    fontSize: shareable.fontSize,
-    fontWeight: shareable.fontWeight,
-    scrollSpeed: shareable.scrollSpeed,
-    edgeBlurEnabled: shareable.edgeBlurEnabled,
-    edgeBlurIntensity: shareable.edgeBlurIntensity,
-    shinyTextEnabled: shareable.shinyTextEnabled,
-    noiseEnabled: shareable.noiseEnabled ?? DEFAULT_PRESET_VALUES.noiseEnabled,
-    noiseOpacity: shareable.noiseOpacity ?? DEFAULT_PRESET_VALUES.noiseOpacity,
-    noiseDensity: shareable.noiseDensity ?? DEFAULT_PRESET_VALUES.noiseDensity,
-    noiseAnimated: shareable.noiseAnimated ?? DEFAULT_PRESET_VALUES.noiseAnimated,
-    textStrokeEnabled: shareable.textStrokeEnabled ?? DEFAULT_PRESET_VALUES.textStrokeEnabled,
-    textStrokeWidth: shareable.textStrokeWidth ?? DEFAULT_PRESET_VALUES.textStrokeWidth,
-    textStrokeColor: shareable.textStrokeColor ?? DEFAULT_PRESET_VALUES.textStrokeColor,
-    textFillEnabled: shareable.textFillEnabled ?? DEFAULT_PRESET_VALUES.textFillEnabled,
-  };
+  return normalizePreset(shareable);
 }
 
 // Normalize preset with default values to ensure consistency

@@ -1,4 +1,4 @@
-import { PresetType } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/types";
 import { ApiResponse } from "@/types";
 import { presetToShareable, shareableToPreset } from "@/lib/preset-conversion";
 import { requestQueue } from "@/services/request-queue";
