@@ -254,7 +254,7 @@ export default function FeedbackDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <p className="text-sm font-bold">意见反馈</p>
+            <p className="text-sm font-bold">反馈</p>
           </DialogTitle>
           <DialogDescription>请您提交遇到的问题或建议</DialogDescription>
         </DialogHeader>
@@ -359,7 +359,7 @@ export default function FeedbackDialog({
               <div className="space-y-2">
                 <Input
                   type="email"
-                  placeholder="请留下您的邮箱，用于反馈交流"
+                  placeholder="留下您的邮箱，用于反馈交流"
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
