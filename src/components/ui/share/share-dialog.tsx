@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { ApiResponse } from "@/types";
-import { PresetType } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/types";
 import { TextSettings, EffectsSettings } from "@/types";
 import {
   createPresetFromCurrentSettings,
