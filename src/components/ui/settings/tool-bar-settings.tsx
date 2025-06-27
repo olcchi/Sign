@@ -8,7 +8,7 @@ import {
   EffectsSetting,
   BackgroundImageSetting,
 } from "@/components/ui/settings/settings-component";
-import { PresetType } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/types";
 
 // Configurable options
 interface OptionsConfig {
