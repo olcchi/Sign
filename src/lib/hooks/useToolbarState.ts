@@ -1,6 +1,6 @@
-import { useState, useEffect, RefObject } from 'react';
-import { processImageFile } from '../image-utils';
-import { ImageSize } from '../types/common';
+import { useState, useEffect } from "react";
+import { processImageFile } from "../image-utils";
+import { ImageSize } from "@/lib/image-utils";
 
 export interface ToolbarState {
   isOpen: boolean;
@@ -18,7 +18,7 @@ export interface ToolbarState {
 
 /**
  * Hook for managing toolbar visibility, edit modes, and media handling
- * 
+ *
  * Centralizes all toolbar interaction states and provides methods for
  * panel visibility, text editing, and image processing.
  */
@@ -88,11 +88,11 @@ export const useToolbarState = (): ToolbarState => {
     try {
       // Convert file to optimized image data
       const { backgroundImage, previewImage } = await processImageFile(file);
-      
+
       // Update state with processed image
       onImageChange(backgroundImage);
       setPreviewImage(previewImage);
-      
+
       // Get dimensions for positioning controls
       const img = new Image();
       img.onload = () => {
@@ -113,6 +113,6 @@ export const useToolbarState = (): ToolbarState => {
     activeTab,
     openPanel,
     closePanel,
-    handleImageChange
+    handleImageChange,
   };
-}; 
+};

@@ -14,4 +14,4 @@ export type { TextSettings, BackgroundSettings, EffectsSettings } from './settin
 export type { BaseDialogProps, BaseComponentProps, BaseSettingProps } from './component';
 
 // Common types
-export type { ImageSize } from '@/lib/types/common'; 
+export type { ImageSize } from '@/types/common'; 

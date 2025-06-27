@@ -1,11 +1,14 @@
 import { PREVIEW_IMAGE_QUALITY, BACKGROUND_IMAGE_QUALITY } from "./settings-config";
-import { ImageSize } from "./types/common";
 
 interface ProcessedImage {
   backgroundImage: string;
   previewImage: string;
 }
 
+export interface ImageSize {
+  width: number;
+  height: number;
+} 
 // Processes uploaded images to create optimized versions for background and preview
 export const processImageFile = (file: File): Promise<ProcessedImage> => {
   return new Promise((resolve, reject) => {

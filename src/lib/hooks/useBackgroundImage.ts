@@ -1,6 +1,5 @@
 import { useState, useEffect, RefObject } from "react";
-import { getImageSliderState } from "@/lib/image-utils";
-import { ImageSize } from "@/lib/types/common";
+import { getImageSliderState,ImageSize } from "@/lib/image-utils";
 
 /**
  * Hook for managing background image functionality
