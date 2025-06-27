@@ -1,6 +1,5 @@
 import React from "react";
 import { cn } from "@/lib/utils";
-import { Card } from "@/components/ui/layout/card";
 interface PanelContentProps {
   children: React.ReactNode;
   className?: string;
