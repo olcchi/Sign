@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
-import type { Preset, PresetManagerProps } from "./preset-manager/types";
+import type { PresetType, PresetManagerProps } from "./preset-manager/types";
 
 /**
  * Component for managing text display presets
@@ -53,7 +53,7 @@ export function PresetManager({
 }: PresetManagerProps) {
   const { updateTextSettings, updateEffectsSettings } = useSettings();
 
-  const [presets, setPresets] = useState<Preset[]>([]);
+  const [presets, setPresets] = useState<PresetType[]>([]);
   const [presetName, setPresetName] = useState("");
   const [showPresetInput, setShowPresetInput] = useState(false);
   const [activePresetId, setActivePresetId] = useState<string | null>(null);
@@ -69,7 +69,7 @@ export function PresetManager({
     if (savedPresets) {
       try {
         const parsedPresets = JSON.parse(savedPresets);
-        const updatedPresets = parsedPresets.map((preset: Preset) => ({
+        const updatedPresets = parsedPresets.map((preset: PresetType) => ({
           ...preset,
           edgeBlurEnabled:
             preset.edgeBlurEnabled !== undefined
@@ -183,7 +183,7 @@ export function PresetManager({
   const savePreset = () => {
     if (!presetName.trim()) return;
 
-    const newPreset: Preset = {
+    const newPreset: PresetType = {
       id: Date.now().toString(),
       name: presetName,
       text,
@@ -276,7 +276,7 @@ export function PresetManager({
   };
 
   // Load a preset and set it as active
-  const handleLoadPreset = (preset: Preset) => {
+  const handleLoadPreset = (preset: PresetType) => {
     onLoadPreset(preset);
     setActivePresetId(preset.id);
   };
@@ -506,5 +506,5 @@ export function PresetManager({
   );
 }
 
-// Export Preset type for backward compatibility
-export type { Preset } from "./preset-manager/types";
+// Export PresetType for backward compatibility
+export type { PresetType } from "./preset-manager/types";

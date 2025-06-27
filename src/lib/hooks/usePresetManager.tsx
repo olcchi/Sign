@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { Preset } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import { applyPreset } from "@/lib/preset-utils";
 
 // Unified preset manager hook to eliminate duplicate preset application logic
@@ -34,13 +34,13 @@ export function usePresetManager() {
   }), [updateTextSettings, updateEffectsSettings]);
 
   // Unified preset loading function
-  const loadPreset = useCallback((preset: Preset) => {
+  const loadPreset = useCallback((preset: PresetType) => {
     const handlers = createPresetHandlers();
     applyPreset(preset, handlers);
   }, [createPresetHandlers]);
 
   // Get current settings as preset format
-  const getCurrentPreset = useCallback((): Omit<Preset, 'id' | 'name'> => ({
+  const getCurrentPreset = useCallback((): Omit<PresetType, 'id' | 'name'> => ({
     text: textSettings.text,
     textColor: textSettings.textColor,
     fontFamily: textSettings.fontFamily,

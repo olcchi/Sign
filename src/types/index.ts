@@ -5,7 +5,7 @@ export * from './api';
 export type { Feedback, ProcessedFeedback, CreateFeedbackRequest, FeedbackRating } from './feedback';
 
 // Component types
-export type { Preset, PresetManagerProps } from '@/components/ui/settings/preset-manager/types';
+export type { PresetType, PresetManagerProps } from '@/components/ui/settings/preset-manager/types';
 export type { ImageSize } from '@/lib/types/common';
 
 // Preset sharing interface

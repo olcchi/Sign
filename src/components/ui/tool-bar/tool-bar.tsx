@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
 import { SettingItem } from "@/components/ui/settings/setting-item";
 import { PresetManager } from "@/components/ui/settings/preset";
-import { PresetType, Preset } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import { ToolBarSettings } from "@/components/ui/settings/tool-bar-settings";
 import { PanelHeader } from "@/components/ui/settings/panel/panel-header";
 import { PanelContent } from "@/components/ui/settings/panel/panel-content";
@@ -45,7 +45,7 @@ export default function ToolBar({ className }: ToolBarProps) {
   } = useSettings();
 
   // Track current active preset
-  const [activePreset, setActivePreset] = useState<Preset | null>(null);
+  const [activePreset, setActivePreset] = useState<PresetType | null>(null);
 
   // Using custom hooks to separate state and logic for improved maintainability
   const {

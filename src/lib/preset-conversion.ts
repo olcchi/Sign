@@ -1,4 +1,4 @@
-import { Preset } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import { ShareablePreset } from "@/types";
 
 // Font mapping for backward compatibility with old presets
@@ -26,7 +26,7 @@ const DEFAULT_PRESET_VALUES = {
 } as const;
 
 // Convert Preset to ShareablePreset for sharing/saving
-export function presetToShareable(preset: Preset): ShareablePreset {
+export function presetToShareable(preset: PresetType): ShareablePreset {
   return {
     id: preset.id,
     name: preset.name,
@@ -51,7 +51,7 @@ export function presetToShareable(preset: Preset): ShareablePreset {
 }
 
 // Convert ShareablePreset to Preset for loading/applying
-export function shareableToPreset(shareable: ShareablePreset): Preset {
+export function shareableToPreset(shareable: ShareablePreset): PresetType {
   return {
     id: shareable.id,
     name: shareable.name,
@@ -76,7 +76,7 @@ export function shareableToPreset(shareable: ShareablePreset): Preset {
 }
 
 // Normalize preset with default values to ensure consistency
-export function normalizePreset(preset: Partial<Preset>): Preset {
+export function normalizePreset(preset: Partial<PresetType>): PresetType {
   return {
     id: preset.id || '',
     name: preset.name || '',
@@ -101,7 +101,7 @@ export function normalizePreset(preset: Partial<Preset>): Preset {
 }
 
 // Validate preset data integrity
-export function validatePreset(preset: any): preset is Preset {
+export function validatePreset(preset: any): preset is PresetType {
   return (
     typeof preset === 'object' &&
     preset !== null &&

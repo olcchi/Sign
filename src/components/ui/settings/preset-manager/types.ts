@@ -24,9 +24,6 @@ export interface PresetType {
   textFillEnabled?: boolean;
 }
 
-// Alias for backward compatibility
-export type Preset = PresetType;
-
 /**
  * Props for the PresetManager component
  */

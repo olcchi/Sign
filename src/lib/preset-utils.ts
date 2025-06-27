@@ -1,4 +1,4 @@
-import { Preset } from "@/components/ui/settings/preset-manager/types";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import type { TextSettings, EffectsSettings } from "@/types";
 import {
   colorOptions,
@@ -41,7 +41,7 @@ interface PresetHandlers {
  * @param preset - The configuration preset to apply
  * @param handlers - Object containing all the setter functions for each property
  */
-export function applyPreset(preset: Preset, handlers: PresetHandlers) {
+export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
   const {
     onTextChange,
     onColorChange,
@@ -109,7 +109,7 @@ export function createPresetFromCurrentSettings(
   textSettings: TextSettings,
   effectsSettings: EffectsSettings,
   name: string = "当前设置"
-): Preset {
+): PresetType {
   return {
     id: `temp-${Date.now()}`, // Temporary ID for current settings
     name,
@@ -137,7 +137,7 @@ export function createPresetFromCurrentSettings(
  * Get detailed preset information as an array of strings for vertical display
  * Reuses the same display logic as Preset.tsx AccordionContent
  */
-export function getPresetDetailedInfo(preset: Preset): string[] {
+export function getPresetDetailedInfo(preset: PresetType): string[] {
   const details = [];
 
   // Text content (truncated)
