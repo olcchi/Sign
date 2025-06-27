@@ -1,49 +1,16 @@
 "use client";
 
 import React, { createContext, useContext, useState, ReactNode } from "react";
-import { 
-  colorOptions, 
-  fontOptions, 
+import {
+  colorOptions,
+  fontOptions,
   fontSizeOptions,
   scrollSpeedOptions,
   edgeBlurConfig,
   noiseConfig,
-  textStrokeConfig 
+  textStrokeConfig,
 } from "@/lib/settings-config";
-
-// Text settings interface for managing text content and styles
-export interface TextSettings {
-  text: string;
-  textColor: string;
-  fontFamily: string;
-  fontSize: string;
-  fontWeight: string;
-  scrollSpeed: number;
-  textStrokeEnabled: boolean;
-  textStrokeWidth: number;
-  textStrokeColor: string;
-  textFillEnabled: boolean;
-}
-
-// Background settings interface for controlling page background appearance
-export interface BackgroundSettings {
-  backgroundColor: string;
-  backgroundImage: string | null;
-  backgroundPosition: { x: number; y: number };
-  backgroundZoom: number;
-  overlayEnabled: boolean;
-}
-
-// Visual effects settings interface for managing effect parameters
-export interface EffectsSettings {
-  edgeBlurEnabled: boolean;
-  edgeBlurIntensity: number;
-  shinyTextEnabled: boolean;
-  noiseEnabled: boolean;
-  noiseOpacity: number;
-  noiseDensity: number;
-  noiseAnimated: boolean;
-}
+import type { TextSettings, BackgroundSettings, EffectsSettings } from "@/types";
 
 // Global settings context definition, providing access to grouped settings
 interface SettingsContextType {
@@ -57,7 +24,9 @@ interface SettingsContextType {
   setIsTextScrolling: (scrolling: boolean) => void;
 }
 
-const SettingsContext = createContext<SettingsContextType | undefined>(undefined);
+const SettingsContext = createContext<SettingsContextType | undefined>(
+  undefined
+);
 
 // Default values for initial text settings
 const defaultTextSettings: TextSettings = {
@@ -95,24 +64,30 @@ const defaultEffectsSettings: EffectsSettings = {
 
 // Settings provider that improves code maintainability through grouped management
 export function SettingsProvider({ children }: { children: ReactNode }) {
-  const [textSettings, setTextSettings] = useState<TextSettings>(defaultTextSettings);
-  const [backgroundSettings, setBackgroundSettings] = useState<BackgroundSettings>(defaultBackgroundSettings);
-  const [effectsSettings, setEffectsSettings] = useState<EffectsSettings>(defaultEffectsSettings);
+  const [textSettings, setTextSettings] =
+    useState<TextSettings>(defaultTextSettings);
+  const [backgroundSettings, setBackgroundSettings] =
+    useState<BackgroundSettings>(defaultBackgroundSettings);
+  const [effectsSettings, setEffectsSettings] = useState<EffectsSettings>(
+    defaultEffectsSettings
+  );
   const [isTextScrolling, setIsTextScrolling] = useState(false);
 
   // Support partial updates for text settings
   const updateTextSettings = (newSettings: Partial<TextSettings>) => {
-    setTextSettings(prev => ({ ...prev, ...newSettings }));
+    setTextSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
   // Support partial updates for background settings
-  const updateBackgroundSettings = (newSettings: Partial<BackgroundSettings>) => {
-    setBackgroundSettings(prev => ({ ...prev, ...newSettings }));
+  const updateBackgroundSettings = (
+    newSettings: Partial<BackgroundSettings>
+  ) => {
+    setBackgroundSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
   // Support partial updates for effect settings
   const updateEffectsSettings = (newSettings: Partial<EffectsSettings>) => {
-    setEffectsSettings(prev => ({ ...prev, ...newSettings }));
+    setEffectsSettings((prev) => ({ ...prev, ...newSettings }));
   };
 
   return (
@@ -140,4 +115,4 @@ export function useSettings() {
     throw new Error("useSettings must be used within a SettingsProvider");
   }
   return context;
-} 
+}

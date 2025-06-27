@@ -24,7 +24,7 @@ import { cn } from "@/lib/utils";
 import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
-import type { Preset, PresetManagerProps } from "./Preset/types";
+import type { Preset, PresetManagerProps } from "./preset-manager/types";
 
 /**
  * Component for managing text display presets
@@ -507,4 +507,4 @@ export function PresetManager({
 }
 
 // Export Preset type for backward compatibility
-export type { Preset } from "./Preset/types";
+export type { Preset } from "./preset-manager/types";

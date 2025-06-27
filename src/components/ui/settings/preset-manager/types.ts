@@ -1,7 +1,7 @@
 /**
  * Preset interface defining the structure of saved presets
  */
-export interface Preset {
+export interface PresetType {
   id: string;
   name: string;
   text: string;
@@ -24,6 +24,9 @@ export interface Preset {
   textFillEnabled?: boolean;
 }
 
+// Alias for backward compatibility
+export type Preset = PresetType;
+
 /**
  * Props for the PresetManager component
  */
@@ -45,6 +48,6 @@ export interface PresetManagerProps {
   textStrokeWidth?: number;
   textStrokeColor?: string;
   textFillEnabled?: boolean;
-  onLoadPreset: (preset: Preset) => void;
-  onActivePresetChange?: (preset: Preset | null) => void; // Callback for active preset changes
-} 
+  onLoadPreset: (preset: PresetType) => void;
+  onActivePresetChange?: (preset: PresetType | null) => void; // Callback for active preset changes
+}

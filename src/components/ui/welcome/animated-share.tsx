@@ -7,10 +7,10 @@ function AnimatedShare() {
         <TextPressure
           text="{PIN Code}"
           flex={true}
-          alpha={false}
+          alpha={true}
           stroke={false}
-          width={true}
-          weight={true}
+          width={false}
+          weight={false}
           italic={false}
           minFontSize={36}
           simulateMouseMovement

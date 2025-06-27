@@ -8,7 +8,7 @@ import {
   EffectsSetting,
   BackgroundImageSetting,
 } from "@/components/ui/settings/settings-component";
-import { Preset } from "@/components/ui/settings/Preset";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 
 // Configurable options
 interface OptionsConfig {
@@ -46,7 +46,7 @@ export interface ToolBarSettingsProps
   extends BackgroundImageHandlingProps,
     OptionsConfig {
   isOpen?: boolean;
-  activePreset?: Preset | null; // Current active preset
+  activePreset?: PresetType | null; // Current active preset
 }
 
 // Constructs setting item components for toolbar option rendering

@@ -5,7 +5,8 @@ import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
 import { SettingItem } from "@/components/ui/settings/setting-item";
-import { PresetManager, Preset } from "@/components/ui/settings/Preset";
+import { PresetManager } from "@/components/ui/settings/preset";
+import { PresetType, Preset } from "@/components/ui/settings/preset-manager/types";
 import { ToolBarSettings } from "@/components/ui/settings/tool-bar-settings";
 import { PanelHeader } from "@/components/ui/settings/panel/panel-header";
 import { PanelContent } from "@/components/ui/settings/panel/panel-content";
@@ -100,7 +101,7 @@ export default function ToolBar({ className }: ToolBarProps) {
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
-    sm: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
+    sm: "w-[75vw] top-12 right-0 h-auto max-h-[70vh]",
     md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
     lg: "lg:w-80 lg:top-12 lg:right-0",
   };

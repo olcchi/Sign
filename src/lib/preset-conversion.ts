@@ -1,5 +1,5 @@
-import { Preset } from "@/components/ui/settings/Preset/types";
-import { ShareablePreset } from "@/lib/share-api";
+import { Preset } from "@/components/ui/settings/preset-manager/types";
+import { ShareablePreset } from "@/types";
 
 // Font mapping for backward compatibility with old presets
 const FONT_MAPPING = {

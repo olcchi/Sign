@@ -1,5 +1,5 @@
-import { Preset } from "@/components/ui/settings/Preset/types";
-import { TextSettings, EffectsSettings } from "@/lib/contexts/settings-context";
+import { Preset } from "@/components/ui/settings/preset-manager/types";
+import type { TextSettings, EffectsSettings } from "@/types";
 import {
   colorOptions,
   fontOptions,

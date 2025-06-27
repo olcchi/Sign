@@ -3,8 +3,8 @@
 import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { ApiResponse } from "@/types";
-import { Preset } from "@/components/ui/settings/Preset";
-import { TextSettings, EffectsSettings } from "@/lib/contexts/settings-context";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
+import { TextSettings, EffectsSettings } from "@/types";
 import {
   createPresetFromCurrentSettings,
   getPresetDetailedInfo,
@@ -57,7 +57,7 @@ DialogContent.displayName = "DialogContent";
 interface ShareDialogProps {
   children: React.ReactNode;
   className?: string;
-  activePreset?: Preset | null; // Current active preset
+  activePreset?: PresetType | null; // Current active preset
   currentTextSettings?: TextSettings; // Current text settings
   currentEffectsSettings?: EffectsSettings; // Current effects settings
 }
@@ -73,14 +73,13 @@ export default function ShareDialog({
   const [isLoading, setIsLoading] = useState(false);
   const [shareResult, setShareResult] = useState<{
     pinCode: string;
-    shareUrl: string;
   } | null>(null);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // Determine what to share: current settings or active preset
   const getPresetToShare = (): {
-    preset: Preset;
+    preset: PresetType;
     isCurrentSettings: boolean;
   } => {
     if (!currentTextSettings || !currentEffectsSettings) {
@@ -114,12 +113,11 @@ export default function ShareDialog({
       const { preset } = getPresetToShare();
 
       // Use unified API service to share preset
-      const result: ApiResponse<{ pinCode: string; shareUrl: string }> = await PresetApiService.sharePreset(preset);
+      const result: ApiResponse<{ pinCode: string }> = await PresetApiService.sharePreset(preset);
 
       if (result.success && result.data) {
         setShareResult({
           pinCode: result.data.pinCode,
-          shareUrl: result.data.shareUrl,
         });
       } else {
         setError(result.error || "分享失败，请重试");
@@ -139,7 +137,7 @@ export default function ShareDialog({
   const getShareInfo = (): {
     title: string;
     description: string[];
-    preset: Preset;
+    preset: PresetType;
   } | null => {
     try {
       const { preset, isCurrentSettings } = getPresetToShare();

@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { Preset } from "@/components/ui/settings/Preset/types";
+import { Preset } from "@/components/ui/settings/preset-manager/types";
 import { applyPreset } from "@/lib/preset-utils";
 
 // Unified preset manager hook to eliminate duplicate preset application logic

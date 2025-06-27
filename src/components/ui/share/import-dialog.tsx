@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
-import { Preset } from "@/components/ui/settings/Preset";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import { BaseDialogProps } from "@/types";
 import { Button } from "@/components/ui/layout/button";
 import { Label } from "@/components/ui/label";
@@ -50,7 +50,7 @@ const DialogContent = React.forwardRef<
 DialogContent.displayName = "DialogContent";
 
 interface ImportDialogProps extends BaseDialogProps {
-  onPresetLoaded: (preset: Preset) => void;
+  onPresetLoaded: (preset: PresetType) => void;
 }
 
 export default function ImportDialog({

@@ -1,5 +1,5 @@
 import { createClient } from '@/lib/supabase/server'
-import { ShareablePreset } from '@/lib/share-api'
+import { ShareablePreset } from '@/types'
 
 interface SupabasePreset {
   pin_code: string

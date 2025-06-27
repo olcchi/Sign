@@ -47,17 +47,17 @@ export const colorOptions = [
 // Typography options - Updated to use DM Serif Display font family
 export const fontOptions = [
   {
-    name: "无衬线",
+    name: "Noto Sans",
     value: "var(--font-noto-sans)",
     fontFamily: "text-[var(--font-noto-sans)]",
   },
   {
-    name: "衬线",
+    name: "DM Serif Display",
     value: "var(--font-serif)",
     fontFamily: "text-[var(--font-serif)]",
   },
   {
-    name: "等宽",
+    name: "Noto Sans Mono",
     value: "var(--font-noto-sans-mono)",
     fontFamily: "text-[var(--font-noto-sans-mono)]",
   },

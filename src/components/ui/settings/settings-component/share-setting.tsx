@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Preset } from "@/components/ui/settings/Preset";
+import { PresetType } from "@/components/ui/settings/preset-manager/types";
 import { usePresetManager } from "@/lib/hooks/usePresetManager";
 import ShareDialog from "@/components/ui/share/share-dialog";
 import ImportDialog from "@/components/ui/share/import-dialog";
@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/layout/button";
 import { CloudUpload, CloudDownload } from "lucide-react";
 
 interface ShareSettingProps {
-  activePreset?: Preset | null; // Current active preset from preset manager
+  activePreset?: PresetType | null; // Current active preset from preset manager
 }
 
 // Share setting component for preset sharing functionality
@@ -32,7 +32,7 @@ export function ShareSetting({ activePreset }: ShareSettingProps) {
         </ShareDialog>
 
         {/* Import shared preset */}
-        <ImportDialog>
+        <ImportDialog onPresetLoaded={() => {}}>
           <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
             <CloudDownload className="mr-2 h-3 w-3" />
             导入预设
