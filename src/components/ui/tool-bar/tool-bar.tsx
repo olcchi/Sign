@@ -5,7 +5,7 @@ import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout/button";
 import { SettingItem } from "@/components/ui/settings/setting-item";
-import { PresetManager } from "@/components/ui/settings/Preset";
+import { PresetManager } from "@/components/ui/settings/preset";
 import { PresetType } from "@/types";
 import { ToolBarSettings } from "@/components/ui/settings/tool-bar-settings";
 import { PanelHeader } from "@/components/ui/settings/panel/panel-header";
