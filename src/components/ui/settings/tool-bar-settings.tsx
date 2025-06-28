@@ -1,10 +1,8 @@
 "use client";
-import { Card } from "@/components/ui/layout/card";
 import {
   ContentSetting,
   TextRenderingSetting,
   ScrollSpeedSetting,
-  TextFillSetting,
   EffectsSetting,
   BackgroundImageSetting,
 } from "@/components/ui/settings/settings-component";
