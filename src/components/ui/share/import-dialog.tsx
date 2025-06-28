@@ -50,12 +50,70 @@ const DialogContent = React.forwardRef<
 DialogContent.displayName = "DialogContent";
 
 interface ImportDialogProps extends BaseDialogProps {
-  onPresetLoaded: (preset: PresetType) => void;
+  onPresetListUpdated?: () => void; // Optional callback to notify preset list updates
 }
+
+// Function to save imported preset to localStorage
+const saveImportedPresetToLocal = (importedPreset: PresetType): PresetType => {
+  // Generate new ID but keep original name
+  const newId = Date.now().toString();
+
+  // Create new preset with updated ID but original name
+  const newPreset: PresetType = {
+    ...importedPreset,
+    id: newId,
+    // Keep the original name from the shared preset
+  };
+
+  // Load existing presets from localStorage
+  const savedPresets = localStorage.getItem("sign-presets");
+  let existingPresets: PresetType[] = [];
+  
+  if (savedPresets) {
+    try {
+      const parsedPresets = JSON.parse(savedPresets);
+      existingPresets = parsedPresets.map((preset: PresetType) => ({
+        ...preset,
+        edgeBlurEnabled:
+          preset.edgeBlurEnabled !== undefined ? preset.edgeBlurEnabled : false,
+        edgeBlurIntensity:
+          preset.edgeBlurIntensity !== undefined ? preset.edgeBlurIntensity : 10,
+        shinyTextEnabled:
+          preset.shinyTextEnabled !== undefined ? preset.shinyTextEnabled : false,
+        noiseEnabled:
+          preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
+        noiseOpacity:
+          preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
+        noiseDensity:
+          preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+        noiseAnimated:
+          preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+        textStrokeEnabled:
+          preset.textStrokeEnabled !== undefined ? preset.textStrokeEnabled : true,
+        textStrokeWidth:
+          preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
+        textStrokeColor:
+          preset.textStrokeColor !== undefined ? preset.textStrokeColor : "#000000",
+        textFillEnabled:
+          preset.textFillEnabled !== undefined ? preset.textFillEnabled : true,
+      }));
+    } catch (e) {
+      console.error("Failed to parse existing presets", e);
+    }
+  }
+
+  // Add new preset to the beginning of the list
+  const updatedPresets = [newPreset, ...existingPresets];
+  
+  // Save back to localStorage
+  localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
+  
+  return newPreset;
+};
 
 export default function ImportDialog({
   children,
-  onPresetLoaded,
+  onPresetListUpdated,
   className,
 }: ImportDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
@@ -79,7 +137,14 @@ export default function ImportDialog({
       const result = await PresetApiService.loadSharedPreset(currentPinCode);
 
       if (result.success && result.data) {
-        onPresetLoaded(result.data);
+        // Save imported preset to local storage only (don't apply to current interface)
+        saveImportedPresetToLocal(result.data);
+        
+        // Notify that preset list has been updated
+        if (onPresetListUpdated) {
+          onPresetListUpdated();
+        }
+        
         setIsOpen(false);
         setPinCode("");
       } else {
@@ -126,7 +191,7 @@ export default function ImportDialog({
             加载预设
           </DialogTitle>
           <DialogDescription className="text-sm">
-            输入PIN码以加载应援牌预设
+            输入PIN码以导入应援牌预设
           </DialogDescription>
         </DialogHeader>
 
