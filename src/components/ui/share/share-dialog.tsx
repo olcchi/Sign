@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { ApiResponse } from "@/types";
 import { PresetType } from "@/types";
@@ -25,6 +25,13 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/layout/accordion";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/inputs/select";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Copy, Check, Loader2, AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -76,31 +83,83 @@ export default function ShareDialog({
   } | null>(null);
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  
+  // New states for preset selection
+  const [localPresets, setLocalPresets] = useState<PresetType[]>([]);
+  const [selectedPresetId, setSelectedPresetId] = useState<string>("current"); // "current" for current settings
 
-  // Determine what to share: current settings or active preset
+  // Load local presets from localStorage
+  useEffect(() => {
+    const savedPresets = localStorage.getItem("sign-presets");
+    if (savedPresets) {
+      try {
+        const parsedPresets = JSON.parse(savedPresets);
+        const updatedPresets = parsedPresets.map((preset: PresetType) => ({
+          ...preset,
+          edgeBlurEnabled:
+            preset.edgeBlurEnabled !== undefined
+              ? preset.edgeBlurEnabled
+              : false,
+          edgeBlurIntensity:
+            preset.edgeBlurIntensity !== undefined
+              ? preset.edgeBlurIntensity
+              : 10,
+          shinyTextEnabled:
+            preset.shinyTextEnabled !== undefined
+              ? preset.shinyTextEnabled
+              : false,
+          noiseEnabled:
+            preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
+          noiseOpacity:
+            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
+          noiseDensity:
+            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+          noiseAnimated:
+            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+          textStrokeEnabled:
+            preset.textStrokeEnabled !== undefined
+              ? preset.textStrokeEnabled
+              : true,
+          textStrokeWidth:
+            preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
+          textStrokeColor:
+            preset.textStrokeColor !== undefined
+              ? preset.textStrokeColor
+              : "#000000",
+          textFillEnabled:
+            preset.textFillEnabled !== undefined
+              ? preset.textFillEnabled
+              : true,
+        }));
+
+        setLocalPresets(updatedPresets);
+      } catch (e) {
+        console.error("Failed to parse saved presets", e);
+      }
+    }
+  }, [isOpen]); // Reload when dialog opens
+
+  // Get the preset to share based on selection
   const getPresetToShare = (): {
     preset: PresetType;
     isCurrentSettings: boolean;
   } => {
-    if (!currentTextSettings || !currentEffectsSettings) {
-      // Fallback to active preset if current settings not provided
-      if (activePreset) {
-        return { preset: activePreset, isCurrentSettings: false };
+    if (selectedPresetId === "current") {
+      if (!currentTextSettings || !currentEffectsSettings) {
+        throw new Error("没有可分享的当前设置");
       }
-      throw new Error("没有可分享的设置");
-    }
-
-    // Simple logic: share active preset if exists, otherwise share current settings
-    if (activePreset) {
-      return { preset: activePreset, isCurrentSettings: false };
-    } else {
-      // No active preset, create temporary preset from current settings
       const currentPreset = createPresetFromCurrentSettings(
         currentTextSettings,
         currentEffectsSettings,
         "当前设置"
       );
       return { preset: currentPreset, isCurrentSettings: true };
+    } else {
+      const selectedPreset = localPresets.find(p => p.id === selectedPresetId);
+      if (!selectedPreset) {
+        throw new Error("选择的预设不存在");
+      }
+      return { preset: selectedPreset, isCurrentSettings: false };
     }
   };
 
@@ -133,7 +192,7 @@ export default function ShareDialog({
     }
   };
 
-  // Get display information for what will be shared
+  // Get display information for selected preset
   const getShareInfo = (): {
     title: string;
     description: string[];
@@ -178,6 +237,7 @@ export default function ShareDialog({
       setShareResult(null);
       setError(null);
       setCopied(false);
+      setSelectedPresetId("current"); // Reset to current settings
     }
   };
 
@@ -191,25 +251,40 @@ export default function ShareDialog({
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="flex items-center gap-2">
-            <p className="text-sm font-bold">
-              {shareInfo?.title || "分享预设"}
-            </p>
+            <p className="text-sm font-bold">分享预设</p>
           </DialogTitle>
           <DialogDescription>
-            {shareInfo ? "生成一个6位PIN码来分享你的应援牌预设" : "没有可分享的预设"}
+            选择要分享的预设并生成一个6位PIN码
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4 min-h-0 flex-1 overflow-hidden">
           {!shareResult ? (
             <>
-              {/* Active preset info */}
+              {/* Preset selection */}
+              <div className="space-y-2 mt-3">
+                <Select value={selectedPresetId} onValueChange={setSelectedPresetId}>
+                  <SelectTrigger className="w-full">
+                    <SelectValue placeholder="选择要分享的预设" />
+                  </SelectTrigger>
+                  <SelectContent className="z-1001">
+                    <SelectItem value="current">分享当前设置</SelectItem>
+                    {localPresets.map((preset) => (
+                      <SelectItem key={preset.id} value={preset.id}>
+                        {preset.name}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+
+              {/* Selected preset info */}
               {shareInfo && (
                 <Accordion type="single" collapsible className="w-full">
                   <AccordionItem value="preset-details" className="rounded-lg">
                     <AccordionTrigger className="px-3 py-2 hover:no-underline">
                       <div className="text-sm font-medium">
-                        {shareInfo.preset.name}
+                       预设详情 : {shareInfo.preset.name}
                       </div>
                     </AccordionTrigger>
                     <AccordionContent className="px-3 pb-3 max-h-32 overflow-y-auto custom-scrollbar">
@@ -230,13 +305,15 @@ export default function ShareDialog({
                   <span className="text-sm">{error}</span>
                 </div>
               )}
-              {/* no activePreset */}
+
+              {/* No valid selection */}
               {!shareInfo && (
                 <div className="flex items-center gap-2 p-3 bg-destructive/10 text-destructive rounded-lg">
                   <AlertCircle size={16} />
-                  <span className="text-sm">激活您需要分享的预设</span>
+                  <span className="text-sm">请选择要分享的预设</span>
                 </div>
               )}
+
               {/* Share button */}
               <Button
                 onClick={handleShare}
