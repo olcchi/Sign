@@ -9,30 +9,42 @@ import { CloudUpload, CloudDownload } from "lucide-react";
 
 interface ShareSettingProps {
   activePreset?: PresetType | null; // Current active preset from preset manager
+  onPresetListUpdated?: () => void; // Callback to refresh preset list
 }
 
 // Share setting component for preset sharing functionality
-export function ShareSetting({ activePreset }: ShareSettingProps) {
+export function ShareSetting({
+  activePreset,
+  onPresetListUpdated,
+}: ShareSettingProps) {
   const { textSettings, effectsSettings } = usePresetManager();
 
   return (
     <div className="space-y-3 flex-col gap-2">
       <div className="flex gap-2">
         {/* Share current settings */}
-        <ShareDialog 
+        <ShareDialog
           activePreset={activePreset}
           currentTextSettings={textSettings}
           currentEffectsSettings={effectsSettings}
         >
-          <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 justify-center text-xs"
+          >
             <CloudUpload className="mr-2 h-3 w-3" />
             分享预设
           </Button>
         </ShareDialog>
 
         {/* Import shared preset */}
-        <ImportDialog onPresetLoaded={() => {}}>
-          <Button variant="outline" size="sm" className="flex-1 justify-center text-xs">
+        <ImportDialog onPresetListUpdated={onPresetListUpdated}>
+          <Button
+            variant="outline"
+            size="sm"
+            className="flex-1 justify-center text-xs"
+          >
             <CloudDownload className="mr-2 h-3 w-3" />
             导入预设
           </Button>
