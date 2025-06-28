@@ -281,6 +281,57 @@ export function PresetManager({
     setActivePresetId(preset.id);
   };
 
+  // Function to refresh preset list from localStorage
+  const refreshPresetList = () => {
+    const savedPresets = localStorage.getItem("sign-presets");
+    if (savedPresets) {
+      try {
+        const parsedPresets = JSON.parse(savedPresets);
+        const updatedPresets = parsedPresets.map((preset: PresetType) => ({
+          ...preset,
+          edgeBlurEnabled:
+            preset.edgeBlurEnabled !== undefined
+              ? preset.edgeBlurEnabled
+              : false,
+          edgeBlurIntensity:
+            preset.edgeBlurIntensity !== undefined
+              ? preset.edgeBlurIntensity
+              : 10,
+          shinyTextEnabled:
+            preset.shinyTextEnabled !== undefined
+              ? preset.shinyTextEnabled
+              : false,
+          noiseEnabled:
+            preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
+          noiseOpacity:
+            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
+          noiseDensity:
+            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
+          noiseAnimated:
+            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+          textStrokeEnabled:
+            preset.textStrokeEnabled !== undefined
+              ? preset.textStrokeEnabled
+              : true,
+          textStrokeWidth:
+            preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
+          textStrokeColor:
+            preset.textStrokeColor !== undefined
+              ? preset.textStrokeColor
+              : "#000000",
+          textFillEnabled:
+            preset.textFillEnabled !== undefined
+              ? preset.textFillEnabled
+              : true,
+        }));
+
+        setPresets(updatedPresets);
+      } catch (e) {
+        console.error("Failed to parse saved presets", e);
+      }
+    }
+  };
+
   return (
     <div className="space-y-2 relative">
       <div className="flex items-center justify-between py-1">
@@ -326,6 +377,7 @@ export function PresetManager({
               ? presets.find((p) => p.id === activePresetId) || null
               : null
           }
+          onPresetListUpdated={refreshPresetList}
         />
       </div>
       <AnimatePresence>
