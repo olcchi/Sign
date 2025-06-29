@@ -5,7 +5,7 @@ import { PresetApiService } from "@/lib/preset-api";
 import { PresetType } from "@/types";
 import { BaseDialogProps } from "@/types";
 import { Button } from "@/components/ui/layout/button";
-import { Label } from "@/components/ui/label";
+import { Label } from "@/components/ui/layout/label";
 import {
   InputOTP,
   InputOTPGroup,
