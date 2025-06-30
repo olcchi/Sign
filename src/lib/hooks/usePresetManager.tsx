@@ -24,13 +24,17 @@ export function usePresetManager() {
     onEdgeBlurIntensityChange: (intensity: number) => updateEffectsSettings({ edgeBlurIntensity: intensity }),
     onShinyTextEnabledChange: (enabled: boolean) => updateEffectsSettings({ shinyTextEnabled: enabled }),
     onNoiseEnabledChange: (enabled: boolean) => updateEffectsSettings({ noiseEnabled: enabled }),
-    onNoiseOpacityChange: (opacity: number) => updateEffectsSettings({ noiseOpacity: opacity }),
-    onNoiseDensityChange: (density: number) => updateEffectsSettings({ noiseDensity: density }),
-    onNoiseAnimatedChange: (animated: boolean) => updateEffectsSettings({ noiseAnimated: animated }),
+    onNoisePatternSizeChange: (size: number) => updateEffectsSettings({ noisePatternSize: size }),
+    onNoisePatternAlphaChange: (alpha: number) => updateEffectsSettings({ noisePatternAlpha: alpha }),
     onTextStrokeEnabledChange: (enabled: boolean) => updateTextSettings({ textStrokeEnabled: enabled }),
     onTextStrokeWidthChange: (width: number) => updateTextSettings({ textStrokeWidth: width }),
     onTextStrokeColorChange: (color: string) => updateTextSettings({ textStrokeColor: color }),
     onTextFillEnabledChange: (enabled: boolean) => updateTextSettings({ textFillEnabled: enabled }),
+    onStarFieldEnabledChange: (enabled: boolean) => updateEffectsSettings({ starFieldEnabled: enabled }),
+    onStarFieldDensityChange: (density: number) => updateEffectsSettings({ starFieldDensity: density }),
+    onStarFieldColorChange: (color: string) => updateEffectsSettings({ starFieldColor: color }),
+    onStarFieldSizeChange: (size: number) => updateEffectsSettings({ starFieldSize: size }),
+    onStarFieldTwinkleSpeedChange: (speed: number) => updateEffectsSettings({ starFieldTwinkleSpeed: speed }),
   }), [updateTextSettings, updateEffectsSettings]);
 
   // Unified preset loading function
@@ -51,13 +55,17 @@ export function usePresetManager() {
     edgeBlurIntensity: effectsSettings.edgeBlurIntensity,
     shinyTextEnabled: effectsSettings.shinyTextEnabled,
     noiseEnabled: effectsSettings.noiseEnabled,
-    noiseOpacity: effectsSettings.noiseOpacity,
-    noiseDensity: effectsSettings.noiseDensity,
-    noiseAnimated: effectsSettings.noiseAnimated,
+    noisePatternSize: effectsSettings.noisePatternSize,
+    noisePatternAlpha: effectsSettings.noisePatternAlpha,
     textStrokeEnabled: textSettings.textStrokeEnabled,
     textStrokeWidth: textSettings.textStrokeWidth,
     textStrokeColor: textSettings.textStrokeColor,
     textFillEnabled: textSettings.textFillEnabled,
+    starFieldEnabled: effectsSettings.starFieldEnabled,
+    starFieldDensity: effectsSettings.starFieldDensity,
+    starFieldColor: effectsSettings.starFieldColor,
+    starFieldSize: effectsSettings.starFieldSize,
+    starFieldTwinkleSpeed: effectsSettings.starFieldTwinkleSpeed,
   }), [textSettings, effectsSettings]);
 
   return {
