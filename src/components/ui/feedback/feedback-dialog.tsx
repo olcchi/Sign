@@ -297,7 +297,7 @@ export default function FeedbackDialog({
                   placeholder="请描述遇到的问题或建议..."
                   value={content}
                   onChange={(e) => setContent(e.target.value)}
-                  className="min-h-[100px] resize-none text-sm"
+                  className="bg-muted min-h-[100px] resize-none text-sm"
                   disabled={isLoading}
                 />
               </div>
@@ -363,7 +363,7 @@ export default function FeedbackDialog({
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
-                  className={emailError ? "border-destructive" : ""}
+                  className={emailError ? "border-destructive" : "bg-muted"}
                 />
                 {emailError && (
                   <p className="text-xs text-destructive">{emailError}</p>
@@ -401,8 +401,8 @@ export default function FeedbackDialog({
                   className="text-green-600 dark:text-green-400"
                 />
                 <div>
-                  <h2 className="text-sm font-semibold mb-2">
-                    我们已经收到了您的反馈，感谢您。
+                  <h2 className="text-sm mb-2">
+                    我们已经收到了您的反馈，感谢您
                   </h2>
                 </div>
               </div>
