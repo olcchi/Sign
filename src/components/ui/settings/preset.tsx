@@ -41,9 +41,8 @@ export function PresetManager({
   edgeBlurIntensity,
   shinyTextEnabled,
   noiseEnabled,
-  noiseOpacity,
-  noiseDensity,
-  noiseAnimated,
+  noisePatternSize,
+  noisePatternAlpha,
   textStrokeEnabled,
   textStrokeWidth,
   textStrokeColor,
@@ -85,12 +84,10 @@ export function PresetManager({
               : false,
           noiseEnabled:
             preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-          noiseOpacity:
-            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
-          noiseDensity:
-            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
-          noiseAnimated:
-            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+          noisePatternSize:
+            preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
+          noisePatternAlpha:
+            preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
           textStrokeEnabled:
             preset.textStrokeEnabled !== undefined
               ? preset.textStrokeEnabled
@@ -137,9 +134,8 @@ export function PresetManager({
         activePreset.edgeBlurIntensity !== edgeBlurIntensity ||
         activePreset.shinyTextEnabled !== shinyTextEnabled ||
         activePreset.noiseEnabled !== noiseEnabled ||
-        activePreset.noiseOpacity !== noiseOpacity ||
-        activePreset.noiseDensity !== noiseDensity ||
-        activePreset.noiseAnimated !== noiseAnimated ||
+        activePreset.noisePatternSize !== noisePatternSize ||
+        activePreset.noisePatternAlpha !== noisePatternAlpha ||
         activePreset.textStrokeEnabled !== textStrokeEnabled ||
         activePreset.textStrokeWidth !== textStrokeWidth ||
         activePreset.textStrokeColor !== textStrokeColor ||
@@ -159,9 +155,8 @@ export function PresetManager({
     edgeBlurIntensity,
     shinyTextEnabled,
     noiseEnabled,
-    noiseOpacity,
-    noiseDensity,
-    noiseAnimated,
+    noisePatternSize,
+    noisePatternAlpha,
     textStrokeEnabled,
     textStrokeWidth,
     textStrokeColor,
@@ -196,9 +191,8 @@ export function PresetManager({
       edgeBlurIntensity,
       shinyTextEnabled,
       noiseEnabled,
-      noiseOpacity,
-      noiseDensity,
-      noiseAnimated,
+      noisePatternSize,
+      noisePatternAlpha,
       textStrokeEnabled,
       textStrokeWidth,
       textStrokeColor,
@@ -229,9 +223,8 @@ export function PresetManager({
           edgeBlurIntensity,
           shinyTextEnabled,
           noiseEnabled,
-          noiseOpacity,
-          noiseDensity,
-          noiseAnimated,
+          noisePatternSize,
+          noisePatternAlpha,
           textStrokeEnabled,
           textStrokeWidth,
           textStrokeColor,
@@ -303,12 +296,10 @@ export function PresetManager({
               : false,
           noiseEnabled:
             preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-          noiseOpacity:
-            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
-          noiseDensity:
-            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
-          noiseAnimated:
-            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+          noisePatternSize:
+            preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
+          noisePatternAlpha:
+            preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
           textStrokeEnabled:
             preset.textStrokeEnabled !== undefined
               ? preset.textStrokeEnabled
