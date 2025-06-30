@@ -2,12 +2,12 @@ import TextPressure from "@/components/ui/welcome/text-pressure";
 import { TextLoop } from "./text-loop";
 function AnimatedShare() {
   return (
-          <div className="relative w-full h-full flex-center">
+    <div className="relative w-full h-full flex-center">
       <div className="h-fit w-full ">
         <TextPressure
           text="{PIN Code}"
           flex={true}
-          alpha={true}
+          alpha={false}
           stroke={false}
           width={true}
           weight={true}
@@ -15,7 +15,7 @@ function AnimatedShare() {
           minFontSize={36}
           simulateMouseMovement
           simulationPadding={-80}
-          simulationSpeed={6000}
+          simulationSpeed={10000}
         />
       </div>
 
