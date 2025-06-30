@@ -110,12 +110,10 @@ export default function ShareDialog({
               : false,
           noiseEnabled:
             preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-          noiseOpacity:
-            preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
-          noiseDensity:
-            preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
-          noiseAnimated:
-            preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+          noisePatternSize:
+            preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
+          noisePatternAlpha:
+            preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
           textStrokeEnabled:
             preset.textStrokeEnabled !== undefined
               ? preset.textStrokeEnabled
@@ -334,7 +332,7 @@ export default function ShareDialog({
           ) : (
             <>
               {/* Success result */}
-              <div className="space-y-3">
+              <div className="space-y-3 mt-3">
                 <div className="text-center">
                   <div className="text-2xl font-bold font-mono mb-1">
                     {shareResult.pinCode}
