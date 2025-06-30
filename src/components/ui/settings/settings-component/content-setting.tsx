@@ -12,7 +12,7 @@ interface ContentSettingProps {
 
 export function ContentSetting({ isOpen }: ContentSettingProps) {
   const { textSettings, updateTextSettings } = useSettings();
-  
+
   const [localText, setLocalText] = useState(textSettings.text);
   const [isEditing, setIsEditing] = useState(false);
 
@@ -72,21 +72,21 @@ export function ContentSetting({ isOpen }: ContentSettingProps) {
       </div>
     ),
     component: (
-        <Textarea
-          value={localText}
-          onChange={(e) => {
-            // Update local state
-            setLocalText(e.target.value);
-            // Set editing state to true
-            setIsEditing(true);
-          }}
-          className="w-full bg-muted min-h-16 max-h-24 text-xs font-sans overflow-y-auto custom-scrollbar"
-          placeholder="请输入文本内容..."
-          onFocus={(e) => {
-            e.stopPropagation();
-          }}
-          onClick={(e) => e.stopPropagation()}
-        />
+      <Textarea
+        value={localText}
+        onChange={(e) => {
+          // Update local state
+          setLocalText(e.target.value);
+          // Set editing state to true
+          setIsEditing(true);
+        }}
+        className="w-full bg-muted min-h-16 max-h-24 text-xs font-sans overflow-y-auto custom-scrollbar"
+        placeholder="请输入文本内容..."
+        onFocus={(e) => {
+          e.stopPropagation();
+        }}
+        onClick={(e) => e.stopPropagation()}
+      />
     ),
   };
-} 
+}
