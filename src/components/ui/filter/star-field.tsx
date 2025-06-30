@@ -68,7 +68,7 @@ export function StarField() {
       const area = displayWidth * displayHeight;
       // Restore original density for richer star field
       const baseStarCount = Math.floor(area * starFieldDensity * 0.00005);
-      const starCount = Math.min(baseStarCount, 300); // Increased limit for better visual effect
+      const starCount = Math.min(baseStarCount, 1000); // Increased limit for better visual effect
       starsRef.current = [];
 
       for (let i = 0; i < starCount; i++) {
@@ -87,7 +87,7 @@ export function StarField() {
     (ctx: CanvasRenderingContext2D) => {
       ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
 
-            starsRef.current.forEach((star) => {
+      starsRef.current.forEach((star) => {
         if (star.opacity <= 0) return;
 
         // Outer glow layer
@@ -98,12 +98,9 @@ export function StarField() {
         ctx.shadowBlur = star.size * 8; // Large glow radius
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
-        ctx.fillRect(
-          star.x - star.size / 2,
-          star.y - star.size / 2,
-          star.size,
-          star.size
-        );
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
 
         // Main star with medium glow
@@ -114,12 +111,9 @@ export function StarField() {
         ctx.shadowBlur = star.size * 4; // Medium glow radius
         ctx.shadowOffsetX = 0;
         ctx.shadowOffsetY = 0;
-        ctx.fillRect(
-          star.x - star.size / 2,
-          star.y - star.size / 2,
-          star.size,
-          star.size
-        );
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size / 2, 0, Math.PI * 2);
+        ctx.fill();
         ctx.restore();
       });
     },
