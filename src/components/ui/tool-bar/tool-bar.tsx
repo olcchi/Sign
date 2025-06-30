@@ -160,7 +160,7 @@ export default function ToolBar({ className }: ToolBarProps) {
         </div>
 
         {/* settings panel */}
-        <AnimatePresence>
+        <AnimatePresence mode="popLayout">
           {isOpen && (
             <MotionCard
               className={cn(
@@ -169,9 +169,9 @@ export default function ToolBar({ className }: ToolBarProps) {
                 toolBarPosition.lg,
                 "absolute flex flex-col py-0 gap-0 pointer-events-auto"
               )}
-              initial={{ opacity: 0, y: -10 }}
+              initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
-              exit={{ opacity: 0, y: -10 }}
+              exit={{ opacity: 0, y: -5 }}
               transition={{ ...transition }}
             >
               <PanelHeader title="配置" onClose={closePanel} />
