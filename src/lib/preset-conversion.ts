@@ -15,13 +15,17 @@ function mapFontFamily(fontFamily: string): string {
 // Default values for preset properties to ensure consistency
 const DEFAULT_PRESET_VALUES = {
   noiseEnabled: false,
-  noiseOpacity: 0.1,
-  noiseDensity: 0.5,
-  noiseAnimated: false,
+  noisePatternSize: 250,
+  noisePatternAlpha: 15,
   textStrokeEnabled: false,
   textStrokeWidth: 1,
   textStrokeColor: "#000000",
   textFillEnabled: true,
+  starFieldEnabled: false,
+  starFieldDensity: 0.5,
+  starFieldColor: "#FFFFFB",
+  starFieldSize: 2,
+  starFieldTwinkleSpeed: 1.0,
 } as const;
 
 // Normalize and prepare preset for sharing/saving
@@ -29,7 +33,7 @@ export function presetToShareable(preset: PresetType): ShareablePreset {
   return normalizePreset(preset);
 }
 
-// Process shared preset for local use
+// Convert shareable preset back to full preset format
 export function shareableToPreset(shareable: ShareablePreset): PresetType {
   return normalizePreset(shareable);
 }
@@ -49,13 +53,17 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
     edgeBlurIntensity: preset.edgeBlurIntensity ?? 10,
     shinyTextEnabled: preset.shinyTextEnabled ?? false,
     noiseEnabled: preset.noiseEnabled ?? DEFAULT_PRESET_VALUES.noiseEnabled,
-    noiseOpacity: preset.noiseOpacity ?? DEFAULT_PRESET_VALUES.noiseOpacity,
-    noiseDensity: preset.noiseDensity ?? DEFAULT_PRESET_VALUES.noiseDensity,
-    noiseAnimated: preset.noiseAnimated ?? DEFAULT_PRESET_VALUES.noiseAnimated,
+    noisePatternSize: preset.noisePatternSize ?? DEFAULT_PRESET_VALUES.noisePatternSize,
+    noisePatternAlpha: preset.noisePatternAlpha ?? DEFAULT_PRESET_VALUES.noisePatternAlpha,
     textStrokeEnabled: preset.textStrokeEnabled ?? DEFAULT_PRESET_VALUES.textStrokeEnabled,
     textStrokeWidth: preset.textStrokeWidth ?? DEFAULT_PRESET_VALUES.textStrokeWidth,
     textStrokeColor: preset.textStrokeColor ?? DEFAULT_PRESET_VALUES.textStrokeColor,
     textFillEnabled: preset.textFillEnabled ?? DEFAULT_PRESET_VALUES.textFillEnabled,
+    starFieldEnabled: preset.starFieldEnabled ?? DEFAULT_PRESET_VALUES.starFieldEnabled,
+    starFieldDensity: preset.starFieldDensity ?? DEFAULT_PRESET_VALUES.starFieldDensity,
+    starFieldColor: preset.starFieldColor ?? DEFAULT_PRESET_VALUES.starFieldColor,
+    starFieldSize: preset.starFieldSize ?? DEFAULT_PRESET_VALUES.starFieldSize,
+    starFieldTwinkleSpeed: preset.starFieldTwinkleSpeed ?? DEFAULT_PRESET_VALUES.starFieldTwinkleSpeed,
   };
 }
 
