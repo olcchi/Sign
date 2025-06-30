@@ -231,8 +231,8 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                       <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                         <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
                         <Noise
-                          density={0.05}
-                          className="z-2 bg-blend-overlay"
+                          patternSize={150}
+                          patternAlpha={8}
                         />
                         <div className="relative p-5 w-full h-full">
                           {feature.content}
