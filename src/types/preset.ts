@@ -14,13 +14,17 @@ export interface PresetType {
   edgeBlurIntensity: number;
   shinyTextEnabled: boolean;
   noiseEnabled?: boolean;
-  noiseOpacity?: number;
-  noiseDensity?: number;
-  noiseAnimated?: boolean;
+  noisePatternSize?: number;
+  noisePatternAlpha?: number;
   textStrokeEnabled?: boolean;
   textStrokeWidth?: number;
   textStrokeColor?: string;
   textFillEnabled?: boolean;
+  starFieldEnabled?: boolean;
+  starFieldDensity?: number;
+  starFieldColor?: string;
+  starFieldSize?: number;
+  starFieldTwinkleSpeed?: number;
 }
 
 /**
@@ -37,13 +41,17 @@ export interface PresetManagerProps {
   edgeBlurIntensity: number;
   shinyTextEnabled: boolean;
   noiseEnabled?: boolean;
-  noiseOpacity?: number;
-  noiseDensity?: number;
-  noiseAnimated?: boolean;
+  noisePatternSize?: number;
+  noisePatternAlpha?: number;
   textStrokeEnabled?: boolean;
   textStrokeWidth?: number;
   textStrokeColor?: string;
   textFillEnabled?: boolean;
+  starFieldEnabled?: boolean;
+  starFieldDensity?: number;
+  starFieldColor?: string;
+  starFieldSize?: number;
+  starFieldTwinkleSpeed?: number;
   onLoadPreset: (preset: PresetType) => void;
   onActivePresetChange?: (preset: PresetType | null) => void; // Callback for active preset changes
 }
