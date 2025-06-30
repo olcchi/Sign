@@ -91,17 +91,17 @@ export const edgeBlurConfig = {
 
 // Noise effect configuration
 export const noiseConfig = {
-  opacity: {
-    min: 0.01,
-    max: 0.3,
-    step: 0.01,
-    defaultValue: 0.1,
+  patternSize: {
+    min: 50,
+    max: 500,
+    step: 10,
+    defaultValue: 250,
   },
-  density: {
-    min: 0.1,
-    max: 0.6,
-    step: 0.05,
-    defaultValue: 0.3,
+  patternAlpha: {
+    min: 1,
+    max: 50,
+    step: 1,
+    defaultValue: 15,
   },
 };
 
@@ -113,6 +113,28 @@ export const textStrokeConfig = {
   defaultValue: 2,
 };
 
+// Star field effect configuration
+export const starFieldConfig = {
+  density: {
+    min: 0.5,
+    max: 3.0,
+    step: 0.1,
+    defaultValue: 3,
+  },
+  size: {
+    min: 2,
+    max: 7,
+    step: 0.5,
+    defaultValue: 3.5,
+  },
+  twinkleSpeed: {
+    min: 0.5,
+    max: 3.0,
+    step: 0.1,
+    defaultValue: 1.0,
+  },
+};
+
 // Image processing configuration
 export const PREVIEW_IMAGE_QUALITY = 0.2;
-export const BACKGROUND_IMAGE_QUALITY = 0.6;
+export const BACKGROUND_IMAGE_QUALITY = 0.6;  // 设置为更低质量以测试效果
