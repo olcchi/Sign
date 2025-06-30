@@ -9,6 +9,7 @@ import {
   edgeBlurConfig,
   noiseConfig,
   textStrokeConfig,
+  starFieldConfig,
 } from "@/lib/settings-config";
 import type { TextSettings, BackgroundSettings, EffectsSettings } from "@/types";
 
@@ -57,9 +58,13 @@ const defaultEffectsSettings: EffectsSettings = {
   edgeBlurIntensity: edgeBlurConfig.defaultValue,
   shinyTextEnabled: false,
   noiseEnabled: false,
-  noiseOpacity: noiseConfig.opacity.defaultValue,
-  noiseDensity: noiseConfig.density.defaultValue,
-  noiseAnimated: false,
+  noisePatternSize: noiseConfig.patternSize.defaultValue,
+  noisePatternAlpha: noiseConfig.patternAlpha.defaultValue,
+  starFieldEnabled: false,
+  starFieldDensity: starFieldConfig.density.defaultValue,
+  starFieldColor: colorOptions[0].value,
+  starFieldSize: starFieldConfig.size.defaultValue,
+  starFieldTwinkleSpeed: starFieldConfig.twinkleSpeed.defaultValue,
 };
 
 // Settings provider that improves code maintainability through grouped management
