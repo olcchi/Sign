@@ -363,8 +363,10 @@ export function PresetManager({
           <CircleAlert size={12} />
           <AlertTitle className="text-xs">提示</AlertTitle>
           <AlertDescription className="text-xs">
-            <p>- 预设保存在您的浏览器LocalStorage，不保证持久性</p>
-            <p>- 分享预设PIN码有效期24小时</p>
+            <ul className="list-disc space-y-1">
+              <li>预设保存在您的浏览器LocalStorage，不保证持久性</li>
+              <li>分享预设PIN码有效期24小时</li>
+            </ul>
           </AlertDescription>
         </Alert>
       )}
