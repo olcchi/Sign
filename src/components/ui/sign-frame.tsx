@@ -7,8 +7,9 @@ import FullScreen from "@/components/ui/layout/full-screen";
 import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import Noise from "@/components/ui/filter/noise";
+import { StarField } from "@/components/ui/filter/star-field";
 import { useSettings } from "@/lib/contexts/settings-context";
-import {WelcomeModal} from "@/components/ui/welcome/welcome-modal";
+import { WelcomeModal } from "@/components/ui/onboarding/onboarding-modal";
 
 interface SignFrameProps {
   className?: string;
@@ -42,7 +43,7 @@ export default function SignFrame({ className }: SignFrameProps) {
             alt="Background"
             fill
             priority
-            sizes="100vw"
+            quality={90}
             style={{
               objectFit: "cover",
               objectPosition: `${backgroundSettings.backgroundPosition.x}% ${backgroundSettings.backgroundPosition.y}%`,
@@ -54,16 +55,16 @@ export default function SignFrame({ className }: SignFrameProps) {
       )}
       {backgroundSettings.backgroundImage &&
         backgroundSettings.overlayEnabled && (
-          <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1"></div>
+          <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1" />
         )}
+      <StarField />
       {effectsSettings.noiseEnabled && (
-        <Noise
-          className="z-30 mix-blend-overlay"
-          opacity={effectsSettings.noiseOpacity}
-          density={effectsSettings.noiseDensity}
-          color="#ffffff"
-          animated={effectsSettings.noiseAnimated}
-        />
+        <div className="fixed inset-0 z-50">
+          <Noise
+            patternSize={effectsSettings.noisePatternSize}
+            patternAlpha={effectsSettings.noisePatternAlpha}
+          />
+        </div>
       )}
       <ScrollingText
         className="fixed inset-0 z-20 overflow-hidden flex-center"
@@ -87,7 +88,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         intensity={effectsSettings.edgeBlurIntensity}
       />
       <WelcomeModal />
-      
+
       {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
         <FullScreen asButton={true} />
