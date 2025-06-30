@@ -98,10 +98,10 @@ export const noiseConfig = {
     defaultValue: 250,
   },
   patternAlpha: {
-    min: 1,
+    min: 20,
     max: 50,
-    step: 1,
-    defaultValue: 15,
+    step: 2,
+    defaultValue: 20,
   },
 };
 
@@ -117,7 +117,7 @@ export const textStrokeConfig = {
 export const starFieldConfig = {
   density: {
     min: 0.5,
-    max: 3.0,
+    max: 10,
     step: 0.1,
     defaultValue: 3,
   },
@@ -137,4 +137,4 @@ export const starFieldConfig = {
 
 // Image processing configuration
 export const PREVIEW_IMAGE_QUALITY = 0.2;
-export const BACKGROUND_IMAGE_QUALITY = 0.6;  // 设置为更低质量以测试效果
+export const BACKGROUND_IMAGE_QUALITY = 0.6; 
