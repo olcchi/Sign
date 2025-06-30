@@ -25,7 +25,11 @@ export interface EffectsSettings {
   edgeBlurIntensity: number;
   shinyTextEnabled: boolean;
   noiseEnabled: boolean;
-  noiseOpacity: number;
-  noiseDensity: number;
-  noiseAnimated: boolean;
+  noisePatternSize: number;
+  noisePatternAlpha: number;
+  starFieldEnabled: boolean;
+  starFieldDensity: number;
+  starFieldColor: string;
+  starFieldSize: number;
+  starFieldTwinkleSpeed: number;
 } 
