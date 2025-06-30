@@ -2,7 +2,8 @@
 import { Slider } from "@/components/ui/inputs/slider";
 import { ToggleButton } from "@/components/ui/settings/toggle-button";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { edgeBlurConfig, noiseConfig } from "@/lib/settings-config";
+import { edgeBlurConfig, noiseConfig, starFieldConfig, colorOptions } from "@/lib/settings-config";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/inputs/select";
 
 export function EffectsSetting() {
   const { effectsSettings, updateEffectsSettings } = useSettings();
@@ -59,39 +60,28 @@ export function EffectsSetting() {
           {effectsSettings.noiseEnabled && (
             <div className="p-2 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">亮度</span>
+                <span className="text-sm whitespace-nowrap ">图案大小</span>
                 <Slider
-                  defaultValue={[effectsSettings.noiseOpacity]}
-                  value={[effectsSettings.noiseOpacity]}
-                  min={noiseConfig.opacity.min}
-                  max={noiseConfig.opacity.max}
-                  step={noiseConfig.opacity.step}
+                  defaultValue={[effectsSettings.noisePatternSize]}
+                  value={[effectsSettings.noisePatternSize]}
+                  min={noiseConfig.patternSize.min}
+                  max={noiseConfig.patternSize.max}
+                  step={noiseConfig.patternSize.step}
                   onValueChange={(value) =>
-                    updateEffectsSettings({ noiseOpacity: value[0] })
+                    updateEffectsSettings({ noisePatternSize: value[0] })
                   }
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">密度</span>
+                <span className="text-sm whitespace-nowrap ">透明度</span>
                 <Slider
-                  defaultValue={[effectsSettings.noiseDensity]}
-                  value={[effectsSettings.noiseDensity]}
-                  min={noiseConfig.density.min}
-                  max={noiseConfig.density.max}
-                  step={noiseConfig.density.step}
+                  defaultValue={[effectsSettings.noisePatternAlpha]}
+                  value={[effectsSettings.noisePatternAlpha]}
+                  min={noiseConfig.patternAlpha.min}
+                  max={noiseConfig.patternAlpha.max}
+                  step={noiseConfig.patternAlpha.step}
                   onValueChange={(value) =>
-                    updateEffectsSettings({ noiseDensity: value[0] })
-                  }
-                />
-              </div>
-              <div className="flex justify-between items-center">
-                <span className="text-sm">动画</span>
-                <ToggleButton
-                  isEnabled={effectsSettings.noiseAnimated}
-                  onToggle={() =>
-                    updateEffectsSettings({
-                      noiseAnimated: !effectsSettings.noiseAnimated,
-                    })
+                    updateEffectsSettings({ noisePatternAlpha: value[0] })
                   }
                 />
               </div>
@@ -111,6 +101,95 @@ export function EffectsSetting() {
               }
             />
           </div>
+        </div>
+
+        <div className="border-b overflow-hidden">
+          <div className="flex justify-between items-center p-2">
+            <span className="text-sm ">星空</span>
+            <ToggleButton
+              isEnabled={effectsSettings.starFieldEnabled}
+              onToggle={() =>
+                updateEffectsSettings({
+                  starFieldEnabled: !effectsSettings.starFieldEnabled,
+                })
+              }
+            />
+          </div>
+
+          {effectsSettings.starFieldEnabled && (
+            <div className="p-2 space-y-2">
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm whitespace-nowrap ">密度</span>
+                <Slider
+                  defaultValue={[effectsSettings.starFieldDensity]}
+                  value={[effectsSettings.starFieldDensity]}
+                  min={starFieldConfig.density.min}
+                  max={starFieldConfig.density.max}
+                  step={starFieldConfig.density.step}
+                  onValueChange={(value) =>
+                    updateEffectsSettings({ starFieldDensity: value[0] })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm whitespace-nowrap ">大小</span>
+                <Slider
+                  defaultValue={[effectsSettings.starFieldSize]}
+                  value={[effectsSettings.starFieldSize]}
+                  min={starFieldConfig.size.min}
+                  max={starFieldConfig.size.max}
+                  step={starFieldConfig.size.step}
+                  onValueChange={(value) =>
+                    updateEffectsSettings({ starFieldSize: value[0] })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm whitespace-nowrap ">闪烁速度</span>
+                <Slider
+                  defaultValue={[effectsSettings.starFieldTwinkleSpeed]}
+                  value={[effectsSettings.starFieldTwinkleSpeed]}
+                  min={starFieldConfig.twinkleSpeed.min}
+                  max={starFieldConfig.twinkleSpeed.max}
+                  step={starFieldConfig.twinkleSpeed.step}
+                  onValueChange={(value) =>
+                    updateEffectsSettings({ starFieldTwinkleSpeed: value[0] })
+                  }
+                />
+              </div>
+              <div className="flex items-center justify-between gap-2">
+                <span className="text-sm whitespace-nowrap ">颜色</span>
+                <Select
+                  value={effectsSettings.starFieldColor}
+                  onValueChange={(value) =>
+                    updateEffectsSettings({ starFieldColor: value })
+                  }
+                >
+                  <SelectTrigger className="w-20 h-6">
+                    <SelectValue>
+                      <div
+                        className="w-4 h-4 rounded-full border"
+                        style={{ backgroundColor: effectsSettings.starFieldColor }}
+                      />
+                    </SelectValue>
+                  </SelectTrigger>
+                  <SelectContent>
+                    {colorOptions.map((color) => (
+                      <SelectItem key={color.value} value={color.value}>
+                        <div className="flex items-center gap-2">
+                          <div
+                            className="w-4 h-4 rounded-full border"
+                            style={{ backgroundColor: color.value }}
+                          />
+                          <span>{color.name}</span>
+                        </div>
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     ),
