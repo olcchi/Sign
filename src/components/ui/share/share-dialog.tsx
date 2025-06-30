@@ -280,7 +280,7 @@ export default function ShareDialog({
 
               {/* Selected preset info */}
               {shareInfo && (
-                <Accordion type="single" collapsible className="w-full">
+                <Accordion type="single" collapsible className="w-full" defaultValue="preset-details">
                   <AccordionItem value="preset-details" className="rounded-lg">
                     <AccordionTrigger className="px-3 py-2 hover:no-underline">
                       <div className="text-sm font-medium">
