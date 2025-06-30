@@ -82,12 +82,10 @@ const saveImportedPresetToLocal = (importedPreset: PresetType): PresetType => {
           preset.shinyTextEnabled !== undefined ? preset.shinyTextEnabled : false,
         noiseEnabled:
           preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-        noiseOpacity:
-          preset.noiseOpacity !== undefined ? preset.noiseOpacity : 0.5,
-        noiseDensity:
-          preset.noiseDensity !== undefined ? preset.noiseDensity : 0.5,
-        noiseAnimated:
-          preset.noiseAnimated !== undefined ? preset.noiseAnimated : false,
+        noisePatternSize:
+          preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
+        noisePatternAlpha:
+          preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
         textStrokeEnabled:
           preset.textStrokeEnabled !== undefined ? preset.textStrokeEnabled : true,
         textStrokeWidth:
