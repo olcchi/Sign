@@ -21,13 +21,17 @@ interface PresetHandlers {
   onEdgeBlurIntensityChange: (intensity: number) => void;
   onShinyTextEnabledChange: (enabled: boolean) => void;
   onNoiseEnabledChange: (enabled: boolean) => void;
-  onNoiseOpacityChange: (opacity: number) => void;
-  onNoiseDensityChange: (density: number) => void;
-  onNoiseAnimatedChange: (animated: boolean) => void;
+  onNoisePatternSizeChange: (size: number) => void;
+  onNoisePatternAlphaChange: (alpha: number) => void;
   onTextStrokeEnabledChange: (enabled: boolean) => void;
   onTextStrokeWidthChange: (width: number) => void;
   onTextStrokeColorChange: (color: string) => void;
   onTextFillEnabledChange: (enabled: boolean) => void;
+  onStarFieldEnabledChange: (enabled: boolean) => void;
+  onStarFieldDensityChange: (density: number) => void;
+  onStarFieldColorChange: (color: string) => void;
+  onStarFieldSizeChange: (size: number) => void;
+  onStarFieldTwinkleSpeedChange: (speed: number) => void;
 }
 
 /**
@@ -53,13 +57,17 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
     onEdgeBlurIntensityChange,
     onShinyTextEnabledChange,
     onNoiseEnabledChange,
-    onNoiseOpacityChange,
-    onNoiseDensityChange,
-    onNoiseAnimatedChange,
+    onNoisePatternSizeChange,
+    onNoisePatternAlphaChange,
     onTextStrokeEnabledChange,
     onTextStrokeWidthChange,
     onTextStrokeColorChange,
     onTextFillEnabledChange,
+    onStarFieldEnabledChange,
+    onStarFieldDensityChange,
+    onStarFieldColorChange,
+    onStarFieldSizeChange,
+    onStarFieldTwinkleSpeedChange,
   } = handlers;
 
   // Apply base properties
@@ -77,14 +85,11 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
   if (preset.noiseEnabled !== undefined) {
     onNoiseEnabledChange(preset.noiseEnabled);
   }
-  if (preset.noiseOpacity !== undefined) {
-    onNoiseOpacityChange(preset.noiseOpacity);
+  if (preset.noisePatternSize !== undefined) {
+    onNoisePatternSizeChange(preset.noisePatternSize);
   }
-  if (preset.noiseDensity !== undefined) {
-    onNoiseDensityChange(preset.noiseDensity);
-  }
-  if (preset.noiseAnimated !== undefined) {
-    onNoiseAnimatedChange(preset.noiseAnimated);
+  if (preset.noisePatternAlpha !== undefined) {
+    onNoisePatternAlphaChange(preset.noisePatternAlpha);
   }
 
   // Apply text styling properties conditionally
@@ -99,6 +104,23 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
   }
   if (preset.textFillEnabled !== undefined) {
     onTextFillEnabledChange(preset.textFillEnabled);
+  }
+
+  // Apply star field properties conditionally
+  if (preset.starFieldEnabled !== undefined) {
+    onStarFieldEnabledChange(preset.starFieldEnabled);
+  }
+  if (preset.starFieldDensity !== undefined) {
+    onStarFieldDensityChange(preset.starFieldDensity);
+  }
+  if (preset.starFieldColor !== undefined) {
+    onStarFieldColorChange(preset.starFieldColor);
+  }
+  if (preset.starFieldSize !== undefined) {
+    onStarFieldSizeChange(preset.starFieldSize);
+  }
+  if (preset.starFieldTwinkleSpeed !== undefined) {
+    onStarFieldTwinkleSpeedChange(preset.starFieldTwinkleSpeed);
   }
 }
 
@@ -123,13 +145,17 @@ export function createPresetFromCurrentSettings(
     edgeBlurIntensity: effectsSettings.edgeBlurIntensity,
     shinyTextEnabled: effectsSettings.shinyTextEnabled,
     noiseEnabled: effectsSettings.noiseEnabled,
-    noiseOpacity: effectsSettings.noiseOpacity,
-    noiseDensity: effectsSettings.noiseDensity,
-    noiseAnimated: effectsSettings.noiseAnimated,
+    noisePatternSize: effectsSettings.noisePatternSize,
+    noisePatternAlpha: effectsSettings.noisePatternAlpha,
     textStrokeEnabled: textSettings.textStrokeEnabled,
     textStrokeWidth: textSettings.textStrokeWidth,
     textStrokeColor: textSettings.textStrokeColor,
     textFillEnabled: textSettings.textFillEnabled,
+    starFieldEnabled: effectsSettings.starFieldEnabled,
+    starFieldDensity: effectsSettings.starFieldDensity,
+    starFieldColor: effectsSettings.starFieldColor,
+    starFieldSize: effectsSettings.starFieldSize,
+    starFieldTwinkleSpeed: effectsSettings.starFieldTwinkleSpeed,
   };
 }
 
@@ -177,6 +203,7 @@ export function getPresetDetailedInfo(preset: PresetType): string[] {
   details.push(`聚焦: ${preset.edgeBlurEnabled ? "开启" : "关闭"}`);
   details.push(`闪光: ${preset.shinyTextEnabled ? "开启" : "关闭"}`);
   details.push(`噪点: ${preset.noiseEnabled ? "开启" : "关闭"}`);
+  details.push(`闪点: ${preset.starFieldEnabled ? "开启" : "关闭"}`);
   details.push(`填充: ${preset.textFillEnabled ? "开启" : "关闭"}`);
   details.push(`边框: ${preset.textStrokeEnabled ? "开启" : "关闭"}`);
 
