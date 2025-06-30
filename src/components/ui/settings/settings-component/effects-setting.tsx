@@ -60,7 +60,7 @@ export function EffectsSetting() {
           {effectsSettings.noiseEnabled && (
             <div className="p-2 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">图案大小</span>
+                <span className="text-sm whitespace-nowrap ">尺寸</span>
                 <Slider
                   defaultValue={[effectsSettings.noisePatternSize]}
                   value={[effectsSettings.noisePatternSize]}
@@ -105,7 +105,7 @@ export function EffectsSetting() {
 
         <div className="border-b overflow-hidden">
           <div className="flex justify-between items-center p-2">
-            <span className="text-sm ">星空</span>
+            <span className="text-sm ">闪点</span>
             <ToggleButton
               isEnabled={effectsSettings.starFieldEnabled}
               onToggle={() =>
@@ -145,7 +145,7 @@ export function EffectsSetting() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">闪烁速度</span>
+                <span className="text-sm whitespace-nowrap ">速度</span>
                 <Slider
                   defaultValue={[effectsSettings.starFieldTwinkleSpeed]}
                   value={[effectsSettings.starFieldTwinkleSpeed]}
@@ -158,20 +158,14 @@ export function EffectsSetting() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">颜色</span>
                 <Select
                   value={effectsSettings.starFieldColor}
                   onValueChange={(value) =>
                     updateEffectsSettings({ starFieldColor: value })
                   }
                 >
-                  <SelectTrigger className="w-20 h-6">
-                    <SelectValue>
-                      <div
-                        className="w-4 h-4 rounded-full border"
-                        style={{ backgroundColor: effectsSettings.starFieldColor }}
-                      />
-                    </SelectValue>
+                  <SelectTrigger className="w-full h-6">
+                    <SelectValue />
                   </SelectTrigger>
                   <SelectContent>
                     {colorOptions.map((color) => (
