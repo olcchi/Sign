@@ -194,9 +194,8 @@ export default function ToolBar({ className }: ToolBarProps) {
                     edgeBlurIntensity={effectsSettings.edgeBlurIntensity}
                     shinyTextEnabled={effectsSettings.shinyTextEnabled}
                     noiseEnabled={effectsSettings.noiseEnabled}
-                    noiseOpacity={effectsSettings.noiseOpacity}
-                    noiseDensity={effectsSettings.noiseDensity}
-                    noiseAnimated={effectsSettings.noiseAnimated}
+                    noisePatternSize={effectsSettings.noisePatternSize}
+                    noisePatternAlpha={effectsSettings.noisePatternAlpha}
                     textStrokeEnabled={textSettings.textStrokeEnabled}
                     textStrokeWidth={textSettings.textStrokeWidth}
                     textStrokeColor={textSettings.textStrokeColor}
