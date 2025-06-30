@@ -75,6 +75,7 @@ export function BackgroundImageSetting({
                 alt="Background preview"
                 fill
                 sizes="50px"
+                quality={90}
                 style={{
                   objectFit: "cover",
                 }}
@@ -118,19 +119,7 @@ export function BackgroundImageSetting({
                   disabled={sliderDisabled.y}
                 />
               </div>
-              <div className="flex items-center justify-between gap-2">
-                <p className="text-xs whitespace-nowrap ">缩放</p>
-                <Slider
-                  defaultValue={[backgroundSettings.backgroundZoom]}
-                  value={[backgroundSettings.backgroundZoom]}
-                  min={1}
-                  max={3}
-                  step={0.1}
-                  onValueChange={(value) =>
-                    updateBackgroundSettings({ backgroundZoom: value[0] })
-                  }
-                />
-              </div>
+
             </div>
           </>
         )}
