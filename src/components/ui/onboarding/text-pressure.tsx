@@ -23,9 +23,9 @@ interface TextPressureProps {
 }
 
 const TextPressure: React.FC<TextPressureProps> = ({
-  text = "Compressa",
-  fontFamily = " ",
-  fontUrl = " ",
+  text = "Sign",
+  fontFamily = "",
+  fontUrl = "",
   width = true,
   weight = true,
   italic = true,

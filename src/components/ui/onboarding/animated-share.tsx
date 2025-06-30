@@ -1,4 +1,4 @@
-import TextPressure from "@/components/ui/welcome/text-pressure";
+import TextPressure from "@/components/ui/onboarding/text-pressure";
 import { TextLoop } from "./text-loop";
 function AnimatedShare() {
   return (

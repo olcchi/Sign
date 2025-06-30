@@ -1,4 +1,4 @@
-export { WelcomeModal } from "./welcome-modal";
+export { WelcomeModal } from "./onboarding-modal";
 export { AnimatedSign } from "./animated-sign";
 export { default as AnimatedShare } from "./animated-share";
 export { GlowEffect } from "./glow-effect";

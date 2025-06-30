@@ -20,7 +20,7 @@ import { Olcchi } from "../icon/olcchi";
 import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
-import { CardSwap, Card, AnimatedSign, GlowEffect } from "./";
+import { CardSwap, Card, AnimatedSign, GlowEffect } from ".";
 import AnimatedShare from "./animated-share";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
