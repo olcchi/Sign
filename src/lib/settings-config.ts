@@ -71,7 +71,6 @@ export const fontSizeOptions = [
   { name: "2XL", value: "min(30rem, 90vh)" },
 ];
 
-
 // Scroll speed options
 export const scrollSpeedOptions = [
   { name: "0.3x", value: "3" },
@@ -119,13 +118,13 @@ export const starFieldConfig = {
     min: 0.5,
     max: 10,
     step: 0.1,
-    defaultValue: 3,
+    defaultValue: 5,
   },
   size: {
-    min: 2,
-    max: 7,
+    min: 10,
+    max: 20,
     step: 0.5,
-    defaultValue: 3.5,
+    defaultValue: 10,
   },
   twinkleSpeed: {
     min: 0.5,
@@ -137,4 +136,4 @@ export const starFieldConfig = {
 
 // Image processing configuration
 export const PREVIEW_IMAGE_QUALITY = 0.2;
-export const BACKGROUND_IMAGE_QUALITY = 0.6; 
+export const BACKGROUND_IMAGE_QUALITY = 0.6;
