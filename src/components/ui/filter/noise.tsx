@@ -23,7 +23,7 @@ const Noise: React.FC<NoiseProps> = ({
     // Fixed values for scaling and refresh interval
     const patternScaleX = 1;
     const patternScaleY = 1;
-    const patternRefreshInterval = 2;
+    const patternRefreshInterval = 5;
 
     const patternCanvas = document.createElement("canvas");
     patternCanvas.width = patternSize;
@@ -62,13 +62,15 @@ const Noise: React.FC<NoiseProps> = ({
       }
     };
 
+    let animationId: number;
+
     const loop = () => {
       if (frame % patternRefreshInterval === 0) {
         updatePattern();
         drawGrain();
       }
       frame++;
-      window.requestAnimationFrame(loop);
+      animationId = window.requestAnimationFrame(loop);
     };
 
     window.addEventListener("resize", resize);
@@ -77,6 +79,9 @@ const Noise: React.FC<NoiseProps> = ({
 
     return () => {
       window.removeEventListener("resize", resize);
+      if (animationId) {
+        window.cancelAnimationFrame(animationId);
+      }
     };
   }, [patternSize, patternAlpha]);
 
