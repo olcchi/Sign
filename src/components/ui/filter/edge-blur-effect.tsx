@@ -20,7 +20,7 @@ export function EdgeBlurEffect({
   if (!enabled) return null;
   
   // Fixed number of blur layers for consistent DOM structure
-  const blurLayers = 6; // Optimal balance between smoothness and performance
+  const blurLayers = 5; // Optimal balance between smoothness and performance
   
   // Only intensity varies based on user input
   const blurIntensity = intensity * 0.1;
