@@ -1,7 +1,7 @@
 "use client";
 import { ImagePlus, Trash2 } from "lucide-react";
-import { Slider } from "@/components/ui/inputs/slider";
-import { Button } from "@/components/ui/layout/button";
+import { Slider } from "@/components/ui/inputs";
+import { Button } from "@/components/ui/layout";
 import Image from "next/image";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { ToggleButton } from "../toggle-button";
