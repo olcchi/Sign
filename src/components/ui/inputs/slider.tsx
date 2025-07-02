@@ -60,4 +60,4 @@ function Slider({
   )
 }
 
-export { Slider }
+export default Slider
