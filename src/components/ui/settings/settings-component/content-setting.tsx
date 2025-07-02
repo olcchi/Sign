@@ -2,9 +2,9 @@
 
 import React, { useEffect, useState } from "react";
 import { Save, RotateCcw } from "lucide-react";
-import { Button } from "@/components/ui/layout/button";
+import { Button } from "@/components/ui/layout";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { Textarea } from "@/components/ui/inputs/textarea";
+import { Textarea } from "@/components/ui/inputs";
 
 interface ContentSettingProps {
   isOpen?: boolean;
