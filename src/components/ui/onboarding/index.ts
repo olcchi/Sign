@@ -1,8 +1,13 @@
+import Sign from "./onboarding-card-swap/item/sign";
+import Share from "./onboarding-card-swap/item/share";
+import CardSwap, { Card } from "./onboarding-card-swap/card-swap";
+import TextPressureEffect from "./onboarding-card-swap/effect/text-pressure-effect";
+
 export { WelcomeModal } from "./onboarding-modal";
-export { AnimatedSign } from "./animated-sign";
-export { default as AnimatedShare } from "./animated-share";
-export { GlowEffect } from "./glow-effect";
-export { default as CardSwap, Card } from "./card-swap";
-export { TextMorph } from "./morph-text";
-export { TextLoop } from "./text-loop";
-export { default as TextPressure } from "./text-pressure";
+export { Sign };
+export { Share };
+export { GlowEffect } from "./onboarding-card-swap/effect/glow-effect";
+export { CardSwap, Card };
+export { TextMorph } from "./onboarding-card-swap/effect/morph-text-effect";
+export { TextLoop } from "./onboarding-card-swap/effect/text-loop-effect";
+export { TextPressureEffect };

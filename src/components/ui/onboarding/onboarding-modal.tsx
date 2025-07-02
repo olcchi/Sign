@@ -9,19 +9,16 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
 import { Button } from "@/components/ui/layout/button";
-import {
-  X,
-  ArrowRight,
-  Sparkles,
-  Share2,
-} from "lucide-react";
+import { X, ArrowRight, Sparkles, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
 import { motion } from "motion/react";
 import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
-import { CardSwap, Card, AnimatedSign, GlowEffect } from ".";
-import AnimatedShare from "./animated-share";
+import { CardSwap, Card, GlowEffect } from ".";
+import Sign from "./onboarding-card-swap/item/sign";
+import Share from "./onboarding-card-swap/item/share";
+import Effect from "./onboarding-card-swap/item/effect";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -133,7 +130,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
       title: "文字变体",
       content: (
         <>
-          <AnimatedSign />
+          <Sign />
         </>
       ),
     },
@@ -142,7 +139,16 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
       title: "快捷分享",
       content: (
         <>
-          <AnimatedShare />
+          <Share />
+        </>
+      ),
+    },
+    {
+      icon: <Sparkles className={iconStyle} />,
+      title: "多变特效",
+      content: (
+        <>
+          <Effect />
         </>
       ),
     },
@@ -180,7 +186,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
           <DialogContent className={className}>
             <VisuallyHidden>
               <DialogTitle>欢迎使用 Sign</DialogTitle>
-              <DialogDescription>快速创建并分享你的应援牌</DialogDescription>
+              <DialogDescription>快速创建 & 分享美丽应援牌</DialogDescription>
             </VisuallyHidden>
             <div className="h-full flex flex-col md:flex-row">
               {/* Left Content Area */}
@@ -189,7 +195,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                   <div className="space-y-3 flex flex-col">
                     <SignHeroTitle size="lg" />
                     <p className="text-muted-foreground max-w-md ">
-                      快速创建并分享你的应援牌
+                      快速创建 & 分享美丽应援牌
                     </p>
                   </div>
                 </div>
@@ -230,10 +236,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                       </div>
                       <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                         <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
-                        <Noise
-                          patternSize={150}
-                          patternAlpha={8}
-                        />
+                        <Noise patternSize={150} patternAlpha={8} />
                         <div className="relative p-5 w-full h-full">
                           {feature.content}
                         </div>
