@@ -71,6 +71,14 @@ export const fontSizeOptions = [
   { name: "2XL", value: "min(30rem, 90vh)" },
 ];
 
+// Text stroke width configuration (using relative units - em)
+export const textStrokeConfig = {
+  min: 0.002,
+  max: 0.01,
+  step: 0.001,
+  defaultValue: 0.002,
+};
+
 // Scroll speed options
 export const scrollSpeedOptions = [
   { name: "0.3x", value: "3" },
@@ -104,31 +112,23 @@ export const noiseConfig = {
   },
 };
 
-// Text stroke width configuration
-export const textStrokeConfig = {
-  min: 1,
-  max: 3,
-  step: 0.5,
-  defaultValue: 2,
-};
-
 // Star field effect configuration
 export const starFieldConfig = {
   density: {
     min: 0.5,
-    max: 10,
+    max: 15,
     step: 0.1,
     defaultValue: 5,
   },
   size: {
     min: 10,
-    max: 20,
+    max: 15,
     step: 0.5,
     defaultValue: 10,
   },
   twinkleSpeed: {
     min: 0.5,
-    max: 3.0,
+    max: 5,
     step: 0.1,
     defaultValue: 1.0,
   },

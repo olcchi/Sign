@@ -1,9 +1,9 @@
 import { createClient } from '@/lib/supabase/server'
-import { ShareablePreset } from '@/types'
+import { PresetType } from '@/types'
 
 interface SupabasePreset {
   pin_code: string
-  preset_data: ShareablePreset
+  preset_data: PresetType
   created_at: string
   expires_at: string
 }
@@ -12,7 +12,7 @@ interface SupabasePreset {
 class SupabaseConfigStorage {
   private tableName = 'shared_presets'
 
-  async setPreset(pinCode: string, preset: ShareablePreset): Promise<boolean> {
+  async setPreset(pinCode: string, preset: PresetType): Promise<boolean> {
     try {
       const supabase = await createClient()
 
@@ -56,7 +56,7 @@ class SupabaseConfigStorage {
     }
   }
 
-  async getPreset(pinCode: string): Promise<ShareablePreset | null> {
+  async getPreset(pinCode: string): Promise<PresetType | null> {
     try {
       const supabase = await createClient()
 
@@ -77,7 +77,7 @@ class SupabaseConfigStorage {
         return null
       }
 
-      return data.preset_data as ShareablePreset
+      return data.preset_data as PresetType
     } catch (error) {
       console.error('Failed to get preset from Supabase:', error)
       return null

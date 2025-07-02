@@ -55,7 +55,4 @@ export interface PresetManagerProps {
   starFieldTwinkleSpeed?: number;
   onLoadPreset: (preset: PresetType) => void;
   onActivePresetChange?: (preset: PresetType | null) => void; // Callback for active preset changes
-}
-
-// Type alias for sharing - same as PresetType but with semantic meaning
-export type ShareablePreset = PresetType; 
+} 

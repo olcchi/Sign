@@ -1,4 +1,4 @@
-import { PresetType, ShareablePreset } from "@/types";
+import { PresetType } from "@/types";
 
 // Font mapping for backward compatibility with old presets
 const FONT_MAPPING = {
@@ -13,7 +13,7 @@ function mapFontFamily(fontFamily: string): string {
 }
 
 // Default values for preset properties to ensure consistency
-const DEFAULT_PRESET_VALUES = {
+const DEFAULT_PRESET_VALUES = { 
   noiseEnabled: false,
   noisePatternSize: 250,
   noisePatternAlpha: 15,
@@ -30,12 +30,12 @@ const DEFAULT_PRESET_VALUES = {
 } as const;
 
 // Normalize and prepare preset for sharing/saving
-export function presetToShareable(preset: PresetType): ShareablePreset {
+export function presetToShareable(preset: PresetType): PresetType {
   return normalizePreset(preset);
 }
 
 // Convert shareable preset back to full preset format
-export function shareableToPreset(shareable: ShareablePreset): PresetType {
+export function shareableToPreset(shareable: PresetType): PresetType {
   return normalizePreset(shareable);
 }
 
