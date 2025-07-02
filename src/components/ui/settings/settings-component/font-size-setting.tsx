@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/inputs/select";
+} from "@/components/ui/inputs";
 
 interface FontSizeSettingProps {
   fontSizeOptions: Array<{
@@ -35,4 +35,4 @@ export function FontSizeSetting({ fontSizeOptions }: FontSizeSettingProps) {
       </SelectContent>
     </Select>
   );
-} 
+}
