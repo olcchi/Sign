@@ -1,6 +1,6 @@
 "use client";
 import { Eye, EyeOff } from "lucide-react";
-import { Button } from "@/components/ui/layout/button";
+import { Button } from "@/components/ui/layout";
 
 interface ToggleButtonProps {
   isEnabled: boolean;
@@ -29,4 +29,4 @@ export function ToggleButton({
       {isEnabled ? <p>开启</p> : <p>关闭</p>}
     </Button>
   );
-} 
+}
