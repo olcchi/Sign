@@ -1,20 +1,10 @@
 "use client";
 
 import React, { useState, useRef } from "react";
-import { Button } from "@/components/ui/layout/button";
-import {
-  Dialog,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-  DialogPortal,
-  DialogOverlay,
-} from "@/components/ui/layout/dialog";
+import { Button, Dialog, DialogDescription, DialogHeader, DialogTitle, DialogTrigger, DialogPortal, DialogOverlay } from "@/components/ui/layout";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { cn } from "@/lib/utils";
-import { Textarea } from "@/components/ui/inputs/textarea";
-import { Input } from "@/components/ui/inputs/input";
+import { Textarea, Input } from "@/components/ui/inputs";
 import { FeedbackRating, BaseDialogProps } from "@/types";
 import {
   Loader2,
