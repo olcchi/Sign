@@ -4,7 +4,10 @@ import React, { useState } from "react";
 import { PresetApiService } from "@/lib/preset-api";
 import { PresetType } from "@/types";
 import { BaseDialogProps } from "@/types";
-import { loadPresetsFromLocalStorage, savePresetsToLocalStorage } from "@/lib/preset-conversion";
+import {
+  loadPresetsFromLocalStorage,
+  savePresetsToLocalStorage,
+} from "@/lib/preset-conversion";
 import { Button } from "@/components/ui/layout/button";
 import { Label } from "@/components/ui/layout/label";
 import {
@@ -72,10 +75,10 @@ const saveImportedPresetToLocal = (importedPreset: PresetType): PresetType => {
 
   // Add new preset to the beginning of the list
   const updatedPresets = [newPreset, ...existingPresets];
-  
+
   // Save back to localStorage
   savePresetsToLocalStorage(updatedPresets);
-  
+
   return newPreset;
 };
 
@@ -107,12 +110,12 @@ export default function ImportDialog({
       if (result.success && result.data) {
         // Save imported preset to local storage only (don't apply to current interface)
         saveImportedPresetToLocal(result.data);
-        
+
         // Notify that preset list has been updated
         if (onPresetListUpdated) {
           onPresetListUpdated();
         }
-        
+
         setIsOpen(false);
         setPinCode("");
       } else {
@@ -195,7 +198,7 @@ export default function ImportDialog({
 
           {/* Loading State */}
           {isLoading && (
-                          <div className="flex-center text-sm text-gray-600">
+            <div className="flex-center text-sm text-gray-600">
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
               正在加载应援牌配置...
             </div>

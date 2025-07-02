@@ -31,7 +31,7 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   shinyTextEnabled = false,
   textColor,
   textStrokeEnabled = false,
-  textStrokeWidth = 1,
+  textStrokeWidth = 0.03,
   textStrokeColor = "#000000",
   textFillEnabled = true,
 }) => {

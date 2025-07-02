@@ -34,7 +34,7 @@ export default function ScrollingText({
   onScrollStateChange,
   shinyTextEnabled = false,
   textStrokeEnabled = true,
-  textStrokeWidth = 1,
+  textStrokeWidth = 0.03,
   textStrokeColor = "#000000",
   textFillEnabled = true,
 }: ScrollingTextProps) {
@@ -96,8 +96,8 @@ export default function ScrollingText({
     fontWeight,
     color: ensuredTextFillEnabled ? color : "transparent",
     ...(ensuredTextStrokeEnabled && {
-      WebkitTextStroke: `${textStrokeWidth}px ${textStrokeColor}`,
-      textStroke: `${textStrokeWidth}px ${textStrokeColor}`,
+      WebkitTextStroke: `${textStrokeWidth}em ${textStrokeColor}`,
+      textStroke: `${textStrokeWidth}em ${textStrokeColor}`,
     }),
     WebkitFontSmoothing: "antialiased",
     MozOsxFontSmoothing: "grayscale",
