@@ -10,7 +10,7 @@ import {
   getPresetDetailedInfo,
 } from "@/lib/preset-utils";
 import { loadPresetsFromLocalStorage } from "@/lib/preset-conversion";
-import { Button } from "@/components/ui/layout/button";
+import { Button } from "@/components/ui/layout";
 import {
   Dialog,
   DialogDescription,
@@ -19,20 +19,20 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/layout/dialog";
+} from "@/components/ui/layout";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from "@/components/ui/layout/accordion";
+} from "@/components/ui/layout";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/inputs/select";
+} from "@/components/ui/inputs";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Copy, Check, Loader2, AlertCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
