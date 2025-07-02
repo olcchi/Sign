@@ -173,8 +173,8 @@ function SelectScrollDownButton({
   );
 }
 
+export default Select
 export {
-  Select,
   SelectContent,
   SelectGroup,
   SelectItem,
