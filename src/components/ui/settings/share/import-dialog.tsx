@@ -8,13 +8,13 @@ import {
   loadPresetsFromLocalStorage,
   savePresetsToLocalStorage,
 } from "@/lib/preset-conversion";
-import { Button } from "@/components/ui/layout/button";
-import { Label } from "@/components/ui/layout/label";
+import { Button } from "@/components/ui/layout";
+import { Label } from "@/components/ui/layout";
 import {
   InputOTP,
   InputOTPGroup,
   InputOTPSlot,
-} from "@/components/ui/inputs/input-otp";
+} from "@/components/ui/inputs";
 import {
   Dialog,
   DialogDescription,
@@ -23,7 +23,7 @@ import {
   DialogTrigger,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/layout/dialog";
+} from "@/components/ui/layout";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { Loader2, X } from "lucide-react";
 import { cn } from "@/lib/utils";
