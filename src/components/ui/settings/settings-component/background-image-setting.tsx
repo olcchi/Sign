@@ -60,7 +60,7 @@ export function BackgroundImageSetting({
               className="relative w-full h-20 rounded-md overflow-hidden border"
               ref={previewContainerRef}
             >
-                                <div className="absolute bg-black/30 flex-center opacity-0 hover:opacity-100 z-30 inset-0">
+              <div className="absolute bg-black/30 flex-center opacity-0 hover:opacity-100 z-30 inset-0">
                 <Button
                   variant="ghost"
                   onClick={triggerFileUpload}
@@ -119,11 +119,10 @@ export function BackgroundImageSetting({
                   disabled={sliderDisabled.y}
                 />
               </div>
-
             </div>
           </>
         )}
       </div>
-    ),
+    )
   };
 }
