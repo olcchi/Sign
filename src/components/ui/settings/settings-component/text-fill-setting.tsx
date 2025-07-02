@@ -8,7 +8,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/inputs/select";
+} from "@/components/ui/inputs";
 
 interface TextFillSettingProps {
   colorOptions: Array<{
