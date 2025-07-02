@@ -1,8 +1,8 @@
 "use client";
 import { useRef } from "react";
-import ToolBar from "@/components/ui/tool-bar/tool-bar";
+import ToolBar from "@/components/ui/settings/tool-bar/tool-bar";
 import ScrollingText from "@/components/ui/widgets/scrolling-text/scrolling-text";
-import { EdgeBlurEffect } from "@/components/ui/filter/edge-blur-effect";
+import { EdgeBlurEffect } from "@/components/ui/filter/blur/edge-blur-effect";
 import FullScreen from "@/components/ui/layout/full-screen";
 import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
