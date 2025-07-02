@@ -5,10 +5,10 @@ import {
   DialogDescription,
   DialogPortal,
   DialogOverlay,
-} from "@/components/ui/layout/dialog";
+} from "@/components/ui/layout";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
-import { Button } from "@/components/ui/layout/button";
+import { Button } from "@/components/ui/layout";
 import { X, ArrowRight, Sparkles, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Olcchi } from "../icon/olcchi";
