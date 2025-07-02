@@ -6,7 +6,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/inputs/select";
+} from "@/components/ui/inputs";
 
 interface FontFamilySettingProps {
   fontOptions: Array<{
@@ -36,4 +36,4 @@ export function FontFamilySetting({ fontOptions }: FontFamilySettingProps) {
       </SelectContent>
     </Select>
   );
-} 
+}
