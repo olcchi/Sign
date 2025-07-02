@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { AnimatePresence, motion } from "motion/react";
-import { Button } from "@/components/ui/layout/button";
+import { Button } from "@/components/ui/layout";
 import {
   Save,
   Plus,
@@ -13,13 +13,11 @@ import {
   Alert,
   AlertDescription,
   AlertTitle,
-} from "@/components/ui/layout/alert";
-import {
   Accordion,
   AccordionItem,
   AccordionTrigger,
   AccordionContent,
-} from "@/components/ui/layout/accordion";
+} from "@/components/ui/layout";
 import { cn } from "@/lib/utils";
 import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
 import { useSettings } from "@/lib/contexts/settings-context";
