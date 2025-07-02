@@ -9,7 +9,7 @@ interface SwitchProps extends React.ComponentProps<typeof SwitchPrimitive.Root> 
   children?: React.ReactNode
 }
 
-function Switch({
+export default function Switch({
   className,
   children,
   ...props
@@ -34,5 +34,3 @@ function Switch({
     </SwitchPrimitive.Root>
   )
 }
-
-export { Switch }
