@@ -1,7 +1,7 @@
 "use client";
 import { cn } from "@/lib/utils";
 import { Baseline } from "lucide-react";
-import { Slider } from "@/components/ui/inputs/slider";
+import { Slider } from "@/components/ui/inputs";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { textStrokeConfig } from "@/lib/settings-config";
 import {
@@ -10,7 +10,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/inputs/select";
+} from "@/components/ui/inputs";
 
 interface TextStrokeSettingProps {
   colorOptions: Array<{
@@ -87,4 +87,4 @@ export function TextStrokeSetting({ colorOptions }: TextStrokeSettingProps) {
       )}
     </div>
   );
-} 
+}
