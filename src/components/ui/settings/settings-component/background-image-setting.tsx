@@ -123,6 +123,6 @@ export function BackgroundImageSetting({
           </>
         )}
       </div>
-    )
+    ),
   };
 }
