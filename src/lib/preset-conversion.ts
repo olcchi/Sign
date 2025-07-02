@@ -18,7 +18,7 @@ const DEFAULT_PRESET_VALUES = {
   noisePatternSize: 250,
   noisePatternAlpha: 15,
   textStrokeEnabled: false,
-  textStrokeWidth: 1,
+  textStrokeWidth: 0.03,
   textStrokeColor: "#000000",
   textFillEnabled: true,
   starFieldEnabled: false,
@@ -26,6 +26,7 @@ const DEFAULT_PRESET_VALUES = {
   starFieldColor: "#FFFFFB",
   starFieldSize: 2,
   starFieldTwinkleSpeed: 1.0,
+  isNewImport: false,
 } as const;
 
 // Normalize and prepare preset for sharing/saving
@@ -64,6 +65,7 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
     starFieldColor: preset.starFieldColor ?? DEFAULT_PRESET_VALUES.starFieldColor,
     starFieldSize: preset.starFieldSize ?? DEFAULT_PRESET_VALUES.starFieldSize,
     starFieldTwinkleSpeed: preset.starFieldTwinkleSpeed ?? DEFAULT_PRESET_VALUES.starFieldTwinkleSpeed,
+    isNewImport: preset.isNewImport ?? DEFAULT_PRESET_VALUES.isNewImport,
   };
 }
 
@@ -84,4 +86,46 @@ export function validatePreset(preset: any): preset is PresetType {
     typeof preset.edgeBlurIntensity === 'number' &&
     typeof preset.shinyTextEnabled === 'boolean'
   );
+}
+
+/**
+ * Load and normalize presets from localStorage
+ * This function handles all the common logic for reading presets from localStorage,
+ * parsing them, and applying default values for backward compatibility.
+ * 
+ * @returns Array of normalized PresetType objects
+ */
+export function loadPresetsFromLocalStorage(): PresetType[] {
+  try {
+    const savedPresets = localStorage.getItem("sign-presets");
+    if (!savedPresets) {
+      return [];
+    }
+
+    const parsedPresets = JSON.parse(savedPresets);
+    if (!Array.isArray(parsedPresets)) {
+      console.error("Invalid presets data format in localStorage");
+      return [];
+    }
+
+    // Normalize each preset to ensure all properties have default values
+    return parsedPresets.map((preset: Partial<PresetType>) => normalizePreset(preset));
+  } catch (error) {
+    console.error("Failed to parse saved presets from localStorage:", error);
+    return [];
+  }
+}
+
+/**
+ * Save presets to localStorage
+ * This function handles saving an array of presets to localStorage.
+ * 
+ * @param presets Array of PresetType objects to save
+ */
+export function savePresetsToLocalStorage(presets: PresetType[]): void {
+  try {
+    localStorage.setItem("sign-presets", JSON.stringify(presets));
+  } catch (error) {
+    console.error("Failed to save presets to localStorage:", error);
+  }
 } 

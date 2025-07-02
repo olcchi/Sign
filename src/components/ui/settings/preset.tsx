@@ -24,6 +24,7 @@ import { cn } from "@/lib/utils";
 import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
+import { loadPresetsFromLocalStorage, savePresetsToLocalStorage } from "@/lib/preset-conversion";
 import type { PresetType, PresetManagerProps } from "@/types";
 
 /**
@@ -64,52 +65,11 @@ export function PresetManager({
 
   // Load saved presets
   useEffect(() => {
-    const savedPresets = localStorage.getItem("sign-presets");
-    if (savedPresets) {
-      try {
-        const parsedPresets = JSON.parse(savedPresets);
-        const updatedPresets = parsedPresets.map((preset: PresetType) => ({
-          ...preset,
-          edgeBlurEnabled:
-            preset.edgeBlurEnabled !== undefined
-              ? preset.edgeBlurEnabled
-              : false,
-          edgeBlurIntensity:
-            preset.edgeBlurIntensity !== undefined
-              ? preset.edgeBlurIntensity
-              : 10,
-          shinyTextEnabled:
-            preset.shinyTextEnabled !== undefined
-              ? preset.shinyTextEnabled
-              : false,
-          noiseEnabled:
-            preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-          noisePatternSize:
-            preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
-          noisePatternAlpha:
-            preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
-          textStrokeEnabled:
-            preset.textStrokeEnabled !== undefined
-              ? preset.textStrokeEnabled
-              : true,
-          textStrokeWidth:
-            preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
-          textStrokeColor:
-            preset.textStrokeColor !== undefined
-              ? preset.textStrokeColor
-              : "#000000",
-          textFillEnabled:
-            preset.textFillEnabled !== undefined
-              ? preset.textFillEnabled
-              : true,
-        }));
-
-        setPresets(updatedPresets);
-        // update
-        localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
-      } catch (e) {
-        console.error("Failed to parse saved presets", e);
-      }
+    const presets = loadPresetsFromLocalStorage();
+    setPresets(presets);
+    // Save back the normalized presets to localStorage to ensure consistency
+    if (presets.length > 0) {
+      savePresetsToLocalStorage(presets);
     }
   }, []);
 
@@ -201,7 +161,7 @@ export function PresetManager({
 
     const updatedPresets = [newPreset, ...presets];
     setPresets(updatedPresets);
-    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
+    savePresetsToLocalStorage(updatedPresets);
 
     setPresetName("");
     setShowPresetInput(false);
@@ -235,7 +195,7 @@ export function PresetManager({
     });
 
     setPresets(updatedPresets);
-    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
+    savePresetsToLocalStorage(updatedPresets);
     setHasUnsavedChanges(false);
   };
 
@@ -251,7 +211,7 @@ export function PresetManager({
 
     const updatedPresets = presets.filter((preset) => preset.id !== id);
     setPresets(updatedPresets);
-    localStorage.setItem("sign-presets", JSON.stringify(updatedPresets));
+    savePresetsToLocalStorage(updatedPresets);
 
     // Clear active preset if deleted
     if (activePresetId === id) {
@@ -272,55 +232,21 @@ export function PresetManager({
   const handleLoadPreset = (preset: PresetType) => {
     onLoadPreset(preset);
     setActivePresetId(preset.id);
+    
+    // Remove isNewImport flag when preset is activated
+    if (preset.isNewImport) {
+      const updatedPresets = presets.map((p) => 
+        p.id === preset.id ? { ...p, isNewImport: false } : p
+      );
+      setPresets(updatedPresets);
+      savePresetsToLocalStorage(updatedPresets);
+    }
   };
 
   // Function to refresh preset list from localStorage
   const refreshPresetList = () => {
-    const savedPresets = localStorage.getItem("sign-presets");
-    if (savedPresets) {
-      try {
-        const parsedPresets = JSON.parse(savedPresets);
-        const updatedPresets = parsedPresets.map((preset: PresetType) => ({
-          ...preset,
-          edgeBlurEnabled:
-            preset.edgeBlurEnabled !== undefined
-              ? preset.edgeBlurEnabled
-              : false,
-          edgeBlurIntensity:
-            preset.edgeBlurIntensity !== undefined
-              ? preset.edgeBlurIntensity
-              : 10,
-          shinyTextEnabled:
-            preset.shinyTextEnabled !== undefined
-              ? preset.shinyTextEnabled
-              : false,
-          noiseEnabled:
-            preset.noiseEnabled !== undefined ? preset.noiseEnabled : false,
-          noisePatternSize:
-            preset.noisePatternSize !== undefined ? preset.noisePatternSize : 250,
-          noisePatternAlpha:
-            preset.noisePatternAlpha !== undefined ? preset.noisePatternAlpha : 15,
-          textStrokeEnabled:
-            preset.textStrokeEnabled !== undefined
-              ? preset.textStrokeEnabled
-              : true,
-          textStrokeWidth:
-            preset.textStrokeWidth !== undefined ? preset.textStrokeWidth : 1,
-          textStrokeColor:
-            preset.textStrokeColor !== undefined
-              ? preset.textStrokeColor
-              : "#000000",
-          textFillEnabled:
-            preset.textFillEnabled !== undefined
-              ? preset.textFillEnabled
-              : true,
-        }));
-
-        setPresets(updatedPresets);
-      } catch (e) {
-        console.error("Failed to parse saved presets", e);
-      }
-    }
+    const presets = loadPresetsFromLocalStorage();
+    setPresets(presets);
   };
 
   return (
@@ -432,11 +358,14 @@ export function PresetManager({
                       )}
                     >
                       <div className="flex py-1 items-center gap-1 w-full">
-                        <p className="max-w-40 font-sans text-xs">
+                        <p className="max-w-40 font-sans text-xs flex items-center gap-1">
                           {activePresetId === preset.id && (
                             <span className="pr-2  text-xs">当前</span>
                           )}
                           {preset.name}
+                          {preset.isNewImport && (
+                            <span className="inline-block w-2 h-2 bg-green-500 rounded-full ml-1" title="新导入的预设"></span>
+                          )}
                         </p>
                       </div>
                     </AccordionTrigger>

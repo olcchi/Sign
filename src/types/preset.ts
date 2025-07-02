@@ -25,6 +25,7 @@ export interface PresetType {
   starFieldColor?: string;
   starFieldSize?: number;
   starFieldTwinkleSpeed?: number;
+  isNewImport?: boolean; // Mark newly imported presets that haven't been used yet
 }
 
 /**
