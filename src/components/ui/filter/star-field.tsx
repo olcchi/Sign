@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useRef, useEffect, useCallback, useMemo } from "react";
-import { useSettings } from "@/lib/contexts/settings-context";
+import { cn } from "@/lib/utils";
 
 interface Star {
   x: number;
@@ -11,31 +11,37 @@ interface Star {
   fadeSpeed: number;
 }
 
-export function StarField() {
+interface StarFieldProps {
+  enabled?: boolean;
+  density?: number;
+  color?: string;
+  size?: number;
+  twinkleSpeed?: number;
+  className?: string;
+}
+
+export function StarField({
+  enabled = false,
+  density = 0.5,
+  color = "#FFFFFB",
+  size = 2,
+  twinkleSpeed = 1.0,
+  className,
+}: StarFieldProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const animationFrameRef = useRef<number | undefined>(undefined);
   const activeStarsRef = useRef<Star[]>([]);
   const dormantStarsRef = useRef<Star[]>([]);
-  const { effectsSettings } = useSettings();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   // Performance optimization related refs
   const lastFrameTime = useRef(0);
   const needsRedraw = useRef(false);
   const frameInterval = useRef(1000 / 30); // 30fps
 
-  const {
-    starFieldEnabled,
-    starFieldDensity,
-    starFieldColor,
-    starFieldSize,
-    starFieldTwinkleSpeed,
-  } = effectsSettings;
-
   // Memoize RGB conversion to avoid repeated calculations
   const starRgb = useMemo(() => {
-    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(
-      starFieldColor
-    );
+    const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
     return result
       ? {
           r: parseInt(result[1], 16),
@@ -43,7 +49,7 @@ export function StarField() {
           b: parseInt(result[3], 16),
         }
       : { r: 255, g: 255, b: 255 };
-  }, [starFieldColor]);
+  }, [color]);
 
   // Memoize gradient colors to avoid string concatenation in render loop
   const glowColors = useMemo(
@@ -54,21 +60,32 @@ export function StarField() {
     [starRgb]
   );
 
+  // Get container dimensions for star positioning
+  const getContainerDimensions = useCallback(() => {
+    if (containerRef.current) {
+      const rect = containerRef.current.getBoundingClientRect();
+      return { width: rect.width, height: rect.height };
+    }
+    return { width: window.innerWidth, height: window.innerHeight };
+  }, []);
+
   // Create a new star with random properties
   const createStar = useCallback((): Star => {
+    const { width, height } = getContainerDimensions();
     return {
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
+      x: Math.random() * width,
+      y: Math.random() * height,
       opacity: 0,
       fadeDirection: 1,
-      fadeSpeed: (Math.random() * 0.5 + 0.1) * starFieldTwinkleSpeed,
+      fadeSpeed: (Math.random() * 0.5 + 0.1) * twinkleSpeed,
     };
-  }, [starFieldTwinkleSpeed]);
+  }, [twinkleSpeed, getContainerDimensions]);
 
   // Initialize stars based on density
   const initializeStars = useCallback(() => {
-    const area = window.innerWidth * window.innerHeight;
-    const baseStarCount = Math.floor(area * starFieldDensity * 0.00005);
+    const { width, height } = getContainerDimensions();
+    const area = width * height;
+    const baseStarCount = Math.floor(area * density * 0.00005);
     const starCount = Math.min(baseStarCount, 1000);
 
     // Clear all pools
@@ -90,7 +107,7 @@ export function StarField() {
     });
 
     needsRedraw.current = true;
-  }, [starFieldDensity, createStar]);
+  }, [density, createStar, getContainerDimensions]);
 
   // Draw star shape using optimized Canvas path operations
   const drawStarShape = useCallback(
@@ -121,14 +138,15 @@ export function StarField() {
     (ctx: CanvasRenderingContext2D) => {
       if (!needsRedraw.current) return;
 
-      ctx.clearRect(0, 0, window.innerWidth, window.innerHeight);
+      const { width, height } = getContainerDimensions();
+      ctx.clearRect(0, 0, width, height);
 
       activeStarsRef.current.forEach((star) => {
         ctx.save();
         ctx.globalAlpha = star.opacity;
 
         // Create circular glow effect using radial gradient
-        const glowRadius = starFieldSize * 2;
+        const glowRadius = size * 2;
         const gradient = ctx.createRadialGradient(
           star.x,
           star.y,
@@ -150,15 +168,15 @@ export function StarField() {
         ctx.fill();
 
         // Draw star shape on top
-        ctx.fillStyle = starFieldColor;
-        drawStarShape(ctx, star.x, star.y, starFieldSize);
+        ctx.fillStyle = color;
+        drawStarShape(ctx, star.x, star.y, size);
 
         ctx.restore();
       });
 
       needsRedraw.current = false;
     },
-    [starFieldColor, starFieldSize, glowColors, drawStarShape]
+    [color, size, glowColors, drawStarShape, getContainerDimensions]
   );
 
   // Update star animations
@@ -212,13 +230,14 @@ export function StarField() {
 
         // Reset star properties
         star.fadeDirection = 1;
-        star.fadeSpeed = (Math.random() * 0.5 + 0.1) * starFieldTwinkleSpeed;
+        star.fadeSpeed = (Math.random() * 0.5 + 0.1) * twinkleSpeed;
         star.opacity = 0;
 
         // 30% chance to reposition
         if (Math.random() < 0.3) {
-          star.x = Math.random() * window.innerWidth;
-          star.y = Math.random() * window.innerHeight;
+          const { width, height } = getContainerDimensions();
+          star.x = Math.random() * width;
+          star.y = Math.random() * height;
         }
 
         activeStarsRef.current.push(star);
@@ -229,7 +248,7 @@ export function StarField() {
     if (hasChanges) {
       needsRedraw.current = true;
     }
-  }, [starFieldTwinkleSpeed]);
+  }, [twinkleSpeed, getContainerDimensions]);
 
   // Animation loop with frame rate control
   const animate = useCallback(() => {
@@ -260,11 +279,13 @@ export function StarField() {
   // Handle canvas resize with DPI scaling
   const resizeCanvas = useCallback(() => {
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
     const dpr = Math.min(window.devicePixelRatio || 1, 2);
-    const displayWidth = window.innerWidth;
-    const displayHeight = window.innerHeight;
+    const rect = container.getBoundingClientRect();
+    const displayWidth = rect.width;
+    const displayHeight = rect.height;
 
     canvas.width = displayWidth * dpr;
     canvas.height = displayHeight * dpr;
@@ -280,7 +301,7 @@ export function StarField() {
   }, [initializeStars]);
 
   useEffect(() => {
-    if (!starFieldEnabled) {
+    if (!enabled) {
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -305,28 +326,26 @@ export function StarField() {
         cancelAnimationFrame(animationFrameRef.current);
       }
     };
-  }, [starFieldEnabled, resizeCanvas, animate]);
+  }, [enabled, resizeCanvas, animate]);
 
   // Re-initialize stars when settings change
   useEffect(() => {
-    if (!starFieldEnabled) return;
+    if (!enabled) return;
     const canvas = canvasRef.current;
     if (!canvas) return;
     initializeStars();
-  }, [starFieldDensity, starFieldSize, starFieldTwinkleSpeed, initializeStars]);
+  }, [density, size, twinkleSpeed, initializeStars]);
 
-  if (!starFieldEnabled) {
+  if (!enabled) {
     return null;
   }
 
   return (
-    <canvas
-      ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-0"
-      style={{
-        width: "100vw",
-        height: "100vh",
-      }}
-    />
+    <div ref={containerRef} className={cn("w-full h-full pointer-events-none", className)}>
+      <canvas
+        ref={canvasRef}
+        className="w-full h-full"
+      />
+    </div>
   );
 }
