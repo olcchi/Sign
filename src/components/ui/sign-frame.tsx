@@ -72,6 +72,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         text={textSettings.text}
         fontSize={textSettings.fontSize}
         fontWeight={textSettings.fontWeight}
+        fontItalic={textSettings.fontItalic}
         color={textSettings.textColor}
         textRef={textRef as React.RefObject<HTMLDivElement>}
         scrollSpeed={textSettings.scrollSpeed}
