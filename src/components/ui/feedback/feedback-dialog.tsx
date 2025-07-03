@@ -18,7 +18,7 @@ import {
   CircleCheck,
   Plus,
 } from "lucide-react";
-// Create a non-animated version of DialogContent
+
 const DialogContent = React.forwardRef<
   React.ComponentRef<typeof DialogPrimitive.Content>,
   React.ComponentPropsWithoutRef<typeof DialogPrimitive.Content>
@@ -28,13 +28,13 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 max-h-3/4 overflow-y-auto custom-scrollbar md:w-full max-w-lg min-w-fit translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
+        "fixed left-[50%] top-[50%] z-[1001] flex flex-col w-3/4 max-h-[90vh] md:w-full max-w-lg min-w-fit translate-x-[-50%] translate-y-[-50%] border bg-background shadow-lg rounded-lg overflow-hidden",
         className
       )}
       {...props}
     >
       {children}
-      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground">
+      <DialogPrimitive.Close className="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground z-10">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
@@ -43,7 +43,7 @@ const DialogContent = React.forwardRef<
 ));
 DialogContent.displayName = "DialogContent";
 
-interface FeedbackDialogProps extends BaseDialogProps {}
+type FeedbackDialogProps = BaseDialogProps;
 
 export default function FeedbackDialog({
   children,
@@ -212,7 +212,7 @@ export default function FeedbackDialog({
         setError(errorMsg);
         console.error("反馈提交失败:", result);
       }
-    } catch (err) {
+    } catch {
       setError("网络错误，请检查连接后重试");
     } finally {
       setIsLoading(false);
@@ -242,17 +242,18 @@ export default function FeedbackDialog({
         {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-md">
-        <DialogHeader>
-          <DialogTitle className="flex items-center gap-2">
-            <p className="text-sm font-bold">反馈</p>
-          </DialogTitle>
-          <DialogDescription>请您提交遇到的问题或建议</DialogDescription>
-        </DialogHeader>
-
-        <div className="space-y-4">
+        <div className="flex-shrink-0 p-6 pb-4">
+          <DialogHeader>
+            <DialogTitle className="flex items-center gap-2">
+              <p className="text-sm font-bold">反馈</p>
+            </DialogTitle>
+            <DialogDescription>请您提交遇到的问题或建议</DialogDescription>
+          </DialogHeader>
+        </div>
+        <div className="flex-1 overflow-y-auto custom-scrollbar px-6 pb-6">
+          <div className="space-y-4">
           {!isSuccess ? (
             <>
-              {/* Rating selection */}
               <div className="space-y-3">
                 <div className="flex justify-center gap-4">
                   {ratingConfig.map((item) => {
@@ -311,8 +312,6 @@ export default function FeedbackDialog({
                     <p className="text-xs text-muted-foreground">请添加图片</p>
                   )}
                   <div className="flex gap-2">
-                    {/* Existing images */}
-
                     {selectedImages.map((file, index) => (
                       <div key={index} className="relative group">
                         <img
@@ -333,7 +332,6 @@ export default function FeedbackDialog({
                       </div>
                     ))}
 
-                    {/* Add image button - only show if less than 4 images */}
                     {selectedImages.length < 4 && (
                       <div
                         onClick={() => fileInputRef.current?.click()}
@@ -392,12 +390,13 @@ export default function FeedbackDialog({
                 />
                 <div>
                   <h2 className="text-sm mb-2">
-                    我们已经收到了您的反馈，感谢您
+                    感谢您，我们已经收到了您的反馈
                   </h2>
                 </div>
               </div>
             </>
           )}
+          </div>
         </div>
       </DialogContent>
     </Dialog>
