@@ -9,6 +9,7 @@ export interface PresetType {
   fontFamily: string;
   fontSize: string;
   fontWeight: string;
+  fontItalic: boolean;
   scrollSpeed: number;
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;
@@ -37,6 +38,7 @@ export interface PresetManagerProps {
   fontFamily: string;
   fontSize: string;
   fontWeight: string;
+  fontItalic: boolean;
   scrollSpeed: number;
   edgeBlurEnabled: boolean;
   edgeBlurIntensity: number;

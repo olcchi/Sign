@@ -7,7 +7,7 @@ import {
   Trash2,
   RefreshCw,
   CircleAlert,
-  AlertCircle,
+
 } from "lucide-react";
 import {
   Alert,
@@ -35,6 +35,7 @@ export function PresetManager({
   fontFamily,
   fontSize,
   fontWeight,
+  fontItalic,
   scrollSpeed,
   edgeBlurEnabled,
   edgeBlurIntensity,
@@ -49,7 +50,7 @@ export function PresetManager({
   onLoadPreset,
   onActivePresetChange,
 }: PresetManagerProps) {
-  const { updateTextSettings, updateEffectsSettings } = useSettings();
+  const {} = useSettings();
 
   const [presets, setPresets] = useState<PresetType[]>([]);
   const [presetName, setPresetName] = useState("");
@@ -57,7 +58,7 @@ export function PresetManager({
   const [activePresetId, setActivePresetId] = useState<string | null>(null);
   // Track which preset is currently in delete confirmation mode
   const [deleteConfirmId, setDeleteConfirmId] = useState<string | null>(null);
-  const [isAlert, setIsAlert] = useState(true);
+  const [isAlert] = useState(true);
   const [hasUnsavedChanges, setHasUnsavedChanges] = useState(false);
   const presetInputRef = useRef<HTMLInputElement>(null);
 
@@ -87,6 +88,7 @@ export function PresetManager({
         activePreset.fontFamily !== fontFamily ||
         activePreset.fontSize !== fontSize ||
         activePreset.fontWeight !== fontWeight ||
+        activePreset.fontItalic !== fontItalic ||
         activePreset.scrollSpeed !== scrollSpeed ||
         activePreset.edgeBlurEnabled !== edgeBlurEnabled ||
         activePreset.edgeBlurIntensity !== edgeBlurIntensity ||
@@ -108,6 +110,7 @@ export function PresetManager({
     fontFamily,
     fontSize,
     fontWeight,
+    fontItalic,
     scrollSpeed,
     edgeBlurEnabled,
     edgeBlurIntensity,
@@ -144,6 +147,7 @@ export function PresetManager({
       fontFamily,
       fontSize,
       fontWeight,
+      fontItalic,
       scrollSpeed,
       edgeBlurEnabled,
       edgeBlurIntensity,
@@ -176,6 +180,8 @@ export function PresetManager({
           textColor,
           fontFamily,
           fontSize,
+          fontWeight,
+          fontItalic,
           scrollSpeed,
           edgeBlurEnabled,
           edgeBlurIntensity,
@@ -279,7 +285,7 @@ export function PresetManager({
           <AlertTitle className="text-xs">提示</AlertTitle>
           <AlertDescription className="text-xs">
             <ul className="list-disc space-y-1">
-              <li>预设保存在您的浏览器本地存储，不保证持久性</li>
+              <li>本地预设保存在您的浏览器本地存储，不保证持久性</li>
               <li>分享预设PIN码有效期24小时</li>
             </ul>
           </AlertDescription>

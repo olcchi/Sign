@@ -16,6 +16,7 @@ interface PresetHandlers {
   onFontChange: (font: string) => void;
   onFontSizeChange: (size: string) => void;
   onFontWeightChange: (weight: string) => void;
+  onFontItalicChange: (italic: boolean) => void;
   onScrollSpeedChange: (speed: number) => void;
   onEdgeBlurEnabledChange: (enabled: boolean) => void;
   onEdgeBlurIntensityChange: (intensity: number) => void;
@@ -52,6 +53,7 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
     onFontChange,
     onFontSizeChange,
     onFontWeightChange,
+    onFontItalicChange,
     onScrollSpeedChange,
     onEdgeBlurEnabledChange,
     onEdgeBlurIntensityChange,
@@ -76,6 +78,7 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
   onFontChange(preset.fontFamily);
   onFontSizeChange(preset.fontSize);
   onFontWeightChange(preset.fontWeight);
+  onFontItalicChange(preset.fontItalic);
   onScrollSpeedChange(preset.scrollSpeed);
   onEdgeBlurEnabledChange(preset.edgeBlurEnabled);
   onEdgeBlurIntensityChange(preset.edgeBlurIntensity);
@@ -140,6 +143,7 @@ export function createPresetFromCurrentSettings(
     fontFamily: textSettings.fontFamily,
     fontSize: textSettings.fontSize,
     fontWeight: textSettings.fontWeight,
+    fontItalic: textSettings.fontItalic,
     scrollSpeed: textSettings.scrollSpeed,
     edgeBlurEnabled: effectsSettings.edgeBlurEnabled,
     edgeBlurIntensity: effectsSettings.edgeBlurIntensity,
@@ -192,6 +196,10 @@ export function getPresetDetailedInfo(preset: PresetType): string[] {
   // Font weight - simplified to bold/normal
   const weightName = preset.fontWeight === "700" ? "粗体" : "正常";
   details.push(`粗体: ${weightName}`);
+
+  // Font style - italic/normal
+  const styleName = preset.fontItalic ? "斜体" : "正常";
+  details.push(`倾斜: ${styleName}`);
 
   // Scroll speed
   const speedName =

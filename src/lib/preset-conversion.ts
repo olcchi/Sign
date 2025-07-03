@@ -49,6 +49,7 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
     fontFamily: mapFontFamily(preset.fontFamily || 'var(--font-serif)'),
     fontSize: preset.fontSize || '2xl',
     fontWeight: preset.fontWeight || '400',
+    fontItalic: preset.fontItalic ?? false,
     scrollSpeed: preset.scrollSpeed ?? 50,
     edgeBlurEnabled: preset.edgeBlurEnabled ?? false,
     edgeBlurIntensity: preset.edgeBlurIntensity ?? 10,
@@ -70,21 +71,25 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
 }
 
 // Validate preset data integrity
-export function validatePreset(preset: any): preset is PresetType {
+export function validatePreset(preset: unknown): preset is PresetType {
+  if (typeof preset !== 'object' || preset === null) {
+    return false;
+  }
+  
+  const p = preset as Record<string, unknown>;
+  
   return (
-    typeof preset === 'object' &&
-    preset !== null &&
-    typeof preset.id === 'string' &&
-    typeof preset.name === 'string' &&
-    typeof preset.text === 'string' &&
-    typeof preset.textColor === 'string' &&
-    typeof preset.fontFamily === 'string' &&
-    typeof preset.fontSize === 'string' &&
-    typeof preset.fontWeight === 'string' &&
-    typeof preset.scrollSpeed === 'number' &&
-    typeof preset.edgeBlurEnabled === 'boolean' &&
-    typeof preset.edgeBlurIntensity === 'number' &&
-    typeof preset.shinyTextEnabled === 'boolean'
+    typeof p.id === 'string' &&
+    typeof p.name === 'string' &&
+    typeof p.text === 'string' &&
+    typeof p.textColor === 'string' &&
+    typeof p.fontFamily === 'string' &&
+    typeof p.fontSize === 'string' &&
+    typeof p.fontWeight === 'string' &&
+    typeof p.scrollSpeed === 'number' &&
+    typeof p.edgeBlurEnabled === 'boolean' &&
+    typeof p.edgeBlurIntensity === 'number' &&
+    typeof p.shinyTextEnabled === 'boolean'
   );
 }
 

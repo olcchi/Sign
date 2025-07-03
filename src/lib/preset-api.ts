@@ -44,7 +44,7 @@ export class PresetApiService {
           fetch("/api/cron/cleanup-expired", { method: "POST" }).catch(() => {
             // Silent fail for cleanup
           });
-        } catch (error) {
+        } catch {
           // Silent fail for cleanup
         }
       }
