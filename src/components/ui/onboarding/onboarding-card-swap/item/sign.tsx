@@ -116,7 +116,7 @@ export default function Sign({
   };
 
   return (
-    <div className="relative flex justify-center items-center w-120 h-full">
+    <div className="relative p-5 flex justify-center items-center w-full h-full">
       <motion.div
         initial={{ rotate: 0 }}
         animate={{ rotate: 180 }}
@@ -133,7 +133,7 @@ export default function Sign({
       >
         <Variant className="w-70 h-70 text-[#211E55] opacity-80 z-0" />
       </motion.div>
-      <p className="whitespace-nowrap" style={textStyle}>
+      <p className=" p-5 whitespace-nowrap" style={textStyle}>
         {text}
       </p>
     </div>

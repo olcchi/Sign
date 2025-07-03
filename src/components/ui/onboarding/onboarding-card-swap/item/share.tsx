@@ -2,7 +2,7 @@ import TextPressure from "@/components/ui/onboarding/onboarding-card-swap/effect
 import { TextLoop } from "../effect/text-loop-effect";
 export default function Share() {
   return (
-    <div className="relative w-full h-full flex-center">
+    <div className="relative w-full h-full p-5 flex-center">
       <div className="h-fit w-full ">
         <TextPressure
           text="{PIN Code}"
