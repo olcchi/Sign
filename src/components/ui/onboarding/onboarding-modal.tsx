@@ -19,6 +19,8 @@ import { CardSwap, Card, GlowEffect } from ".";
 import Sign from "./onboarding-card-swap/item/sign";
 import Share from "./onboarding-card-swap/item/share";
 import Effect from "./onboarding-card-swap/item/effect";
+import { ProgressiveBlur } from "../filter/blur/progressive-blur";
+import { EdgeBlurEffect } from "../filter/blur/edge-blur-effect";
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -236,8 +238,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                       </div>
                       <div className="relative flex-1 bg-[url(/grid.svg)] bg-cover bg-center overflow-hidden min-h-32">
                         <div className="absolute inset-0 bg-gradient-to-t from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] opacity-50" />
-                        <Noise patternSize={150} patternAlpha={8} />
-                        <div className="relative p-5 w-full h-full">
+                        <div className="relative w-full h-full">
                           {feature.content}
                         </div>
                       </div>
