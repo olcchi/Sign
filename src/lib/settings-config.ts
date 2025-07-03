@@ -67,7 +67,7 @@ export const fontSizeOptions = [
   { name: "S", value: "5rem" },
   { name: "M", value: "8rem" },
   { name: "L", value: "10rem" },
-  { name: "XL", value: "16rem" },
+  { name: "XL", value: "15rem" },
   { name: "2XL", value: "min(30rem, 90vh)" },
 ];
 
@@ -105,7 +105,7 @@ export const noiseConfig = {
     defaultValue: 250,
   },
   patternAlpha: {
-    min: 20,
+    min: 10,
     max: 50,
     step: 2,
     defaultValue: 20,
