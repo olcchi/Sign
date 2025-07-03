@@ -1,6 +1,7 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
+import { AnimatePresence, motion } from "motion/react";
 import { PresetApiService } from "@/lib/preset-api";
 import { ApiResponse } from "@/types";
 import { PresetType } from "@/types";
@@ -47,7 +48,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-3/4 h-fit md:w-full max-w-lg max-h-[90vh] border bg-background p-6 shadow-lg rounded-lg overflow-hidden",
+        "fixed left-[50%] top-[50%] z-[1001] grid w-3/4 md:w-full max-w-lg max-h-[90vh] translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg rounded-lg",
         className
       )}
       {...props}
@@ -73,7 +74,6 @@ interface ShareDialogProps {
 export default function ShareDialog({
   children,
   className,
-  activePreset,
   currentTextSettings,
   currentEffectsSettings,
 }: ShareDialogProps) {
@@ -89,11 +89,61 @@ export default function ShareDialog({
   const [localPresets, setLocalPresets] = useState<PresetType[]>([]);
   const [selectedPresetId, setSelectedPresetId] = useState<string>("current"); // "current" for current settings
 
+  // States for preset naming
+  const [currentPresetName, setCurrentPresetName] = useState("");
+  const [showPresetNameInput, setShowPresetNameInput] = useState(false);
+  const presetNameInputRef = useRef<HTMLInputElement>(null);
+
   // Load local presets from localStorage
   useEffect(() => {
     const presets = loadPresetsFromLocalStorage();
     setLocalPresets(presets);
+    
+    // Set default selection based on whether local presets exist
+    if (isOpen) {
+      if (presets.length > 0) {
+        // If local presets exist, select the first one
+        setSelectedPresetId(presets[0].id);
+        setShowPresetNameInput(false);
+        setCurrentPresetName("");
+      } else {
+        // If no local presets, select current settings
+        setSelectedPresetId("current");
+        
+        // Generate default name for current settings
+        const now = new Date();
+        const year = now.getFullYear();
+        const month = String(now.getMonth() + 1).padStart(2, "0");
+        const day = String(now.getDate()).padStart(2, "0");
+        const dateString = `${year}${month}${day}`;
+        
+        setCurrentPresetName(dateString);
+        setShowPresetNameInput(true);
+        setTimeout(() => presetNameInputRef.current?.focus(), 100);
+      }
+    }
   }, [isOpen]); // Reload when dialog opens
+
+  // Handle preset selection change
+  const handlePresetSelectionChange = (value: string) => {
+    setSelectedPresetId(value);
+
+    if (value === "current") {
+      // Generate current date in YYYYMMDD format for default name
+      const now = new Date();
+      const year = now.getFullYear();
+      const month = String(now.getMonth() + 1).padStart(2, "0");
+      const day = String(now.getDate()).padStart(2, "0");
+      const dateString = `${year}${month}${day}`;
+
+      setCurrentPresetName(dateString);
+      setShowPresetNameInput(true);
+      setTimeout(() => presetNameInputRef.current?.focus(), 10);
+    } else {
+      setShowPresetNameInput(false);
+      setCurrentPresetName("");
+    }
+  };
 
   // Get the preset to share based on selection
   const getPresetToShare = (): {
@@ -104,10 +154,11 @@ export default function ShareDialog({
       if (!currentTextSettings || !currentEffectsSettings) {
         throw new Error("没有可分享的当前设置");
       }
+      const presetName = currentPresetName.trim() || "当前设置";
       const currentPreset = createPresetFromCurrentSettings(
         currentTextSettings,
         currentEffectsSettings,
-        "当前设置"
+        presetName
       );
       return { preset: currentPreset, isCurrentSettings: true };
     } else {
@@ -189,14 +240,18 @@ export default function ShareDialog({
     }
   };
 
-  // Reset dialog state when opening
+    // Reset dialog state when opening
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
     if (open) {
       setShareResult(null);
       setError(null);
       setCopied(false);
-      setSelectedPresetId("current"); // Reset to current settings
+      // Default selection logic is now handled in useEffect
+    } else {
+      // Reset states when closing
+      setCurrentPresetName("");
+      setShowPresetNameInput(false);
     }
   };
 
@@ -217,14 +272,13 @@ export default function ShareDialog({
           </DialogDescription>
         </DialogHeader>
 
-        <div className="space-y-4 min-h-0 flex-1 overflow-hidden mt-3">
+        <div className="space-y-4">
           {!shareResult ? (
             <>
               {/* Preset selection */}
-
               <Select
                 value={selectedPresetId}
-                onValueChange={setSelectedPresetId}
+                onValueChange={handlePresetSelectionChange}
               >
                 <SelectTrigger className="w-full">
                   <SelectValue placeholder="选择要分享的预设" />
@@ -239,13 +293,43 @@ export default function ShareDialog({
                 </SelectContent>
               </Select>
 
+              {/* Preset naming input for current settings */}
+              <AnimatePresence>
+                {showPresetNameInput && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: "auto" }}
+                    exit={{ opacity: 0, height: 0 }}
+                    className="w-full"
+                  >
+                    <div className="relative">
+                      <input
+                        ref={presetNameInputRef}
+                        type="text"
+                        value={currentPresetName}
+                        onChange={(e) => setCurrentPresetName(e.target.value)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter") {
+                            presetNameInputRef.current?.blur();
+                          }
+                        }}
+                        placeholder=""
+                        className="w-full px-3 pt-6 pb-2 text-sm bg-muted rounded-md focus:outline-none focus:ring-2 focus:ring-ring"
+                      />
+                      <p className="absolute left-3 top-2 text-xs text-muted-foreground pointer-events-none">
+                        预设名称
+                      </p>
+                    </div>
+                  </motion.div>
+                )}
+              </AnimatePresence>
+
               {/* Selected preset info */}
               {shareInfo && (
                 <Accordion
                   type="single"
                   collapsible
                   className="w-full border border-border rounded-md"
-                  defaultValue="preset-details"
                 >
                   <AccordionItem value="preset-details" className="rounded-lg">
                     <AccordionTrigger className="px-3 py-2 hover:no-underline">
@@ -253,7 +337,7 @@ export default function ShareDialog({
                         预设详情 : {shareInfo.preset.name}
                       </div>
                     </AccordionTrigger>
-                    <AccordionContent className="px-3 pb-3 max-h-32 overflow-y-auto custom-scrollbar">
+                    <AccordionContent className="px-3 pb-3 max-h-20 overflow-y-auto custom-scrollbar">
                       <div className="text-xs text-muted-foreground leading-relaxed space-y-1">
                         {shareInfo.description.map((detail, index) => (
                           <div key={index}>{detail}</div>

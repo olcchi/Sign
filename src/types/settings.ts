@@ -5,6 +5,7 @@ export interface TextSettings {
   fontFamily: string;
   fontSize: string;
   fontWeight: string;
+  fontItalic: boolean;
   scrollSpeed: number;
   textStrokeEnabled: boolean;
   textStrokeWidth: number;

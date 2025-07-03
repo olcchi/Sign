@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState, useEffect } from "react";
+import React, { useRef, useState } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/layout";
@@ -67,8 +67,8 @@ export default function ToolBar({ className }: ToolBarProps) {
   } = useBackgroundImage(
     backgroundSettings.backgroundImage,
     (imageUrl) => updateBackgroundSettings({ backgroundImage: imageUrl }),
-    previewContainerRef as any,
-    fileInputRef as any,
+    previewContainerRef as React.RefObject<HTMLDivElement>,
+    fileInputRef as React.RefObject<HTMLInputElement>,
     handleImageChange,
     backgroundSettings.backgroundPosition,
     (position) => updateBackgroundSettings({ backgroundPosition: position }),
@@ -96,13 +96,12 @@ export default function ToolBar({ className }: ToolBarProps) {
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
-    sm: "w-[75vw] top-12 right-0 h-auto max-h-[70vh]",
+    sm: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
     md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
     lg: "lg:w-80 lg:top-12 lg:right-0",
   };
   // Animation configuration for toolbar transitions
   const transition = {
-    type: "easeInOut",
     duration: 0.1,
     delay: 0,
   };
@@ -189,6 +188,7 @@ export default function ToolBar({ className }: ToolBarProps) {
                     fontFamily={textSettings.fontFamily}
                     fontSize={textSettings.fontSize}
                     fontWeight={textSettings.fontWeight}
+                    fontItalic={textSettings.fontItalic}
                     scrollSpeed={textSettings.scrollSpeed}
                     edgeBlurEnabled={effectsSettings.edgeBlurEnabled}
                     edgeBlurIntensity={effectsSettings.edgeBlurIntensity}

@@ -36,6 +36,7 @@ const defaultTextSettings: TextSettings = {
   fontFamily: fontOptions[1].value, // Use second font option (DM Serif Display)
   fontSize: fontSizeOptions[3].value, // Use "XL" size (10rem)
   fontWeight: "400",
+      fontItalic: false,
   scrollSpeed: parseInt(scrollSpeedOptions[2].value), // Use "1x" speed (10)
   textStrokeEnabled: false,
   textStrokeWidth: textStrokeConfig.defaultValue,

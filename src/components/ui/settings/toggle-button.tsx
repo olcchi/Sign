@@ -14,7 +14,6 @@ export function ToggleButton({
   isEnabled,
   onToggle,
   disabled = false,
-  variant,
   size = "sm",
 }: ToggleButtonProps) {
   return (

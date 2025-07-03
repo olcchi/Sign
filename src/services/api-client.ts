@@ -1,4 +1,4 @@
-import { ApiResponse, ApiError } from '@/types';
+import { ApiResponse } from '@/types';
 
 /**
  * Base API client for handling HTTP requests

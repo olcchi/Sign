@@ -66,7 +66,6 @@ export function ToolBarSettings({
 
   // Panel state
   isOpen,
-  activePreset,
 }: ToolBarSettingsProps) {
   // Create setting components using the extracted components
   const contentSetting = ContentSetting({ isOpen });

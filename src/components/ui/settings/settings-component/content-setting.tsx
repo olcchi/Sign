@@ -10,7 +10,7 @@ interface ContentSettingProps {
   isOpen?: boolean;
 }
 
-export function ContentSetting({ isOpen }: ContentSettingProps) {
+export function ContentSetting({}: ContentSettingProps) {
   const { textSettings, updateTextSettings } = useSettings();
 
   const [localText, setLocalText] = useState(textSettings.text);

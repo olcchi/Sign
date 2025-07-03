@@ -121,7 +121,7 @@ export default function ImportDialog({
       } else {
         setError(result.error || "加载设置失败");
       }
-    } catch (err) {
+    } catch {
       setError("网络错误，请检查连接后重试");
     } finally {
       setIsLoading(false);

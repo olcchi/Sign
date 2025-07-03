@@ -1,6 +1,4 @@
 "use client";
-
-import React, { useRef, useEffect, useState } from "react";
 import { motion } from "motion/react";
 import "./scrolling-text-scroller.css";
 import { cn } from "@/lib/utils";
@@ -30,10 +28,6 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   textRef,
   shinyTextEnabled = false,
   textColor,
-  textStrokeEnabled = false,
-  textStrokeWidth = 0.03,
-  textStrokeColor = "#000000",
-  textFillEnabled = true,
 }) => {
   // Add gap spacing to prevent visually abrupt transitions
   const combinedTextStyle = {
