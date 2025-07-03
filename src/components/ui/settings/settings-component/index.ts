@@ -3,6 +3,7 @@ export { TextRenderingSetting } from "./text-rendering-setting";
 export { FontFamilySetting } from "./font-family-setting";
 export { FontSizeSetting } from "./font-size-setting";
 export { FontWeightSetting } from "./font-weight-setting";
+export { FontItalicSetting } from "./font-italic-setting";
 export { TextFillSetting } from "./text-fill-setting";
 export { TextStrokeSetting } from "./text-stroke-setting";
 export { ScrollSpeedSetting } from "./scroll-speed-setting";
