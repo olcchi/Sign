@@ -2,6 +2,7 @@
 import { FontFamilySetting } from "./font-family-setting";
 import { FontSizeSetting } from "./font-size-setting";
 import { FontWeightSetting } from "./font-weight-setting";
+import { FontItalicSetting } from "./font-italic-setting";
 import { TextFillSetting } from "./text-fill-setting";
 import { TextStrokeSetting } from "./text-stroke-setting";
 
@@ -33,8 +34,9 @@ export function TextRenderingSetting({
     component: (
       <div className="space-y-2">
         <FontFamilySetting fontOptions={fontOptions} />
-        <div className="grid grid-cols-2 gap-2">
+        <div className="grid grid-cols-3 gap-2">
           <FontWeightSetting />
+          <FontItalicSetting />
           <FontSizeSetting fontSizeOptions={fontSizeOptions} />
         </div>
         <TextFillSetting colorOptions={colorOptions} />
