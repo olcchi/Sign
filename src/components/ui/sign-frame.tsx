@@ -10,6 +10,7 @@ import Noise from "@/components/ui/filter/noise";
 import { StarField } from "@/components/ui/filter/star-field";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { WelcomeModal } from "@/components/ui/onboarding/onboarding-modal";
+// import { ViewportMonitor } from "@/components/ui/widgets";
 
 interface SignFrameProps {
   className?: string;
@@ -57,7 +58,14 @@ export default function SignFrame({ className }: SignFrameProps) {
         backgroundSettings.overlayEnabled && (
           <div className="absolute inset-0 bg-black/20 backdrop-blur-md z-1" />
         )}
-      <StarField />
+      <StarField
+        enabled={effectsSettings.starFieldEnabled}
+        density={effectsSettings.starFieldDensity}
+        color={effectsSettings.starFieldColor}
+        size={effectsSettings.starFieldSize}
+        twinkleSpeed={effectsSettings.starFieldTwinkleSpeed}
+        className="fixed inset-0 z-0"
+      />
       {effectsSettings.noiseEnabled && (
         <div className="fixed inset-0 z-50">
           <Noise
@@ -89,7 +97,11 @@ export default function SignFrame({ className }: SignFrameProps) {
         intensity={effectsSettings.edgeBlurIntensity}
       />
       <WelcomeModal />
-
+      {/* Viewport Monitor */}
+      {/* <ViewportMonitor 
+        position="bottom-left" 
+        showHeight={true}
+      /> */}
       {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
         <FullScreen asButton={true} />
