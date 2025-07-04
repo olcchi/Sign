@@ -9,7 +9,7 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { SignHeroTitle } from "@/components/ui/icon";
 import { Button } from "@/components/ui/layout";
-import { X, ArrowRight, Sparkles } from "lucide-react";
+import { X, ArrowRight, Sparkles, Share2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
@@ -19,6 +19,8 @@ import {
   GlowEffect,
   Effect,
   VersionFooter,
+  Sign,
+  Share,
 } from "@/components/ui/onboarding";
 import { Olcchi } from "@/components/ui/icon";
 
@@ -129,24 +131,24 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
 
   const iconStyle = "w-5 h-5 stroke-1";
   const features = [
-    // {
-    //   icon: <Sparkles className={iconStyle} />,
-    //   title: "文字变体",
-    //   content: (
-    //     <>
-    //       <Sign />
-    //     </>
-    //   ),
-    // },
-    // {
-    //   icon: <Share2 className={iconStyle} />,
-    //   title: "快捷分享",
-    //   content: (
-    //     <>
-    //       <Share />
-    //     </>
-    //   ),
-    // },
+    {
+      icon: <Sparkles className={iconStyle} />,
+      title: "文字变体",
+      content: (
+        <>
+          <Sign />
+        </>
+      ),
+    },
+    {
+      icon: <Share2 className={iconStyle} />,
+      title: "快捷分享",
+      content: (
+        <>
+          <Share />
+        </>
+      ),
+    },
     {
       icon: <Sparkles className={iconStyle} />,
       title: "多变特效",
