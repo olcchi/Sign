@@ -66,7 +66,8 @@ export function StarField({
       const rect = containerRef.current.getBoundingClientRect();
       return { width: rect.width, height: rect.height };
     }
-    return { width: window.innerWidth, height: window.innerHeight };
+    // Fallback to a default size if container is not available
+    return { width: 800, height: 600 };
   }, []);
 
   // Create a new star with random properties
@@ -287,10 +288,14 @@ export function StarField({
     const displayWidth = rect.width;
     const displayHeight = rect.height;
 
-    canvas.width = displayWidth * dpr;
-    canvas.height = displayHeight * dpr;
-    canvas.style.width = displayWidth + "px";
-    canvas.style.height = displayHeight + "px";
+    // Ensure canvas has minimum dimensions
+    const minWidth = Math.max(displayWidth, 1);
+    const minHeight = Math.max(displayHeight, 1);
+
+    canvas.width = minWidth * dpr;
+    canvas.height = minHeight * dpr;
+    canvas.style.width = "100%";
+    canvas.style.height = "100%";
 
     const ctx = canvas.getContext("2d");
     if (ctx) {
@@ -309,7 +314,8 @@ export function StarField({
     }
 
     const canvas = canvasRef.current;
-    if (!canvas) return;
+    const container = containerRef.current;
+    if (!canvas || !container) return;
 
     lastFrameTime.current = Date.now();
     needsRedraw.current = true;
@@ -320,8 +326,20 @@ export function StarField({
     const handleResize = () => resizeCanvas();
     window.addEventListener("resize", handleResize);
 
+    // Use ResizeObserver for better container size tracking
+    let resizeObserver: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined") {
+      resizeObserver = new ResizeObserver(() => {
+        resizeCanvas();
+      });
+      resizeObserver.observe(container);
+    }
+
     return () => {
       window.removeEventListener("resize", handleResize);
+      if (resizeObserver) {
+        resizeObserver.disconnect();
+      }
       if (animationFrameRef.current) {
         cancelAnimationFrame(animationFrameRef.current);
       }
@@ -344,7 +362,8 @@ export function StarField({
     <div ref={containerRef} className={cn("w-full h-full pointer-events-none", className)}>
       <canvas
         ref={canvasRef}
-        className="w-full h-full"
+        className="w-full h-full block"
+        style={{ display: "block" }}
       />
     </div>
   );
