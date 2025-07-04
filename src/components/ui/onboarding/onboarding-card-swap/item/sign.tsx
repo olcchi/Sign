@@ -6,7 +6,7 @@ import {
   fontOptions,
   fontSizeOptions,
 } from "@/lib/settings-config";
-import { Variant } from "../icon/variant";
+import { Variant } from "@/components/ui/onboarding";
 import { motion } from "motion/react";
 
 interface SignProps {
