@@ -19,7 +19,7 @@ import {
   AccordionContent,
 } from "@/components/ui/layout";
 import { cn } from "@/lib/utils";
-import { ShareSetting } from "@/components/ui/settings/settings-component/share-setting";
+import { ShareSetting } from "@/components/ui/settings";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { getPresetDetailedInfo } from "@/lib/preset-utils";
 import { loadPresetsFromLocalStorage, savePresetsToLocalStorage } from "@/lib/preset-conversion";
