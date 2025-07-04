@@ -2,8 +2,7 @@
 
 import { PresetType } from "@/types";
 import { usePresetManager } from "@/lib/hooks/usePresetManager";
-import ShareDialog from "@/components/ui/settings/share/share-dialog";
-import ImportDialog from "@/components/ui/settings/share/import-dialog";
+import { ShareDialog, ImportDialog } from "@/components/ui/settings";
 import { Button } from "@/components/ui/layout";
 import { CloudUpload, CloudDownload } from "lucide-react";
 
