@@ -1,6 +1,6 @@
 "use client";
 import { Slider } from "@/components/ui/inputs";
-import { ToggleButton } from "@/components/ui/settings/toggle-button";
+import { ToggleButton } from "@/components/ui/settings";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { edgeBlurConfig, noiseConfig, starFieldConfig, colorOptions } from "@/lib/settings-config";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/inputs";
