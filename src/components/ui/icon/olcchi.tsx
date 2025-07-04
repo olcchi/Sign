@@ -15,13 +15,13 @@ interface OlcchiProps {
 
 export function Olcchi({
   id = 'olcchi',
-  personalUrl = 'https://olcchi.site',
+  personalUrl = 'https://olcchi.me',
   githubUrl = 'https://github.com/olcchi',
   showGithub = true,
   className,
 }: OlcchiProps) {
   return (
-    <div className={cn('fixed bottom-4 left-4 z-10 flex items-center gap-3 ', className)}>
+    <div className={cn(' z-10 flex items-center gap-3 ', className)}>
       <Link 
         href={personalUrl}
         target="_blank"
