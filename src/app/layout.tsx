@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ThemeProvider } from "@/components/ui/layout/theme-provider";
+import { ThemeProvider } from "@/components/ui/layout";
 import {
   Noto_Sans,
   Noto_Sans_Mono,
