@@ -1,8 +1,7 @@
 import React from "react";
 import { X, MessageSquare } from "lucide-react";
-import { Button } from "@/components/ui/layout";
-import { Separator } from "@/components/ui/layout";
-import FeedbackDialog from "@/components/ui/feedback/feedback-dialog";
+import { Button, Separator } from "@/components/ui/layout";
+import FeedbackDialog from "@/components/ui/feedback";
 
 interface PanelHeaderProps {
   title: string;
