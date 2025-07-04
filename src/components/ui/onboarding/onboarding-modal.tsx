@@ -7,20 +7,21 @@ import {
   DialogOverlay,
 } from "@/components/ui/layout";
 import * as DialogPrimitive from "@radix-ui/react-dialog";
-import SignHeroTitle from "@/components/ui/icon/sign-hero-title";
+import { SignHeroTitle } from "@/components/ui/icon";
 import { Button } from "@/components/ui/layout";
-import { X, ArrowRight, Sparkles, Share2 } from "lucide-react";
+import { X, ArrowRight, Sparkles } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Olcchi } from "../icon/olcchi";
 import { motion } from "motion/react";
-import Noise from "../filter/noise";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
-import { CardSwap, Card, GlowEffect } from ".";
-import Sign from "./onboarding-card-swap/item/sign";
-import Share from "./onboarding-card-swap/item/share";
-import Effect from "./onboarding-card-swap/item/effect";
-import { ProgressiveBlur } from "../filter/blur/progressive-blur";
-import { EdgeBlurEffect } from "../filter/blur/edge-blur-effect";
+import {
+  CardSwap,
+  Card,
+  GlowEffect,
+  Effect,
+  VersionFooter,
+} from "@/components/ui/onboarding";
+import { Olcchi } from "@/components/ui/icon";
+
 // Simple VisuallyHidden component for accessibility
 const VisuallyHidden = React.forwardRef<
   HTMLSpanElement,
@@ -94,6 +95,7 @@ const DialogContent = React.forwardRef<
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
       <Olcchi showGithub={false} className="absolute bottom-4 left-4 z-20" />
+      <VersionFooter />
     </DialogPrimitive.Content>
   </DialogPortal>
 ));
@@ -127,24 +129,24 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
 
   const iconStyle = "w-5 h-5 stroke-1";
   const features = [
-    {
-      icon: <Sparkles className={iconStyle} />,
-      title: "文字变体",
-      content: (
-        <>
-          <Sign />
-        </>
-      ),
-    },
-    {
-      icon: <Share2 className={iconStyle} />,
-      title: "快捷分享",
-      content: (
-        <>
-          <Share />
-        </>
-      ),
-    },
+    // {
+    //   icon: <Sparkles className={iconStyle} />,
+    //   title: "文字变体",
+    //   content: (
+    //     <>
+    //       <Sign />
+    //     </>
+    //   ),
+    // },
+    // {
+    //   icon: <Share2 className={iconStyle} />,
+    //   title: "快捷分享",
+    //   content: (
+    //     <>
+    //       <Share />
+    //     </>
+    //   ),
+    // },
     {
       icon: <Sparkles className={iconStyle} />,
       title: "多变特效",
@@ -228,11 +230,8 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                   pauseOnHover={false}
                 >
                   {features.map((feature, index) => (
-                    <Card
-                      key={index}
-                      className="overflow-hidden flex flex-col select-none"
-                    >
-                      <div className="flex items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
+                    <Card key={index} className="flex flex-col select-none">
+                      <div className="flex rounded-t-xl  items-center w-full h-10 border-b border-border gap-2 from-[#ccc4f0] dark:from-[#211E55] to-[#FFFFFB] dark:to-[#060606] bg-gradient-to-t p-2">
                         {feature.icon}
                         <p className="text-sm">{feature.title}</p>
                       </div>
