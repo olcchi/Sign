@@ -1,5 +1,5 @@
 "use client";
-import { OptionButtonGroup } from "@/components/ui/settings/option-button-group";
+import { OptionButtonGroup } from "@/components/ui/settings";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { scrollSpeedOptions } from "@/lib/settings-config";
 
