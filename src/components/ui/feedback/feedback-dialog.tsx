@@ -347,7 +347,7 @@ export default function FeedbackDialog({
               <div className="space-y-2">
                 <Input
                   type="email"
-                  placeholder="留下您的邮箱，用于反馈交流"
+                  placeholder="留下您的邮箱，用于反馈回复"
                   value={userEmail}
                   onChange={handleEmailChange}
                   disabled={isLoading}
