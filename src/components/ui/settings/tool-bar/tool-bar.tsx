@@ -3,14 +3,9 @@
 import React, { useRef, useState } from "react";
 import { AnimatePresence, motion, MotionConfig } from "motion/react";
 import { cn } from "@/lib/utils";
-import { Button } from "@/components/ui/layout";
-import { SettingItem } from "@/components/ui/settings/setting-item";
-import { PresetManager } from "@/components/ui/settings/preset";
+import { Button, Card } from "@/components/ui/layout";
+import { SettingItem, PresetManager, ToolBarSettings, PanelHeader, PanelContent } from "@/components/ui/settings";
 import { PresetType } from "@/types";
-import { ToolBarSettings } from "@/components/ui/settings/tool-bar-settings";
-import { PanelHeader } from "@/components/ui/settings/panel/panel-header";
-import { PanelContent } from "@/components/ui/settings/panel/panel-content";
-import { Card } from "@/components/ui/layout";
 import { Ellipsis } from "lucide-react";
 import {
   colorOptions,
