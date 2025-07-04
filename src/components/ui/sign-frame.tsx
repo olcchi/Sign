@@ -1,15 +1,13 @@
 "use client";
 import { useRef } from "react";
-import ToolBar from "@/components/ui/settings/tool-bar/tool-bar";
-import ScrollingText from "@/components/ui/widgets/scrolling-text/scrolling-text";
-import { EdgeBlurEffect } from "@/components/ui/filter/blur/edge-blur-effect";
-import FullScreen from "@/components/ui/layout/full-screen";
+import { ToolBar } from "@/components/ui/settings";
+import { ScrollingText } from "@/components/ui/widgets";
+import { EdgeBlurEffect, Noise, StarField } from "@/components/ui/filter";
+import { FullScreen } from "@/components/ui/layout";
 import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
-import Noise from "@/components/ui/filter/noise";
-import { StarField } from "@/components/ui/filter/star-field";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { WelcomeModal } from "@/components/ui/onboarding/onboarding-modal";
+import { OnboardingModal } from "@/components/ui/onboarding";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
 interface SignFrameProps {
@@ -96,7 +94,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         enabled={effectsSettings.edgeBlurEnabled}
         intensity={effectsSettings.edgeBlurIntensity}
       />
-      <WelcomeModal />
+      <OnboardingModal />
       {/* Viewport Monitor */}
       {/* <ViewportMonitor 
         position="bottom-left" 
