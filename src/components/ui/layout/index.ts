@@ -1,4 +1,3 @@
-import FullScreen from "./full-screen";
 import Dialog, { DialogPortal, DialogOverlay, DialogTrigger, DialogClose, DialogContent, DialogHeader, DialogFooter, DialogTitle, DialogDescription } from "./dialog";
 import Switch from "./switch";
 import Label from "./label";
@@ -10,7 +9,6 @@ import Button, { buttonVariants } from "./button";
 import Accordion, { AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
 
 export {
-  FullScreen,
   Dialog,
   DialogPortal,
   DialogOverlay,
