@@ -8,6 +8,7 @@ import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { OnboardingModal } from "@/components/ui/onboarding";
+import { PWAInstallPrompt } from "@/components/ui/pwa-install-prompt";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
 interface SignFrameProps {
@@ -100,6 +101,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         position="bottom-left" 
         showHeight={true}
       /> */}
+      <PWAInstallPrompt />
       {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
         <FullScreen asButton={true} />

@@ -10,8 +10,36 @@ export const useFullScreenStore = create<FullScreenState>((set) => ({
   setIsFull: (value) => set({ isFull: value }),
 }));
 
+// Cross-browser fullscreen element detection
+const getFullscreenElement = () => {
+  return document.fullscreenElement || 
+         (document as any).webkitFullscreenElement ||
+         (document as any).mozFullScreenElement ||
+         (document as any).msFullscreenElement;
+};
+
+// Update fullscreen state when browser fullscreen changes
+const updateFullscreenState = () => {
+  const isCurrentlyFullscreen = !!getFullscreenElement();
+  useFullScreenStore.getState().setIsFull(isCurrentlyFullscreen);
+};
+
 if (typeof window !== 'undefined') {
-  document.addEventListener('fullscreenchange', () => {
-    useFullScreenStore.getState().setIsFull(!!document.fullscreenElement);
+  // Listen to all possible fullscreen change events
+  const events = [
+    'fullscreenchange',
+    'webkitfullscreenchange', 
+    'mozfullscreenchange',
+    'msfullscreenchange'
+  ];
+  
+  events.forEach(event => {
+    document.addEventListener(event, updateFullscreenState);
+  });
+  
+  // Also listen for orientation changes on mobile devices
+  window.addEventListener('orientationchange', () => {
+    // Delay check to allow orientation change to complete
+    setTimeout(updateFullscreenState, 100);
   });
 }
