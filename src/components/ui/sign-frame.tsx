@@ -3,7 +3,7 @@ import { useRef } from "react";
 import { ToolBar } from "@/components/ui/settings";
 import { ScrollingText } from "@/components/ui/widgets";
 import { EdgeBlurEffect, Noise, StarField } from "@/components/ui/filter";
-import { FullScreen } from "@/components/ui/layout";
+import { FullScreen } from "@/components/ui/icon";
 import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
