@@ -9,7 +9,7 @@ interface FullScreenProps {
   asButton?: boolean;
 }
 
-export default function FullScreen({ className, asButton = false }: FullScreenProps) {
+export function FullScreen({ className, asButton = false }: FullScreenProps) {
   const { isFull, setIsFull } = useFullScreenStore();
   const isActive = useUserActivityTracking(3000);
 
