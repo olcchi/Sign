@@ -213,7 +213,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
               </div>
             </div>
             {/* Right CardSwap Area */}
-            <div className="overflow-hidden relative w-full h-full">
+            <div className=" relative w-full h-full">
               <CardSwap
                 cardDistance={30}
                 verticalDistance={40}
