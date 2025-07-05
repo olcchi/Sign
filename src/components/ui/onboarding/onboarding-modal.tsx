@@ -9,7 +9,7 @@ import {
 import * as DialogPrimitive from "@radix-ui/react-dialog";
 import { SignHeroTitle } from "@/components/ui/icon";
 import { Button } from "@/components/ui/layout";
-import { X, ArrowRight, Sparkles, Share2 } from "lucide-react";
+import { X, ArrowRight, Sparkles, Share2, Blend } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { motion } from "motion/react";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
@@ -140,8 +140,8 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
       ),
     },
     {
-      icon: <Sparkles className={iconStyle} />,
-      title: "多变特效",
+      icon: <Blend className={iconStyle} />,
+      title: "多变效果",
       content: (
         <>
           <Effect />
