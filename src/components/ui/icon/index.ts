@@ -1,4 +1,5 @@
 // Main icon components
-export { default as Sign } from "./sign";
+export { Sign } from "./sign";
 export { Olcchi } from "./olcchi";
-export { default as SignHeroTitle } from "./sign-hero-title"; 
+export {SignHeroTitle } from "./sign-hero-title"; 
+export { FullScreen } from "./full-screen";
