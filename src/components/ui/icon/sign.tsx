@@ -3,7 +3,7 @@ interface SignProps {
   colorFull?: boolean;
 }
 
-export default function Sign({ colorFull = false, className }: SignProps) {
+export function Sign({ colorFull = false, className }: SignProps) {
   return colorFull ? (
     <svg
       width="320"
