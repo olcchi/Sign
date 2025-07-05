@@ -1,5 +1,5 @@
 import React from "react";
-import Sign from "./sign";
+import { Sign } from "@/components/ui/icon";
 import { cn } from "@/lib/utils";
 
 type SignHeroTitleSize = "sm" | "md" | "lg" | "xl";
@@ -32,7 +32,7 @@ const sizeVariants = {
   },
 } as const;
 
-export default function SignHeroTitle({ 
+export function SignHeroTitle({ 
   className, 
   size = "md" 
 }: SignHeroTitleProps) {
