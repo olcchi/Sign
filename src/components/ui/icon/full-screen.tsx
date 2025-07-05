@@ -10,29 +10,16 @@ interface FullScreenProps {
   asButton?: boolean;
 }
 
-// iOS detection - all browsers on iOS use WebKit and have the same limitations
+// iOS Safari fullscreen detection and control
 const isIOS = () => {
   return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 };
 
-// Check if we're on macOS Safari (which has better fullscreen support than iOS WebKit)
-const isMacOSSafari = () => {
-  return /^((?!chrome|android).)*safari/i.test(navigator.userAgent) && 
-         navigator.platform.indexOf('Mac') > -1 && 
-         !isIOS(); // Exclude iOS devices
-};
-
-// Check if fullscreen API is actually supported and functional
+// Check if fullscreen API is actually supported (not just partially)
 const isFullscreenSupported = () => {
   if (typeof document === 'undefined') return false;
   
-  // iOS WebKit has very limited fullscreen support regardless of browser
-  if (isIOS()) {
-    return false; // Even if API exists, it's not reliably functional on iOS
-  }
-  
-  // For other platforms, check if the API is available
   return !!(
     document.fullscreenEnabled ||
     (document as any).webkitFullscreenEnabled ||
@@ -80,10 +67,10 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
   const [shouldShowButton, setShouldShowButton] = useState(false);
 
   useEffect(() => {
-    // Show fullscreen button only on platforms where it actually works well
-    // iOS WebKit (all browsers on iOS) has poor fullscreen support
-    // macOS Safari and other desktop browsers generally work fine
-    const shouldShow = isFullscreenSupported();
+    // Only show fullscreen button if:
+    // 1. Not on iOS (since iOS has very limited support)
+    // 2. OR fullscreen API is properly supported
+    const shouldShow = !isIOS() && isFullscreenSupported();
     setShouldShowButton(shouldShow);
   }, []);
 
@@ -98,14 +85,11 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
       }
     } catch (err) {
       console.error("Fullscreen operation failed:", err);
-      
-      // Provide platform-specific guidance
+      // Provide user guidance for unsupported browsers
       if (isIOS()) {
-        alert("iOS 上的所有浏览器都使用 WebKit 内核，对全屏支持有限。\n建议：\n1. 旋转设备到横屏模式获得更好的视觉体验\n2. 使用浏览器的阅读模式或全屏功能");
-      } else if (isMacOSSafari()) {
-        alert("Safari 全屏功能遇到问题。请尝试：\n1. 更新到最新版本的 Safari\n2. 检查系统偏好设置中的全屏权限");
+        alert("iOS Safari 不完全支持程序化全屏。请使用浏览器的全屏功能：\n1. 点击地址栏旁的 'aA' 按钮\n2. 选择 '隐藏工具栏'\n3. 或者旋转设备到横屏模式");
       } else {
-        alert("您的浏览器不支持全屏功能，或者全屏功能被禁用");
+        alert("您的浏览器不支持全屏功能");
       }
     }
   };
