@@ -75,6 +75,7 @@ export const viewport: Viewport = {
     { media: "(prefers-color-scheme: light)", color: "white" },
     { media: "(prefers-color-scheme: dark)", color: "black" },
   ],
+  viewportFit: 'cover',
 };
 
 // Root layout component that wraps all pages with common configuration
