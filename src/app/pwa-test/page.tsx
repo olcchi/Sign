@@ -10,6 +10,7 @@ export default function PWATestPage() {
   useEffect(() => {
     setMounted(true)
   }, [])
+
   return (
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900 py-8">
       <div className="container mx-auto px-4">
@@ -24,25 +25,26 @@ export default function PWATestPage() {
               <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                 PWA 安装状态
               </h2>
-              <div className="space-y-3">
-                                 <div className="flex items-center justify-between">
-                   <span className="text-gray-700 dark:text-gray-300">Service Worker:</span>
-                   <span className="text-green-600 font-medium">
-                     {mounted && 'serviceWorker' in navigator ? '✅ 支持' : '❌ 不支持'}
-                   </span>
-                 </div>
-                 <div className="flex items-center justify-between">
-                   <span className="text-gray-700 dark:text-gray-300">Push Manager:</span>
-                   <span className="text-green-600 font-medium">
-                     {mounted && 'PushManager' in window ? '✅ 支持' : '❌ 不支持'}
-                   </span>
-                 </div>
-                 <div className="flex items-center justify-between">
-                   <span className="text-gray-700 dark:text-gray-300">Standalone Mode:</span>
-                   <span className="text-green-600 font-medium">
-                     {mounted && window.matchMedia('(display-mode: standalone)').matches ? '✅ 已安装' : '❌ 未安装'}
-                   </span>
-                 </div>
+              
+              <div className="space-y-2">
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700 dark:text-gray-300">Service Worker:</span>
+                  <span className="text-green-600 font-medium">
+                    {mounted && 'serviceWorker' in navigator ? '✅ 支持' : '❌ 不支持'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700 dark:text-gray-300">Push Manager:</span>
+                  <span className="text-green-600 font-medium">
+                    {mounted && 'PushManager' in window ? '✅ 支持' : '❌ 不支持'}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-gray-700 dark:text-gray-300">Standalone Mode:</span>
+                  <span className="text-green-600 font-medium">
+                    {mounted && window.matchMedia('(display-mode: standalone)').matches ? '✅ 已安装' : '❌ 未安装'}
+                  </span>
+                </div>
               </div>
             </div>
 
@@ -79,29 +81,29 @@ export default function PWATestPage() {
               <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-white">
                 安装指南
               </h2>
-              <div className="space-y-4 text-sm text-gray-600 dark:text-gray-400">
-                                 <div>
-                   <strong className="text-gray-900 dark:text-white">Chrome/Edge:</strong>
-                   <p>点击地址栏右侧的安装图标，或使用菜单中的&quot;安装应用&quot;选项</p>
-                 </div>
-                 <div>
-                   <strong className="text-gray-900 dark:text-white">Firefox:</strong>
-                   <p>点击地址栏中的安装图标</p>
-                 </div>
-                 <div>
-                   <strong className="text-gray-900 dark:text-white">iOS Safari:</strong>
-                   <p>点击分享按钮 ⬆️，然后选择&quot;添加到主屏幕&quot; ➕</p>
-                 </div>
-                 <div>
-                   <strong className="text-gray-900 dark:text-white">Android Chrome:</strong>
-                   <p>会自动显示&quot;添加到主屏幕&quot;横幅，或通过菜单安装</p>
-                 </div>
+              <div className="space-y-3 text-sm text-gray-600 dark:text-gray-400">
+                <div>
+                  <strong className="text-gray-900 dark:text-white">Chrome/Edge:</strong>
+                  <p>点击地址栏右侧的安装图标，或使用菜单中的"安装应用"选项</p>
+                </div>
+                <div>
+                  <strong className="text-gray-900 dark:text-white">Firefox:</strong>
+                  <p>点击地址栏右侧的安装图标</p>
+                </div>
+                <div>
+                  <strong className="text-gray-900 dark:text-white">Safari (iOS):</strong>
+                  <p>点击分享按钮，选择"添加到主屏幕"</p>
+                </div>
+                <div>
+                  <strong className="text-gray-900 dark:text-white">Safari (macOS):</strong>
+                  <p>在菜单栏选择"文件" &gt; "添加到程序坞"</p>
+                </div>
               </div>
             </div>
           </div>
 
           {/* 返回主页 */}
-          <div className="text-center mt-8">
+          <div className="mt-8 text-center">
             <Link
               href="/"
               className="inline-flex items-center px-6 py-3 bg-blue-500 hover:bg-blue-600 text-white font-medium rounded-lg transition-colors"
