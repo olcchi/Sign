@@ -12,20 +12,20 @@ export default function manifest(): MetadataRoute.Manifest {
     orientation: 'any',
     icons: [
       {
-        src: '/Sign-Logo.png',
-        sizes: 'any',
+        src: '/Sign-Logo-192.png',
+        sizes: '192x192',
         type: 'image/png',
         purpose: 'any',
       },
       {
-        src: '/Sign-Logo.png',
-        sizes: 'any',
+        src: '/Sign-Logo-512.png',
+        sizes: '512x512',
         type: 'image/png',
-        purpose: 'maskable',
+        purpose: 'any',
       },
     ],
     categories: ['entertainment', 'utilities'],
-    lang: 'en',
+    lang: 'zh-CN',
     scope: '/',
     prefer_related_applications: false,
   }
