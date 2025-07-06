@@ -4,10 +4,12 @@ import { useState, useEffect } from 'react'
 import { subscribeUser, unsubscribeUser } from '@/app/actions'
 
 export function PushNotificationManager() {
+  const [mounted, setMounted] = useState(false)
   const [isSupported, setIsSupported] = useState(false)
   const [subscription, setSubscription] = useState<PushSubscription | null>(null)
 
   useEffect(() => {
+    setMounted(true)
     if ('serviceWorker' in navigator && 'PushManager' in window) {
       setIsSupported(true)
       registerSW()
@@ -37,6 +39,11 @@ export function PushNotificationManager() {
     await subscription?.unsubscribe()
     setSubscription(null)
     await unsubscribeUser()
+  }
+
+  // Prevent hydration mismatch by not rendering until mounted
+  if (!mounted) {
+    return null
   }
 
   if (!isSupported) {
