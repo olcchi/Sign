@@ -15,7 +15,6 @@ interface BeforeInstallPromptEvent extends Event {
   prompt(): Promise<void>;
 }
 
-// Cookie 工具函数
 const setCookie = (name: string, value: string, hours: number) => {
   const date = new Date();
   date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
@@ -51,12 +50,10 @@ export function InstallPrompt() {
 
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
 
-    // 检查 cookie 中的关闭状态
     const dismissed = getCookie("pwa-install-dismissed");
     if (dismissed === "true") {
       setIsDismissed(true);
     } else {
-      // Only set visible for iOS devices if not dismissed
       if (isIOSDevice) {
         setIsVisible(true);
       }
@@ -69,7 +66,6 @@ export function InstallPrompt() {
     const ready = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setPromptInstall(e);
-      // Only show if not dismissed
       if (!isDismissed) {
         setIsVisible(true);
       }
@@ -95,7 +91,6 @@ export function InstallPrompt() {
   const handleClose = () => {
     setIsVisible(false);
     setIsDismissed(true);
-    // 设置 cookie，2 小时后过期
     setCookie("pwa-install-dismissed", "true", 2);
   };
 
