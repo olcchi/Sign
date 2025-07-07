@@ -16,6 +16,16 @@ const isIOS = () => {
          (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 };
 
+// Check if running in PWA standalone mode
+const isPWAStandalone = () => {
+  if (typeof window === 'undefined') return false;
+  
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.matchMedia('(display-mode: fullscreen)').matches ||
+         // iOS Safari PWA detection
+         (window.navigator as any).standalone === true;
+};
+
 // Check if fullscreen API is actually supported (not just partially)
 const isFullscreenSupported = () => {
   if (typeof document === 'undefined') return false;
@@ -68,9 +78,10 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
 
   useEffect(() => {
     // Only show fullscreen button if:
-    // 1. Not on iOS (since iOS has very limited support)
-    // 2. OR fullscreen API is properly supported
-    const shouldShow = !isIOS() && isFullscreenSupported();
+    // 1. Not running in PWA standalone mode (already fullscreen)
+    // 2. Not on iOS (since iOS has very limited support)
+    // 3. AND fullscreen API is properly supported
+    const shouldShow = !isPWAStandalone() && !isIOS() && isFullscreenSupported();
     setShouldShowButton(shouldShow);
   }, []);
 
@@ -94,7 +105,10 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
     }
   };
 
-  // Don't render the button if fullscreen is not properly supported
+  // Don't render the button if:
+  // - Already in PWA standalone mode (already fullscreen)
+  // - Fullscreen API is not properly supported
+  // - Running on iOS (limited fullscreen support)
   if (!shouldShowButton) {
     return null;
   }
