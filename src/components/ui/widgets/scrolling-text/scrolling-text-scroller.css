@@ -1,6 +1,9 @@
 .scrolling-text-container {
   position: relative;
   user-select: none;
+  /* Enable hardware acceleration for smooth scrolling */
+  transform: translateZ(0);
+  will-change: transform;
 }
 
 .scrolling-text-input {
@@ -17,6 +20,9 @@
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;
+  /* Optimize for animations */
+  backface-visibility: hidden;
+  transform: translateZ(0);
 }
 
 /* Subtle focus state animation to indicate active input */

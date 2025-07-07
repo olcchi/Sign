@@ -33,6 +33,10 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
   const combinedTextStyle = {
     ...textStyle,
     gap: `${TEXT_GAP}px`,
+    // Force hardware acceleration for better performance
+    transform: "translateZ(0)",
+    willChange: "transform",
+    backfaceVisibility: "hidden" as const,
   };
 
   // Apply shiny text effect when enabled
@@ -52,12 +56,15 @@ export const ScrollingTextScroller: React.FC<ScrollingTextScrollerProps> = ({
       className="flex whitespace-nowrap"
       key={animationDuration}
       style={combinedTextStyle}
-      // Infinite loop animation with precise positioning
+      // Infinite loop animation with precise positioning using translate3d
       animate={{
-        x: [`0%`, `-${textWidth + TEXT_GAP}px`],
+        transform: [
+          `translate3d(0px, 0px, 0px)`,
+          `translate3d(-${textWidth + TEXT_GAP}px, 0px, 0px)`
+        ],
       }}
       transition={{
-        x: {
+        transform: {
           repeat: Infinity,
           repeatType: "loop",
           duration: animationDuration,
