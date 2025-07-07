@@ -33,6 +33,16 @@ const getCookie = (name: string): string | null => {
   return null;
 };
 
+// Enhanced PWA standalone detection
+const isPWAStandalone = () => {
+  if (typeof window === 'undefined') return false;
+  
+  return window.matchMedia('(display-mode: standalone)').matches ||
+         window.matchMedia('(display-mode: fullscreen)').matches ||
+         // iOS Safari PWA detection
+         (window.navigator as any).standalone === true;
+};
+
 export function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false);
   const [isSafari, setIsSafari] = useState(false);
@@ -48,13 +58,18 @@ export function InstallPrompt() {
     setIsIOS(isIOSDevice);
     setIsSafari(isSafariBrowser);
 
-    setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
+    // Use enhanced standalone detection
+    const standaloneMode = isPWAStandalone();
+    setIsStandalone(standaloneMode);
 
     const dismissed = getCookie("pwa-install-dismissed");
     if (dismissed === "true") {
       setIsDismissed(true);
     } else {
-      setIsVisible(true);
+      // Only show if not in standalone mode
+      if (!standaloneMode) {
+        setIsVisible(true);
+      }
     }
   }, []);
 
@@ -95,6 +110,7 @@ export function InstallPrompt() {
 
   const shouldShowShareInstructions = isIOS || isSafari;
 
+  // Enhanced condition: don't show if standalone OR dismissed
   if (!isVisible || isStandalone || isDismissed) {
     return null;
   }
