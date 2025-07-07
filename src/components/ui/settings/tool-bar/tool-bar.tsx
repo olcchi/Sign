@@ -161,7 +161,7 @@ export default function ToolBar({ className }: ToolBarProps) {
                 toolBarPosition.sm,
                 toolBarPosition.md,
                 toolBarPosition.lg,
-                "absolute flex flex-col py-0 gap-0 pointer-events-auto"
+                "absolute flex flex-col py-0 gap-0 pointer-events-auto bg-black!"
               )}
               initial={{ opacity: 0, y: -5 }}
               animate={{ opacity: 1, y: 0 }}
