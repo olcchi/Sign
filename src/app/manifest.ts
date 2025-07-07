@@ -2,7 +2,7 @@ import { MetadataRoute } from 'next'
 
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'Sign - Electronic Cheering Sign',
+    name: 'Sign',
     description: 'Generate your electronic cheering sign',
     start_url: '/',
     display: 'fullscreen',
