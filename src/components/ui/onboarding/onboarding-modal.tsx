@@ -66,7 +66,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-80 xl:w-4/5 max-w-280 border bg-background shadow-2xl rounded-lg overflow-hidden",
+        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-80 xl:w-4/5 max-w-280 border bg-background rounded-lg overflow-hidden",
         className
       )}
       onPointerDownOutside={(e) => e.preventDefault()}
@@ -76,7 +76,11 @@ const DialogContent = React.forwardRef<
       <motion.div
         className="absolute w-140 h-140 rounded-full opacity-60 blur-2xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
-          x: ["-25%", "25%", "-25%"],
+          transform: [
+            "translate3d(-25%, 0px, 0px)",
+            "translate3d(25%, 0px, 0px)",
+            "translate3d(-25%, 0px, 0px)"
+          ],
         }}
         transition={{
           duration: 25,
@@ -87,10 +91,14 @@ const DialogContent = React.forwardRef<
           left: "0%",
           bottom: "-50%",
           zIndex: 1,
+          // Force hardware acceleration for better performance
+          transform: "translateZ(0)",
+          willChange: "transform",
+          backfaceVisibility: "hidden",
         }}
       />
       {/* Content */}
-      <div className="relative z-10 h-full">{children}</div>
+      <div className="relative z-10 h-full w-full overflow-hidden">{children}</div>
       <DialogPrimitive.Close className="absolute right-6 top-6 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-20">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
@@ -213,7 +221,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
               </div>
             </div>
             {/* Right CardSwap Area */}
-            <div className=" relative w-full h-full">
+            <div className="w-full h-full">
               <CardSwap
                 cardDistance={30}
                 verticalDistance={40}
