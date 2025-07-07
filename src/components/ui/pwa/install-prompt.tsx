@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/layout";
 import { Download, X } from "lucide-react";
 import { ShareIos } from "@/components/ui/icon";
 import { GlowEffect } from "@/components/ui/onboarding";
+import { Checkbox } from "@/components/ui/inputs";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -170,11 +171,7 @@ export function InstallPrompt() {
           )}
 
           <div className="flex items-center space-x-2 cursor-pointer" onClick={handleNotRemindAgain}>
-            <input
-              type="checkbox"
-              className="w-3 h-3 rounded border-white/30 bg-transparent checked:bg-white/20 checked:border-white/50"
-              readOnly
-            />
+            <Checkbox checked={isDismissed} />
             <span className="text-xs text-white/60 hover:text-white/80 transition-colors">
               {shouldShowShareInstructions ? "我已添加到主屏幕，不再提示" : "我已安装，不再提示"}
             </span>

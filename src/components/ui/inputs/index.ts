@@ -3,6 +3,7 @@ import Select, { SelectContent, SelectItem, SelectTrigger, SelectValue, SelectSe
 import Textarea from "./textarea";
 import Input from "./input";
 import Slider from "./slider";
+import { Checkbox } from "./checkbox";
 
 export {
   InputOTP,
@@ -18,5 +19,6 @@ export {
   SelectLabel,
   Textarea,
   Input,
-  Slider
+  Slider,
+  Checkbox
 }; 
