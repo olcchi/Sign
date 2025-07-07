@@ -35,6 +35,7 @@ const getCookie = (name: string): string | null => {
 
 export function InstallPrompt() {
   const [isIOS, setIsIOS] = useState(false);
+  const [isSafari, setIsSafari] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
@@ -42,16 +43,17 @@ export function InstallPrompt() {
 
   useEffect(() => {
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
+    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
+    
     setIsIOS(isIOSDevice);
+    setIsSafari(isSafariBrowser);
 
     setIsStandalone(window.matchMedia("(display-mode: standalone)").matches);
 
-    // 检查用户是否已经关闭过安装提示
     const dismissed = getCookie("pwa-install-dismissed");
     if (dismissed === "true") {
       setIsDismissed(true);
     } else {
-      // 显示安装提示
       setIsVisible(true);
     }
   }, []);
@@ -82,18 +84,17 @@ export function InstallPrompt() {
   const handleNotRemindAgain = () => {
     setIsVisible(false);
     setIsDismissed(true);
-    // 设置cookie过期时间为一周（7 * 24小时）
     setCookie("pwa-install-dismissed", "true", 7 * 24);
   };
 
   const handleClose = () => {
     setIsVisible(false);
     setIsDismissed(true);
-    // 设置cookie过期时间为一周（7 * 24小时）
     setCookie("pwa-install-dismissed", "true", 7 * 24);
   };
 
-  // 如果已经是standalone模式（已安装）或用户已关闭提示，则不显示
+  const shouldShowShareInstructions = isIOS || isSafari;
+
   if (!isVisible || isStandalone || isDismissed) {
     return null;
   }
@@ -112,21 +113,31 @@ export function InstallPrompt() {
 
         <div className="pr-8 select-none">
           <h3 className="text-lg font-semibold text-white mb-2">
-            {isIOS ? "添加到主屏幕" : "安装应用"}
+            {shouldShowShareInstructions ? "添加到主屏幕" : "安装应用"}
           </h3>
 
           <p className="text-white/70 text-sm mb-4 leading-relaxed">
-            {isIOS
-              ? "本应用已良好支持PWA，将此应用添加到主屏幕，获得更好的使用体验"
-              : "本应用已良好支持PWA，安装此应用到您的设备，享受快速启动和离线使用功能"}
+            {shouldShowShareInstructions
+              ? "本应用是渐进式Web应用 ( PWA ) ,将此应用添加到主屏幕,获得最佳使用体验"
+              : "本应用是渐进式Web应用 ( PWA ) ,安装此应用到您的设备,获得最佳使用体验"}
           </p>
 
-          {isIOS ? (
+          {shouldShowShareInstructions ? (
             <div className="text-sm text-white/80 mb-4">
               <p className="mb-3">
-                点击浏览器底部的{" "}
-                <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
-                分享按钮，然后选择"添加到主屏幕"
+                {isIOS ? (
+                  <>
+                    点击浏览器底部的{" "}
+                    <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
+                    分享按钮，然后选择"添加到主屏幕"
+                  </>
+                ) : (
+                  <>
+                    点击浏览器菜单栏的{" "}
+                    <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
+                    分享按钮，然后选择"添加到程序坞"
+                  </>
+                )}
               </p>
             </div>
           ) : (
@@ -149,7 +160,7 @@ export function InstallPrompt() {
               readOnly
             />
             <span className="text-xs text-white/60 hover:text-white/80 transition-colors">
-              {isIOS ? "我已添加到主屏幕，不再提示" : "我已安装，不再提示"}
+              {shouldShowShareInstructions ? "我已添加到主屏幕，不再提示" : "我已安装，不再提示"}
             </span>
           </div>
         </div>
