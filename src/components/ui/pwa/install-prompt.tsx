@@ -17,24 +17,23 @@ interface BeforeInstallPromptEvent extends Event {
 
 const setCookie = (name: string, value: string, hours: number) => {
   const date = new Date();
-  date.setTime(date.getTime() + (hours * 60 * 60 * 1000));
+  date.setTime(date.getTime() + hours * 60 * 60 * 1000);
   const expires = "expires=" + date.toUTCString();
   document.cookie = name + "=" + value + ";" + expires + ";path=/";
 };
 
 const getCookie = (name: string): string | null => {
   const nameEQ = name + "=";
-  const ca = document.cookie.split(';');
+  const ca = document.cookie.split(";");
   for (let i = 0; i < ca.length; i++) {
     let c = ca[i];
-    while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+    while (c.charAt(0) === " ") c = c.substring(1, c.length);
     if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
   }
   return null;
 };
 
 export function InstallPrompt() {
-  const [mounted, setMounted] = useState(false);
   const [isIOS, setIsIOS] = useState(false);
   const [isStandalone, setIsStandalone] = useState(false);
   const [promptInstall, setPromptInstall] =
@@ -43,8 +42,6 @@ export function InstallPrompt() {
   const [isDismissed, setIsDismissed] = useState(false);
 
   useEffect(() => {
-    setMounted(true);
-
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
     setIsIOS(isIOSDevice);
 
@@ -61,8 +58,6 @@ export function InstallPrompt() {
   }, []);
 
   useEffect(() => {
-    if (!mounted) return;
-
     const ready = (e: BeforeInstallPromptEvent) => {
       e.preventDefault();
       setPromptInstall(e);
@@ -76,7 +71,7 @@ export function InstallPrompt() {
     return () => {
       window.removeEventListener("beforeinstallprompt", ready as EventListener);
     };
-  }, [mounted, isDismissed]);
+  }, [isDismissed]);
 
   const handleInstallClick = async () => {
     if (!promptInstall) {
@@ -94,16 +89,11 @@ export function InstallPrompt() {
     setCookie("pwa-install-dismissed", "true", 2);
   };
 
-  if (!mounted || isStandalone || isDismissed) {
-    return null;
-  }
-
   const shouldShowPrompt = (promptInstall && isVisible) || (isIOS && isVisible);
 
-  if (!shouldShowPrompt) {
+  if (!shouldShowPrompt || isStandalone || isDismissed) {
     return null;
   }
-
   return (
     <div className="fixed bottom-6 z-[100] left-4 right-4 md:left-auto md:right-6 md:w-96">
       <div className="relative p-6 bg-black border rounded-lg mx-auto max-w-sm md:mx-0 md:max-w-none">
@@ -122,8 +112,8 @@ export function InstallPrompt() {
 
           <p className="text-white/70 text-sm mb-4 leading-relaxed">
             {isIOS
-              ? "本应用已良好支持PWA，将此应用添加到主屏幕，获得更好的使用体验"
-              : "本应用已良好支持PWA，安装此应用到您的设备，享受快速启动和离线使用功能。"}
+              ? "本应用已良好支持PWA,将此应用添加到主屏幕,获得更好的使用体验"
+              : "本应用已良好支持PWA,安装此应用到您的设备,享受快速启动和离线使用功能"}
           </p>
 
           {isIOS ? (

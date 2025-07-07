@@ -1,7 +1,7 @@
 "use client";
 import { SettingsProvider } from "@/lib/contexts/settings-context";
 import SignFrame from "@/components/ui/sign-frame";
-import { PWAWrapper } from "@/components/ui/pwa";
+import { PWAWrapper, PWAStateMonitor } from "@/components/ui/pwa";
 
 // Main page component wraps with SettingsProvider to ensure global state availability
 export default function SoulSignPage() {
@@ -9,6 +9,7 @@ export default function SoulSignPage() {
     <SettingsProvider>
       <SignFrame />
       <PWAWrapper />
+      <PWAStateMonitor />
     </SettingsProvider>
   );
 }

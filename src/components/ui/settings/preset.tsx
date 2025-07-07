@@ -279,37 +279,14 @@ export function PresetManager({
         </Button>
       </div>
 
-      {isAlert && (
-        <Alert className="my-2">
-          <CircleAlert size={12} />
-          <AlertTitle className="text-xs">提示</AlertTitle>
-          <AlertDescription className="text-xs">
-            <ul className="list-disc space-y-1">
-              <li>本地预设保存在您的浏览器本地存储，不保证持久性</li>
-              <li>分享预设PIN码有效期24小时</li>
-            </ul>
-          </AlertDescription>
-        </Alert>
-      )}
-
-      {/* Share functionality section */}
-      <div className="space-y-2">
-        <ShareSetting
-          activePreset={
-            activePresetId
-              ? presets.find((p) => p.id === activePresetId) || null
-              : null
-          }
-          onPresetListUpdated={refreshPresetList}
-        />
-      </div>
+      {/* Preset name input section - appears right below the save button */}
       <AnimatePresence>
         {showPresetInput && (
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
-            className="w-full flex gap-2 px-2 mt-2"
+            className="w-full flex gap-2 mt-2"
           >
             <input
               ref={presetInputRef}
@@ -339,6 +316,31 @@ export function PresetManager({
           </motion.div>
         )}
       </AnimatePresence>
+
+      {isAlert && (
+        <Alert className="my-2">
+          <CircleAlert size={12} />
+          <AlertTitle className="text-xs">提示</AlertTitle>
+          <AlertDescription className="text-xs">
+            <ul className="list-disc space-y-1">
+              <li>本地预设保存在您的浏览器本地存储，不保证持久性</li>
+              <li>分享预设PIN码有效期24小时</li>
+            </ul>
+          </AlertDescription>
+        </Alert>
+      )}
+
+      {/* Share functionality section */}
+      <div className="space-y-2">
+        <ShareSetting
+          activePreset={
+            activePresetId
+              ? presets.find((p) => p.id === activePresetId) || null
+              : null
+          }
+          onPresetListUpdated={refreshPresetList}
+        />
+      </div>
       {presets.length === 0 ? (
         <p className="text-zinc-500 text-xs italic px-2 py-1">暂无保存的预设</p>
       ) : (

@@ -91,7 +91,8 @@ export default function ToolBar({ className }: ToolBarProps) {
   ];
   // Responsive positioning for toolbar at different screen sizes
   const toolBarPosition = {
-    sm: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
+    xs: "w-[80vw] top-12 right-0 h-auto max-h-[70vh]",
+    sm: "sm:w-[40vw] sm:top-12 sm:right-0 h-auto max-h-[80vh]",
     md: "md:w-[40vw] md:h-[80vh] md:max-h-[80dvh]",
     lg: "lg:w-80 lg:top-12 lg:right-0",
   };
@@ -158,6 +159,7 @@ export default function ToolBar({ className }: ToolBarProps) {
           {isOpen && (
             <MotionCard
               className={cn(
+                toolBarPosition.xs,
                 toolBarPosition.sm,
                 toolBarPosition.md,
                 toolBarPosition.lg,
