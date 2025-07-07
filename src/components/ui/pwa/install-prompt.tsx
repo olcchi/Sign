@@ -115,15 +115,15 @@ export function InstallPrompt() {
           <X className="w-4 h-4 text-white/60 hover:text-white" />
         </Button>
 
-        <div className="pr-8">
+        <div className="pr-8 select-none">
           <h3 className="text-lg font-semibold text-white mb-2">
             {isIOS ? "添加到主屏幕" : "安装应用"}
           </h3>
 
           <p className="text-white/70 text-sm mb-4 leading-relaxed">
             {isIOS
-              ? "将此应用添加到主屏幕，获得更好的使用体验"
-              : "安装此应用到您的设备，享受快速启动和离线使用功能。"}
+              ? "本应用已良好支持PWA，将此应用添加到主屏幕，获得更好的使用体验"
+              : "本应用已良好支持PWA，安装此应用到您的设备，享受快速启动和离线使用功能。"}
           </p>
 
           {isIOS ? (

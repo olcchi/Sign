@@ -167,6 +167,26 @@
     padding-bottom: env(safe-area-inset-bottom);
     padding-left: env(safe-area-inset-left);
     padding-right: env(safe-area-inset-right);
+    
+    /* Force fullscreen on Android PWA */
+    min-height: 100vh;
+    min-height: 100dvh; /* Dynamic viewport height for better mobile support */
+  }
+  
+  /* PWA fullscreen mode adjustments */
+  @media (display-mode: fullscreen) {
+    body {
+      padding-top: 0;
+      padding-bottom: 0;
+    }
+  }
+  
+  /* Android Chrome PWA specific adjustments */
+  @media (display-mode: standalone) and (orientation: portrait) {
+    body {
+      /* Attempt to extend content to status bar area on Android */
+      padding-top: max(env(safe-area-inset-top), 0px);
+    }
   }
   
   /* Improve Chinese-English mixed text layout */
