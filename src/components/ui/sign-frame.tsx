@@ -102,13 +102,6 @@ export default function SignFrame({ className }: SignFrameProps) {
       /> */}
       {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
-        <a
-          href="/pwa-test"
-          className="bg-blue-500 hover:bg-blue-600 text-white text-xs px-3 py-2 rounded-md transition-colors"
-          title="PWA 功能测试"
-        >
-          PWA
-        </a>
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
       </div>
