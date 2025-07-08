@@ -8,7 +8,7 @@ function Effect() {
         duration={1}
         infinite={true}
         infiniteDelay={2}
-        className=" absolute flex justify-center items-center text-transparent text-[128px] text-center inset-0 z-1 [-webkit-text-stroke:1px_#F4F2F8] [text-stroke:1px_#212121]"
+        className=" absolute flex justify-center items-center text-[130px] text-center inset-0 z-1 bg-gradient-to-br from-[#504c9b] to-[#060606] bg-clip-text text-transparent [-webkit-text-stroke:1px_rgba(33,30,85,0.8)]"
       >
         Effect
       </TextRoll>
