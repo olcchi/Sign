@@ -66,7 +66,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-80 xl:w-4/5 max-w-280 border bg-background rounded-lg overflow-hidden",
+        "fixed inset-0 z-[1001] m-auto w-4/5 sm:w-4/5 md:4/5 h-3/5 min-h-60 xl:w-4/5 max-w-240 border bg-background rounded-lg overflow-hidden",
         className
       )}
       onPointerDownOutside={(e) => e.preventDefault()}
@@ -79,7 +79,7 @@ const DialogContent = React.forwardRef<
           transform: [
             "translate3d(-25%, 0px, 0px)",
             "translate3d(25%, 0px, 0px)",
-            "translate3d(-25%, 0px, 0px)"
+            "translate3d(-25%, 0px, 0px)",
           ],
         }}
         transition={{
@@ -98,7 +98,9 @@ const DialogContent = React.forwardRef<
         }}
       />
       {/* Content */}
-      <div className="relative z-10 h-full w-full overflow-hidden">{children}</div>
+      <div className="relative z-10 h-full w-full overflow-hidden">
+        {children}
+      </div>
       <DialogPrimitive.Close className="absolute right-6 top-6 p-2 opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none z-20">
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
