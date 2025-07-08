@@ -6,6 +6,7 @@ import { Download, X } from "lucide-react";
 import { ShareIos } from "@/components/ui/icon";
 import { GlowEffect } from "@/components/ui/onboarding";
 import { Checkbox } from "@/components/ui/inputs";
+import { AnimatePresence, motion } from "motion/react";
 
 interface BeforeInstallPromptEvent extends Event {
   readonly platforms: string[];
@@ -36,12 +37,14 @@ const getCookie = (name: string): string | null => {
 
 // Enhanced PWA standalone detection
 const isPWAStandalone = () => {
-  if (typeof window === 'undefined') return false;
-  
-  return window.matchMedia('(display-mode: standalone)').matches ||
-         window.matchMedia('(display-mode: fullscreen)').matches ||
-         // iOS Safari PWA detection
-         (window.navigator as any).standalone === true;
+  if (typeof window === "undefined") return false;
+
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.matchMedia("(display-mode: fullscreen)").matches ||
+    // iOS Safari PWA detection
+    (window.navigator as any).standalone === true
+  );
 };
 
 export function InstallPrompt() {
@@ -50,12 +53,15 @@ export function InstallPrompt() {
   const [isStandalone, setIsStandalone] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isDismissed, setIsDismissed] = useState(false);
-  const [promptInstall, setPromptInstall] = useState<BeforeInstallPromptEvent | null>(null);
+  const [promptInstall, setPromptInstall] =
+    useState<BeforeInstallPromptEvent | null>(null);
 
   useEffect(() => {
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent);
-    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
-    
+    const isSafariBrowser = /^((?!chrome|android).)*safari/i.test(
+      navigator.userAgent
+    );
+
     setIsIOS(isIOSDevice);
     setIsSafari(isSafariBrowser);
 
@@ -117,74 +123,87 @@ export function InstallPrompt() {
   }
 
   return (
-    <div className="fixed bottom-6 z-[100] left-4 right-4 md:left-auto md:right-6 md:w-96">
-      <div className="relative p-6 bg-black border rounded-lg mx-auto max-w-sm md:mx-0 md:max-w-none">
-        <Button
-          onClick={handleClose}
-          variant="ghost"
-          className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
-          aria-label="关闭安装提示"
-        >
-          <X className="w-4 h-4 text-white/60 hover:text-white" />
-        </Button>
+    <AnimatePresence mode="wait">
+      <motion.div
+        initial={{ opacity: 0, y: 30 }}
+        animate={{ opacity: 1, y: 0 }}
+        exit={{ opacity: 0, y: 30 }}
+        transition={{ duration: 0.3, ease: "easeInOut" }}
+        className="fixed bottom-6 z-[100] left-4 right-4 md:left-auto md:right-6 md:w-96"
+      >
+        <div className="relative p-6 bg-black border rounded-lg mx-auto max-w-sm md:mx-0 md:max-w-none">
+          <Button
+            onClick={handleClose}
+            variant="ghost"
+            className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
+            aria-label="关闭安装提示"
+          >
+            <X className="w-4 h-4 text-white/60 hover:text-white" />
+          </Button>
 
-        <div className="pr-8 select-none">
-          <h3 className="text-lg font-semibold text-white mb-2">
-            {shouldShowShareInstructions ? "添加到主屏幕" : "安装应用"}
-          </h3>
+          <div className=" select-none">
+            <h3 className="text-lg font-semibold text-white mb-2">
+              {shouldShowShareInstructions ? "添加到主屏幕" : "安装应用"}
+            </h3>
 
-          <p className="text-white/70 text-sm mb-4 leading-relaxed">
-            {shouldShowShareInstructions
-              ? "本应用是渐进式Web应用 ( PWA ) ,将此应用添加到主屏幕,获得最佳使用体验"
-              : "本应用是渐进式Web应用 ( PWA ) ,安装此应用到您的设备,获得最佳使用体验"}
-          </p>
+            <p className="text-white/70 text-sm mb-4 leading-relaxed">
+              {shouldShowShareInstructions
+                ? "本应用良好支持PWA ( 渐进式Web应用 ) ,将应用添加到主屏幕,获得最佳使用体验"
+                : "本应用良好支持PWA ( 渐进式Web应用 ) ,安装应用到您的设备,获得最佳使用体验"}
+            </p>
 
-          {shouldShowShareInstructions ? (
-            <div className="text-sm text-white/80 mb-4">
-              <p className="mb-3">
-                {isIOS ? (
-                  <>
-                    点击浏览器底部的{" "}
-                    <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
-                    分享按钮，然后选择"添加到主屏幕"
-                  </>
-                ) : (
-                  <>
-                    点击浏览器菜单栏的{" "}
-                    <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
-                    分享按钮，然后选择"添加到程序坞"
-                  </>
-                )}
-              </p>
+            {shouldShowShareInstructions ? (
+              <div className="text-sm text-white/80 mb-4">
+                <p className="mb-3">
+                  {isIOS ? (
+                    <>
+                      点击浏览器底部的{" "}
+                      <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
+                      分享按钮，然后选择"添加到主屏幕"
+                    </>
+                  ) : (
+                    <>
+                      点击浏览器菜单栏的{" "}
+                      <ShareIos className="text-white w-4 h-4 inline mx-1" />{" "}
+                      分享按钮，选择"添加到程序坞"
+                    </>
+                  )}
+                </p>
+              </div>
+            ) : (
+              <div className="mb-4">
+                <Button
+                  variant="outline"
+                  onClick={handleInstallClick}
+                  className="w-full py-3 transition-colors duration-200 border-white/20 hover:border-white/30 bg-white/5 hover:bg-white/10"
+                >
+                  <Download className="w-4 h-4 mr-2" />
+                  立即安装
+                </Button>
+              </div>
+            )}
+
+            <div
+              className="flex items-center space-x-2 cursor-pointer"
+              onClick={handleNotRemindAgain}
+            >
+              <Checkbox checked={isDismissed} />
+              <span className="text-xs text-white/60 hover:text-white/80 transition-colors">
+                {shouldShowShareInstructions
+                  ? "我已添加到主屏幕，不再提示"
+                  : "我已安装，不再提示"}
+              </span>
             </div>
-          ) : (
-            <div className="mb-4">
-              <Button
-                variant="outline"
-                onClick={handleInstallClick}
-                className="w-full py-3 transition-colors duration-200 border-white/20 hover:border-white/30 bg-white/5 hover:bg-white/10"
-              >
-                <Download className="w-4 h-4 mr-2" />
-                立即安装
-              </Button>
-            </div>
-          )}
-
-          <div className="flex items-center space-x-2 cursor-pointer" onClick={handleNotRemindAgain}>
-            <Checkbox checked={isDismissed} />
-            <span className="text-xs text-white/60 hover:text-white/80 transition-colors">
-              {shouldShowShareInstructions ? "我已添加到主屏幕，不再提示" : "我已安装，不再提示"}
-            </span>
           </div>
         </div>
-      </div>
-      <GlowEffect
-        mode="pulse"
-        blur="strongest"
-        scale={1.1}
-        colors={["#423E8B", "#211E55"]}
-        className="absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
-      />
-    </div>
+        <GlowEffect
+          mode="pulse"
+          blur="strongest"
+          scale={1.1}
+          colors={["#423E8B", "#211E55"]}
+          className="absolute -z-1 inset-0 rounded-full transition-opacity duration-200"
+        />
+      </motion.div>
+    </AnimatePresence>
   );
 }
