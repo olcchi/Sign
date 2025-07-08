@@ -12,24 +12,36 @@ interface FullScreenProps {
 
 // iOS Safari fullscreen detection and control
 const isIOS = () => {
-  return /iPad|iPhone|iPod/.test(navigator.userAgent) || 
-         (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  // Check for iOS devices using userAgent
+  if (/iPad|iPhone|iPod/.test(navigator.userAgent)) {
+    return true;
+  }
+  
+  // Check for iPad using modern API or fallback
+  if ((navigator as any).userAgentData?.platform) {
+    return (navigator as any).userAgentData.platform === "macOS" && navigator.maxTouchPoints > 1;
+  }
+  
+  // Fallback for browsers without userAgentData
+  return navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
 };
 
 // Check if running in PWA standalone mode
 const isPWAStandalone = () => {
-  if (typeof window === 'undefined') return false;
-  
-  return window.matchMedia('(display-mode: standalone)').matches ||
-         window.matchMedia('(display-mode: fullscreen)').matches ||
-         // iOS Safari PWA detection
-         (window.navigator as any).standalone === true;
+  if (typeof window === "undefined") return false;
+
+  return (
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.matchMedia("(display-mode: fullscreen)").matches ||
+    // iOS Safari PWA detection
+    (window.navigator as any).standalone === true
+  );
 };
 
 // Check if fullscreen API is actually supported (not just partially)
 const isFullscreenSupported = () => {
-  if (typeof document === 'undefined') return false;
-  
+  if (typeof document === "undefined") return false;
+
   return !!(
     document.fullscreenEnabled ||
     (document as any).webkitFullscreenEnabled ||
@@ -39,10 +51,12 @@ const isFullscreenSupported = () => {
 };
 
 const getFullscreenElement = () => {
-  return document.fullscreenElement || 
-         (document as any).webkitFullscreenElement ||
-         (document as any).mozFullScreenElement ||
-         (document as any).msFullscreenElement;
+  return (
+    document.fullscreenElement ||
+    (document as any).webkitFullscreenElement ||
+    (document as any).mozFullScreenElement ||
+    (document as any).msFullscreenElement
+  );
 };
 
 const requestFullscreen = (element: HTMLElement) => {
@@ -55,7 +69,7 @@ const requestFullscreen = (element: HTMLElement) => {
   } else if ((element as any).msRequestFullscreen) {
     return (element as any).msRequestFullscreen();
   }
-  return Promise.reject(new Error('Fullscreen not supported'));
+  return Promise.reject(new Error("Fullscreen not supported"));
 };
 
 const exitFullscreen = () => {
@@ -68,7 +82,7 @@ const exitFullscreen = () => {
   } else if ((document as any).msExitFullscreen) {
     return (document as any).msExitFullscreen();
   }
-  return Promise.reject(new Error('Exit fullscreen not supported'));
+  return Promise.reject(new Error("Exit fullscreen not supported"));
 };
 
 export function FullScreen({ className, asButton = false }: FullScreenProps) {
@@ -81,7 +95,8 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
     // 1. Not running in PWA standalone mode (already fullscreen)
     // 2. Not on iOS (since iOS has very limited support)
     // 3. AND fullscreen API is properly supported
-    const shouldShow = !isPWAStandalone() && !isIOS() && isFullscreenSupported();
+    const shouldShow =
+      !isPWAStandalone() && !isIOS() && isFullscreenSupported();
     setShouldShowButton(shouldShow);
   }, []);
 
@@ -98,7 +113,9 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
       console.error("Fullscreen operation failed:", err);
       // Provide user guidance for unsupported browsers
       if (isIOS()) {
-        alert("iOS Safari 不完全支持程序化全屏。请使用浏览器的全屏功能：\n1. 点击地址栏旁的 'aA' 按钮\n2. 选择 '隐藏工具栏'\n3. 或者旋转设备到横屏模式");
+        alert(
+          "iOS Safari 不完全支持程序化全屏。请使用浏览器的全屏功能：\n1. 点击地址栏旁的 'aA' 按钮\n2. 选择 '隐藏工具栏'\n3. 或者旋转设备到横屏模式"
+        );
       } else {
         alert("您的浏览器不支持全屏功能");
       }
@@ -120,9 +137,9 @@ export function FullScreen({ className, asButton = false }: FullScreenProps) {
   );
 
   return (
-    <div 
+    <div
       className={cn(
-        "activity-opacity", 
+        "activity-opacity",
         isActive ? "active" : "inactive",
         className
       )}
