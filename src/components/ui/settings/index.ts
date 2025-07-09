@@ -13,6 +13,9 @@ export { PanelContent } from "./panel/panel-content";
 export { default as ShareDialog } from "./share/share-dialog";
 export { default as ImportDialog } from "./share/import-dialog";
 
+// Reset components
+export { default as ResetDialog } from "./reset-dialog";
+
 // Tool bar components
 export { default as ToolBar } from "./tool-bar/tool-bar";
 
