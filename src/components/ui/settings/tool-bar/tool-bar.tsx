@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button, Card } from "@/components/ui/layout";
 import { SettingItem, PresetManager, ToolBarSettings, PanelHeader, PanelContent } from "@/components/ui/settings";
 import { PresetType } from "@/types";
-import { Ellipsis } from "lucide-react";
+import { Ellipsis, SlidersHorizontal } from "lucide-react";
 import {
   colorOptions,
   fontOptions,
@@ -78,7 +78,7 @@ export default function ToolBar({ className }: ToolBarProps) {
     {
       id: "menu",
       label: "菜单",
-      icon: <Ellipsis color="#FFFFFB" />,
+      icon: <SlidersHorizontal color="#FFFFFB" />,
       // icon: <p className="font-sans border-b font-thin border-white">配置</p>,
       action: () => {
         if (activeTab === "menu") {
