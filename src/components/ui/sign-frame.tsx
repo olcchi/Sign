@@ -1,13 +1,17 @@
 "use client";
 import { useRef } from "react";
-import { ToolBar } from "@/components/ui/settings";
+import { ToolBar, ResetDialog } from "@/components/ui/settings";
 import { ScrollingText } from "@/components/ui/widgets";
 import { EdgeBlurEffect, Noise, StarField } from "@/components/ui/filter";
-import { FullScreen } from "@/components/ui/icon";
+import { FullScreen } from "@/components/ui/layout";
+import { Button } from "@/components/ui/layout";
 import Image from "next/image";
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { OnboardingModal } from "@/components/ui/onboarding";
+import { RefreshCw } from "lucide-react";
+import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
+import { cn } from "@/lib/utils";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
 interface SignFrameProps {
@@ -16,6 +20,7 @@ interface SignFrameProps {
 
 export default function SignFrame({ className }: SignFrameProps) {
   const textRef = useRef<HTMLDivElement>(null);
+  const isActive = useUserActivityTracking(3000);
   const {
     textSettings,
     backgroundSettings,
@@ -102,6 +107,22 @@ export default function SignFrame({ className }: SignFrameProps) {
       /> */}
       {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
+        <div
+          className={cn(
+            "activity-opacity",
+            isActive ? "active" : "inactive"
+          )}
+        >
+          <ResetDialog>
+            <Button
+              variant="ghost"
+              className="hover:bg-[#080808]"
+              aria-label="重置设置"
+            >
+              <RefreshCw size={20} color="white" />
+            </Button>
+          </ResetDialog>
+        </div>
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
       </div>
