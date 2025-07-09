@@ -129,7 +129,7 @@ export function InstallPrompt() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed bottom-6 z-[100] left-4 right-4 md:left-auto md:right-6 md:w-96"
+        className="fixed bottom-4 z-[100] left-4 right-4 md:left-4 md:w-96"
       >
         <div className="relative p-6 bg-black border rounded-lg mx-auto max-w-sm md:mx-0 md:max-w-none">
           <Button
@@ -143,13 +143,13 @@ export function InstallPrompt() {
 
           <div className=" select-none">
             <h3 className="text-lg font-semibold text-white mb-2">
-              {shouldShowShareInstructions ? "添加到主屏幕" : "安装应用"}
+              {shouldShowShareInstructions ? "添加Sign到主屏幕" : "安装Sign"}
             </h3>
 
             <p className="text-white/70 text-sm mb-4 leading-relaxed">
               {shouldShowShareInstructions
-                ? "本应用良好支持PWA ( 渐进式Web应用 ) ,将应用添加到主屏幕,获得最佳使用体验"
-                : "本应用良好支持PWA ( 渐进式Web应用 ) ,安装应用到您的设备,获得最佳使用体验"}
+                ? "Sign 良好支持PWA ( 渐进式Web应用 ) ,将 Sign 添加到主屏幕以获得最佳使用体验"
+                : "Sign 良好支持PWA ( 渐进式Web应用 ) ,安装 Sign 到您的设备以获得最佳使用体验"}
             </p>
 
             {shouldShowShareInstructions ? (
