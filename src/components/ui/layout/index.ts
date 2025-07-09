@@ -7,6 +7,7 @@ import Separator from "./separator";
 import { ThemeProvider } from "./theme-provider";
 import Button, { buttonVariants } from "./button";
 import Accordion, { AccordionItem, AccordionTrigger, AccordionContent } from "./accordion";
+import { FullScreen } from "../icon/full-screen";
 
 export {
   Dialog,
@@ -37,5 +38,6 @@ export {
   Accordion,
   AccordionItem,
   AccordionTrigger,
-  AccordionContent
+  AccordionContent,
+  FullScreen
 }; 

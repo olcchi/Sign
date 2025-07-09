@@ -17,6 +17,7 @@ export { TextRoll } from "./onboarding-card-swap/effect/text-roll-effect";
 export { TextMorph } from "./onboarding-card-swap/effect/morph-text-effect";
 export { TextLoop } from "./onboarding-card-swap/effect/text-loop-effect";
 export { default as TextPressureEffect } from "./onboarding-card-swap/effect/text-pressure-effect";
+export { default as GradientText } from "./onboarding-card-swap/effect/gradient-text-effect";
 
 // Icon components
 export { Variant } from "./onboarding-card-swap/icon/variant";
