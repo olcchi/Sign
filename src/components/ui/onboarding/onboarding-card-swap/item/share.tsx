@@ -1,4 +1,5 @@
-import { TextPressureEffect, TextLoop } from "@/components/ui/onboarding";
+import { TextPressureEffect, TextLoop, GradientText } from "@/components/ui/onboarding";
+import { tree } from "next/dist/build/templates/app-page";
 export default function Share() {
   return (
     <div className="relative w-full h-full p-5 flex-center">
@@ -6,11 +7,11 @@ export default function Share() {
         <TextPressureEffect
           text="{PIN Code}"
           flex={true}
-          alpha={false}
+          alpha={true}
           stroke={false}
-          width={true}
-          weight={true}
-          italic={false}
+          width={false}
+          weight={false}
+          italic={true}
           minFontSize={36}
           simulateMouseMovement
           simulationPadding={-80}
