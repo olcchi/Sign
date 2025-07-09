@@ -1,3 +1,4 @@
+'use client'
 import { Maximize, Minimize } from "lucide-react";
 import { useFullScreenStore } from "@/stores/full-screen-store";
 import { cn } from "@/lib/utils";
