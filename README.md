@@ -1,10 +1,10 @@
 
 # Sign
-![Sign](/public/sign-hero-dark.png)
+![Sign](/public/sign-banner-horizontal.png)
 
 ## Introduction
 
-[Sign](https://soulsign.vercel.app) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
+[Sign](https://sign.olcchi.me) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
 
 
 
