@@ -66,7 +66,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-4/5 sm:w-4/5 md:4/5 h-3/5 min-h-60 xl:w-4/5 max-w-240 border bg-background rounded-lg overflow-hidden",
+        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-85 max-w-240 border bg-background rounded-lg overflow-hidden",
         className
       )}
       onPointerDownOutside={(e) => e.preventDefault()}
@@ -76,11 +76,7 @@ const DialogContent = React.forwardRef<
       <motion.div
         className="absolute w-140 h-140 rounded-full opacity-60 blur-2xl xl:blur-3xl bg-gradient-to-t from-[#ccc4f0] to-[#FFFFFB] dark:from-[#211E55] dark:to-[#060606]"
         animate={{
-          transform: [
-            "translate3d(-25%, 0px, 0px)",
-            "translate3d(25%, 0px, 0px)",
-            "translate3d(-25%, 0px, 0px)",
-          ],
+          x: ["-25%", "25%", "-25%"],
         }}
         transition={{
           duration: 25,
