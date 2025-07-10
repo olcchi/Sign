@@ -135,7 +135,7 @@ export function InstallPrompt() {
           <Button
             onClick={handleClose}
             variant="ghost"
-            className="absolute top-4 right-4 p-1 rounded-full hover:bg-white/10 transition-colors z-10"
+            className="absolute top-4 right-4 transition-colors z-10"
             aria-label="关闭安装提示"
           >
             <X className="w-4 h-4 text-white/60 hover:text-white" />
