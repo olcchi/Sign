@@ -89,8 +89,6 @@ const DialogContent = React.forwardRef<
           zIndex: 1,
           // Force hardware acceleration for better performance
           transform: "translateZ(0)",
-          willChange: "transform",
-          backfaceVisibility: "hidden",
         }}
       />
       {/* Content */}
