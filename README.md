@@ -1,12 +1,12 @@
 
-# Sign
 ![Sign](/public/sign-banner-horizontal.png)
+# Sign - Create & Share Beautiful Signs Quickly
 
 ## Introduction
 
-[Sign](https://sign.olcchi.me) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
+[Sign](https://signo.cc) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
 
-
+- 
 
 ### ***CLI Commands***  
 
