@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { ThemeProvider } from "@/components/ui/layout";
+import Script from "next/script";
 import {
   Noto_Sans,
   Noto_Sans_Mono,
@@ -95,6 +96,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <Script 
+          defer 
+          src="https://cloud.umami.is/script.js" 
+          data-website-id="f1688c5b-abb3-420c-aa08-42b6f9c61724"
+          strategy="afterInteractive"
+        />
+      </head>
       <body
         className={`${notoSans.variable} ${notoSansMono.variable} ${notoSansSC.variable} ${DMSerifDisplay.variable} antialiased`}
       >
