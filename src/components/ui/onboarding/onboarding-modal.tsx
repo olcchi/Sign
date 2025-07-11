@@ -66,7 +66,7 @@ const DialogContent = React.forwardRef<
     <DialogPrimitive.Content
       ref={ref}
       className={cn(
-        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-85 max-w-240 border bg-background rounded-lg overflow-hidden",
+        "fixed inset-0 z-[1001] m-auto w-4/5 h-3/5 min-h-75 max-w-150 md:max-w-240 border bg-background rounded-lg overflow-hidden",
         className
       )}
       onPointerDownOutside={(e) => e.preventDefault()}
