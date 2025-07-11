@@ -1,12 +1,15 @@
 
 ![Sign](/public/sign-banner-horizontal.png)
-# Sign - Create & Share Beautiful Signs Quickly
+# **Sign**
 
-## Introduction
+### Features
+[Sign](https://signo.cc) - Create & Share Beautiful Signs Quickly
 
-[Sign](https://signo.cc) is a generator for quickly creating & sharing aesthetically pleasing digital fan signs.
-
-- 
+- 📱 **PWA Support** - Install as a native app on your device for offline access
+- 🌐 **PIN Code Sharing** - Share and import sign presets using secure PIN codes
+- ✨ **Multiple Visual Effects** - Choose from various text effects including scrolling, shiny text, blur effects, and more
+- 👁️ **Real-time Preview** - See your changes instantly as you customize your sign
+- 📐 **Responsive Design** - Works seamlessly across desktop and mobile devices 
 
 ### ***CLI Commands***  
 
