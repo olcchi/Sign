@@ -12,6 +12,7 @@ import { OnboardingModal } from "@/components/ui/onboarding";
 import { RefreshCw } from "lucide-react";
 import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
 import { cn } from "@/lib/utils";
+import { Olcchi } from "@/components/ui/icon";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
 interface SignFrameProps {
@@ -125,6 +126,18 @@ export default function SignFrame({ className }: SignFrameProps) {
         </div>
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
+      </div>
+      
+      {/* Bottom-right Olcchi component */}
+      <div className="fixed bottom-4 right-4 z-[999]">
+        <div
+          className={cn(
+            "activity-opacity",
+            isActive ? "active" : "inactive"
+          )}
+        >
+          <Olcchi />
+        </div>
       </div>
     </main>
   );

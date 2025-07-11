@@ -16,17 +16,17 @@ interface OlcchiProps {
 export function Olcchi({
   id = 'olcchi',
   personalUrl = 'https://olcchi.me',
-  githubUrl = 'https://github.com/olcchi',
+  githubUrl = 'https://github.com/olcchi/sign',
   showGithub = true,
   className,
 }: OlcchiProps) {
   return (
-    <div className={cn(' z-10 flex items-center gap-3 ', className)}>
+    <div className={cn(' z-10 flex items-center gap-3 hover:opacity-100 opacity-30 md:opacity-20 hover:underline', className)}>
       <Link 
         href={personalUrl}
         target="_blank"
         rel="noopener noreferrer"
-        className="text-xs hover:opacity-100 opacity-30 md:opacity-10 hover:underline font-mono"
+        className="text-xs font-mono"
       >
         @{id}
       </Link>
@@ -36,7 +36,6 @@ export function Olcchi({
           href={githubUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="hover:text-zinc-300"
           aria-label="GitHub"
         >
           <Github size={14} />

@@ -99,7 +99,7 @@ const DialogContent = React.forwardRef<
         <X className="h-4 w-4" />
         <span className="sr-only">Close</span>
       </DialogPrimitive.Close>
-      <Olcchi showGithub={false} className="absolute bottom-4 left-4 z-20" />
+      <Olcchi showGithub={true} className="absolute bottom-4 left-4 z-20" />
       <VersionFooter />
     </DialogPrimitive.Content>
   </DialogPortal>
