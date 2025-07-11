@@ -224,6 +224,13 @@
 }
 
 /* custom scrollbar */
+.custom-scrollbar {
+  /* Firefox scrollbar styling - limited customization options */
+  scrollbar-width: thin; /* Firefox only supports: auto, thin, none */
+  scrollbar-color: var(--border) transparent; /* thumb-color track-color */
+  /* Note: Firefox doesn't support hover effects or exact pixel sizing */
+}
+
 .custom-scrollbar::-webkit-scrollbar {
   width: 6px;
 }
