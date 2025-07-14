@@ -21,7 +21,7 @@ export function Olcchi({
   className,
 }: OlcchiProps) {
   return (
-    <div className={cn(' z-10 flex items-center gap-3 hover:opacity-100 opacity-30 md:opacity-20 hover:underline', className)}>
+    <div className={cn(' z-0 flex items-center gap-3 hover:opacity-100 opacity-30 md:opacity-20 hover:underline', className)}>
       <Link 
         href={personalUrl}
         target="_blank"

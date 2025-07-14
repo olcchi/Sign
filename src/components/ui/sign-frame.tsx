@@ -101,12 +101,6 @@ export default function SignFrame({ className }: SignFrameProps) {
         intensity={effectsSettings.edgeBlurIntensity}
       />
       <OnboardingModal />
-      {/* Viewport Monitor */}
-      {/* <ViewportMonitor 
-        position="bottom-left" 
-        showHeight={true}
-      /> */}
-      {/* Top-right button group */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
         <div
           className={cn(
@@ -127,9 +121,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
       </div>
-      
-      {/* Bottom-right Olcchi component */}
-      <div className="fixed bottom-4 right-4 z-[999]">
+      <div className="fixed bottom-4 right-4 z-[60]">
         <div
           className={cn(
             "activity-opacity",

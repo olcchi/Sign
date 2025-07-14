@@ -129,7 +129,7 @@ export function InstallPrompt() {
         animate={{ opacity: 1, y: 0 }}
         exit={{ opacity: 0, y: 30 }}
         transition={{ duration: 0.3, ease: "easeInOut" }}
-        className="fixed bottom-4 z-[100] left-4 right-4 md:left-4 md:w-96"
+        className="fixed bottom-4 z-[998] left-4 right-4 md:left-4 md:w-96"
       >
         <div className="relative p-6 bg-black border rounded-lg mx-auto max-w-sm md:mx-0 md:max-w-none">
           <Button
