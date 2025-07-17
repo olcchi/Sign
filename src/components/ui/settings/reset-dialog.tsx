@@ -139,18 +139,6 @@ export default function ResetDialog({
               重置后将丢失当前所有自定义设置
             </span>
           </div>
-
-          {/* Reset details */}
-          <div className="text-sm text-muted-foreground space-y-1">
-            <p className="font-medium">将重置以下设置：</p>
-            <ul className="text-xs space-y-0.5 ml-4">
-              <li>• 文本内容：{defaultTextSettings.text}</li>
-              <li>• 字体和颜色设置</li>
-              <li>• 背景图片和颜色</li>
-              <li>• 所有特效设置</li>
-            </ul>
-          </div>
-
           {/* Action buttons */}
           <div className="flex flex-col gap-2">
             <Button
