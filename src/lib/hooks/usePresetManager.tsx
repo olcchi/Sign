@@ -31,6 +31,11 @@ export function usePresetManager() {
     onTextStrokeWidthChange: (width: number) => updateTextSettings({ textStrokeWidth: width }),
     onTextStrokeColorChange: (color: string) => updateTextSettings({ textStrokeColor: color }),
     onTextFillEnabledChange: (enabled: boolean) => updateTextSettings({ textFillEnabled: enabled }),
+    onTextGlowEnabledChange: (enabled: boolean) => updateTextSettings({ textGlowEnabled: enabled }),
+    onTextGlowColorChange: (color: string) => updateTextSettings({ textGlowColor: color }),
+    onTextGlowIntensityChange: (intensity: number) => updateTextSettings({ textGlowIntensity: intensity }),
+
+    onTextGlowBlurChange: (blur: number) => updateTextSettings({ textGlowBlur: blur }),
     onStarFieldEnabledChange: (enabled: boolean) => updateEffectsSettings({ starFieldEnabled: enabled }),
     onStarFieldDensityChange: (density: number) => updateEffectsSettings({ starFieldDensity: density }),
     onStarFieldColorChange: (color: string) => updateEffectsSettings({ starFieldColor: color }),
@@ -63,6 +68,10 @@ export function usePresetManager() {
     textStrokeWidth: textSettings.textStrokeWidth,
     textStrokeColor: textSettings.textStrokeColor,
     textFillEnabled: textSettings.textFillEnabled,
+    textGlowEnabled: textSettings.textGlowEnabled,
+    textGlowColor: textSettings.textGlowColor,
+    textGlowIntensity: textSettings.textGlowIntensity,
+    textGlowBlur: textSettings.textGlowBlur,
     starFieldEnabled: effectsSettings.starFieldEnabled,
     starFieldDensity: effectsSettings.starFieldDensity,
     starFieldColor: effectsSettings.starFieldColor,
@@ -76,4 +85,4 @@ export function usePresetManager() {
     textSettings,
     effectsSettings,
   };
-} 
+}

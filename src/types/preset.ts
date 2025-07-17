@@ -21,6 +21,10 @@ export interface PresetType {
   textStrokeWidth?: number;
   textStrokeColor?: string;
   textFillEnabled?: boolean;
+  textGlowEnabled?: boolean;
+  textGlowColor?: string;
+  textGlowIntensity?: number;
+  textGlowBlur?: number;
   starFieldEnabled?: boolean;
   starFieldDensity?: number;
   starFieldColor?: string;
@@ -50,6 +54,10 @@ export interface PresetManagerProps {
   textStrokeWidth?: number;
   textStrokeColor?: string;
   textFillEnabled?: boolean;
+  textGlowEnabled?: boolean;
+  textGlowColor?: string;
+  textGlowIntensity?: number;
+  textGlowBlur?: number;
   starFieldEnabled?: boolean;
   starFieldDensity?: number;
   starFieldColor?: string;
@@ -57,4 +65,4 @@ export interface PresetManagerProps {
   starFieldTwinkleSpeed?: number;
   onLoadPreset: (preset: PresetType) => void;
   onActivePresetChange?: (preset: PresetType | null) => void; // Callback for active preset changes
-} 
+}

@@ -11,6 +11,10 @@ export interface TextSettings {
   textStrokeWidth: number;
   textStrokeColor: string;
   textFillEnabled: boolean;
+  textGlowEnabled: boolean;
+  textGlowColor: string;
+  textGlowIntensity: number;
+  textGlowBlur: number;
 }
 
 export interface BackgroundSettings {
@@ -33,4 +37,4 @@ export interface EffectsSettings {
   starFieldColor: string;
   starFieldSize: number;
   starFieldTwinkleSpeed: number;
-} 
+}

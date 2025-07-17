@@ -134,6 +134,22 @@ export const starFieldConfig = {
   },
 };
 
+// Text shadow configuration (using relative units for consistent scaling)
+export const textShadowConfig = {
+  blur: {
+    min: 5,
+    max: 10,
+    step: 0.5,
+    defaultValue: 7.5, // Will be converted to 0.04em in component
+  },
+  intensity: {
+    min: 1,
+    max: 5,
+    step:0.5,
+    defaultValue: 3,
+  },
+};
+
 // Image processing configuration
 export const PREVIEW_IMAGE_QUALITY = 0.2;
 export const BACKGROUND_IMAGE_QUALITY = 0.6;

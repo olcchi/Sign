@@ -9,6 +9,7 @@ import {
   edgeBlurConfig,
   noiseConfig,
   textStrokeConfig,
+  textShadowConfig,
   starFieldConfig,
 } from "@/lib/settings-config";
 import type {
@@ -46,6 +47,10 @@ const defaultTextSettings: TextSettings = {
   textStrokeWidth: textStrokeConfig.defaultValue,
   textStrokeColor: colorOptions[0].value, // Use first color option
   textFillEnabled: true,
+  textGlowEnabled: false,
+  textGlowColor: colorOptions[0].value, // Use first color option
+  textGlowIntensity: textShadowConfig.intensity.defaultValue,
+  textGlowBlur: textShadowConfig.blur.defaultValue,
 };
 
 // Default values for initial background settings

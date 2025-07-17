@@ -28,6 +28,11 @@ interface PresetHandlers {
   onTextStrokeWidthChange: (width: number) => void;
   onTextStrokeColorChange: (color: string) => void;
   onTextFillEnabledChange: (enabled: boolean) => void;
+  onTextGlowEnabledChange: (enabled: boolean) => void;
+  onTextGlowColorChange: (color: string) => void;
+  onTextGlowIntensityChange: (intensity: number) => void;
+
+  onTextGlowBlurChange: (blur: number) => void;
   onStarFieldEnabledChange: (enabled: boolean) => void;
   onStarFieldDensityChange: (density: number) => void;
   onStarFieldColorChange: (color: string) => void;
@@ -65,6 +70,11 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
     onTextStrokeWidthChange,
     onTextStrokeColorChange,
     onTextFillEnabledChange,
+    onTextGlowEnabledChange,
+    onTextGlowColorChange,
+    onTextGlowIntensityChange,
+  
+    onTextGlowBlurChange,
     onStarFieldEnabledChange,
     onStarFieldDensityChange,
     onStarFieldColorChange,
@@ -107,6 +117,21 @@ export function applyPreset(preset: PresetType, handlers: PresetHandlers) {
   }
   if (preset.textFillEnabled !== undefined) {
     onTextFillEnabledChange(preset.textFillEnabled);
+  }
+
+  // Apply text glow properties conditionally
+  if (preset.textGlowEnabled !== undefined) {
+    onTextGlowEnabledChange(preset.textGlowEnabled);
+  }
+  if (preset.textGlowColor !== undefined) {
+    onTextGlowColorChange(preset.textGlowColor);
+  }
+  if (preset.textGlowIntensity !== undefined) {
+    onTextGlowIntensityChange(preset.textGlowIntensity);
+  }
+
+  if (preset.textGlowBlur !== undefined) {
+    onTextGlowBlurChange(preset.textGlowBlur);
   }
 
   // Apply star field properties conditionally
@@ -155,6 +180,11 @@ export function createPresetFromCurrentSettings(
     textStrokeWidth: textSettings.textStrokeWidth,
     textStrokeColor: textSettings.textStrokeColor,
     textFillEnabled: textSettings.textFillEnabled,
+    textGlowEnabled: textSettings.textGlowEnabled,
+    textGlowColor: textSettings.textGlowColor,
+    textGlowIntensity: textSettings.textGlowIntensity,
+
+    textGlowBlur: textSettings.textGlowBlur,
     starFieldEnabled: effectsSettings.starFieldEnabled,
     starFieldDensity: effectsSettings.starFieldDensity,
     starFieldColor: effectsSettings.starFieldColor,
@@ -214,6 +244,7 @@ export function getPresetDetailedInfo(preset: PresetType): string[] {
   details.push(`闪点: ${preset.starFieldEnabled ? "开启" : "关闭"}`);
   details.push(`填充: ${preset.textFillEnabled ? "开启" : "关闭"}`);
   details.push(`边框: ${preset.textStrokeEnabled ? "开启" : "关闭"}`);
+  details.push(`阴影: ${preset.textGlowEnabled ? "开启" : "关闭"}`);
 
   return details;
 }

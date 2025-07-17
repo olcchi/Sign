@@ -1,4 +1,5 @@
 import { PresetType } from "@/types";
+import { textShadowConfig } from "@/lib/settings-config";
 
 // Font mapping for backward compatibility with old presets
 const FONT_MAPPING = {
@@ -21,6 +22,10 @@ const DEFAULT_PRESET_VALUES = {
   textStrokeWidth: 0.03,
   textStrokeColor: "#000000",
   textFillEnabled: true,
+  textGlowEnabled: false,
+  textGlowColor: "#FFFFFF",
+  textGlowIntensity: textShadowConfig.intensity.defaultValue,
+  textGlowBlur: 4,
   starFieldEnabled: false,
   starFieldDensity: 0.5,
   starFieldColor: "#FFFFFB",
@@ -61,6 +66,10 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
     textStrokeWidth: preset.textStrokeWidth ?? DEFAULT_PRESET_VALUES.textStrokeWidth,
     textStrokeColor: preset.textStrokeColor ?? DEFAULT_PRESET_VALUES.textStrokeColor,
     textFillEnabled: preset.textFillEnabled ?? DEFAULT_PRESET_VALUES.textFillEnabled,
+    textGlowEnabled: preset.textGlowEnabled ?? DEFAULT_PRESET_VALUES.textGlowEnabled,
+    textGlowColor: preset.textGlowColor ?? DEFAULT_PRESET_VALUES.textGlowColor,
+    textGlowIntensity: preset.textGlowIntensity ?? DEFAULT_PRESET_VALUES.textGlowIntensity,
+    textGlowBlur: preset.textGlowBlur ?? DEFAULT_PRESET_VALUES.textGlowBlur,
     starFieldEnabled: preset.starFieldEnabled ?? DEFAULT_PRESET_VALUES.starFieldEnabled,
     starFieldDensity: preset.starFieldDensity ?? DEFAULT_PRESET_VALUES.starFieldDensity,
     starFieldColor: preset.starFieldColor ?? DEFAULT_PRESET_VALUES.starFieldColor,
@@ -133,4 +142,4 @@ export function savePresetsToLocalStorage(presets: PresetType[]): void {
   } catch (error) {
     console.error("Failed to save presets to localStorage:", error);
   }
-} 
+}

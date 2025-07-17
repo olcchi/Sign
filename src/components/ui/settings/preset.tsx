@@ -47,6 +47,10 @@ export function PresetManager({
   textStrokeWidth,
   textStrokeColor,
   textFillEnabled,
+  textGlowEnabled,
+  textGlowColor,
+  textGlowIntensity,
+  textGlowBlur,
   onLoadPreset,
   onActivePresetChange,
 }: PresetManagerProps) {
@@ -99,7 +103,12 @@ export function PresetManager({
         activePreset.textStrokeEnabled !== textStrokeEnabled ||
         activePreset.textStrokeWidth !== textStrokeWidth ||
         activePreset.textStrokeColor !== textStrokeColor ||
-        activePreset.textFillEnabled !== textFillEnabled;
+        activePreset.textFillEnabled !== textFillEnabled ||
+        activePreset.textGlowEnabled !== textGlowEnabled ||
+        activePreset.textGlowColor !== textGlowColor ||
+        activePreset.textGlowIntensity !== textGlowIntensity ||
+
+        activePreset.textGlowBlur !== textGlowBlur;
 
       setHasUnsavedChanges(settingsChanged);
     }
@@ -122,6 +131,11 @@ export function PresetManager({
     textStrokeWidth,
     textStrokeColor,
     textFillEnabled,
+    textGlowEnabled,
+    textGlowColor,
+    textGlowIntensity,
+
+    textGlowBlur,
     presets,
   ]);
 
@@ -159,6 +173,11 @@ export function PresetManager({
       textStrokeWidth,
       textStrokeColor,
       textFillEnabled,
+      textGlowEnabled,
+      textGlowColor,
+      textGlowIntensity,
+
+      textGlowBlur,
     };
 
     const updatedPresets = [newPreset, ...presets];
@@ -193,6 +212,11 @@ export function PresetManager({
           textStrokeWidth,
           textStrokeColor,
           textFillEnabled,
+          textGlowEnabled,
+          textGlowColor,
+          textGlowIntensity,
+
+          textGlowBlur,
         };
       }
       return preset;

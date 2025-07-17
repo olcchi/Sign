@@ -28,7 +28,7 @@ export function EffectsSetting() {
           {effectsSettings.edgeBlurEnabled && (
             <div className="p-2">
               <div className="flex items-center justify-between gap-2">
-                <p className="text-sm whitespace-nowrap ">强度</p>
+                <p className="text-sm  whitespace-nowrap text-muted-foreground">强度</p>
                 <Slider
                   defaultValue={[effectsSettings.edgeBlurIntensity]}
                   value={[effectsSettings.edgeBlurIntensity]}
@@ -60,7 +60,7 @@ export function EffectsSetting() {
           {effectsSettings.noiseEnabled && (
             <div className="p-2 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">尺寸</span>
+                <span className="text-sm whitespace-nowrap text-muted-foreground">尺寸</span>
                 <Slider
                   defaultValue={[effectsSettings.noisePatternSize]}
                   value={[effectsSettings.noisePatternSize]}
@@ -73,7 +73,7 @@ export function EffectsSetting() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">透明度</span>
+                <span className="text-sm whitespace-nowrap text-muted-foreground">透明度</span>
                 <Slider
                   defaultValue={[effectsSettings.noisePatternAlpha]}
                   value={[effectsSettings.noisePatternAlpha]}
@@ -119,7 +119,7 @@ export function EffectsSetting() {
           {effectsSettings.starFieldEnabled && (
             <div className="p-2 space-y-2">
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">密度</span>
+                <span className="text-sm whitespace-nowrap text-muted-foreground">密度</span>
                 <Slider
                   defaultValue={[effectsSettings.starFieldDensity]}
                   value={[effectsSettings.starFieldDensity]}
@@ -132,7 +132,7 @@ export function EffectsSetting() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">大小</span>
+                <span className="text-sm whitespace-nowrap text-muted-foreground">大小</span>
                 <Slider
                   defaultValue={[effectsSettings.starFieldSize]}
                   value={[effectsSettings.starFieldSize]}
@@ -145,7 +145,7 @@ export function EffectsSetting() {
                 />
               </div>
               <div className="flex items-center justify-between gap-2">
-                <span className="text-sm whitespace-nowrap ">速度</span>
+                <span className="text-sm whitespace-nowrap text-muted-foreground">速度</span>
                 <Slider
                   defaultValue={[effectsSettings.starFieldTwinkleSpeed]}
                   value={[effectsSettings.starFieldTwinkleSpeed]}

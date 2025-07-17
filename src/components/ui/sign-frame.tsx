@@ -94,6 +94,10 @@ export default function SignFrame({ className }: SignFrameProps) {
         textStrokeWidth={textSettings.textStrokeWidth}
         textStrokeColor={textSettings.textStrokeColor}
         textFillEnabled={textSettings.textFillEnabled}
+        textGlowEnabled={textSettings.textGlowEnabled}
+            textGlowColor={textSettings.textGlowColor}
+            textGlowIntensity={textSettings.textGlowIntensity}
+            textGlowBlur={textSettings.textGlowBlur}
       />
       <EdgeBlurEffect
         className="pointer-events-none fixed inset-0 z-30"
