@@ -27,7 +27,15 @@ export function TextGlowSetting({ colorOptions }: TextGlowSettingProps) {
 
   // Handle glow toggle
   const handleGlowToggle = () => {
-    updateTextSettings({ textGlowEnabled: !textSettings.textGlowEnabled });
+    if (!textSettings.textGlowEnabled) {
+      // When enabling glow, set glow color to current text color
+      updateTextSettings({ 
+        textGlowEnabled: true,
+        textGlowColor: textSettings.textColor 
+      });
+    } else {
+      updateTextSettings({ textGlowEnabled: false });
+    }
   };
 
   // Handle color change
