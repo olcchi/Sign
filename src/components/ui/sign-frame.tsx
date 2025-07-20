@@ -1,17 +1,16 @@
 "use client";
 import { useRef } from "react";
-import { ToolBar, ResetDialog } from "@/components/ui/settings";
+import { ToolBar, ResetButton } from "@/components/ui/settings";
 import { ScrollingText } from "@/components/ui/widgets";
 import { EdgeBlurEffect, Noise, StarField } from "@/components/ui/filter";
 import { FullScreen } from "@/components/ui/layout";
 import { Button } from "@/components/ui/layout";
 import Image from "next/image";
+import {cn} from '@/lib/utils'
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
 import { OnboardingModal } from "@/components/ui/onboarding";
-import { RefreshCw } from "lucide-react";
-import { useUserActivityTracking } from "@/lib/hooks/useUserActivityTracking";
-import { cn } from "@/lib/utils";
+import {useUserActivityTracking} from '@/lib/hooks/useUserActivityTracking'
 import { Olcchi } from "@/components/ui/icon";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
@@ -21,14 +20,13 @@ interface SignFrameProps {
 
 export default function SignFrame({ className }: SignFrameProps) {
   const textRef = useRef<HTMLDivElement>(null);
-  const isActive = useUserActivityTracking(3000);
   const {
     textSettings,
     backgroundSettings,
     effectsSettings,
     setIsTextScrolling,
   } = useSettings();
-
+ const isActive = useUserActivityTracking(3000);
   // Background style based on settings
   const backgroundStyle = {
     backgroundColor: backgroundSettings.backgroundColor,
@@ -36,9 +34,8 @@ export default function SignFrame({ className }: SignFrameProps) {
 
   return (
     <main
-      className={`relative w-screen h-[100dvh] overflow-hidden font-sans ${
-        className || ""
-      }`}
+      className={`relative w-screen h-[100dvh] overflow-hidden font-sans ${className || ""
+        }`}
       style={backgroundStyle}
     >
       {backgroundSettings.backgroundImage && (
@@ -95,9 +92,9 @@ export default function SignFrame({ className }: SignFrameProps) {
         textStrokeColor={textSettings.textStrokeColor}
         textFillEnabled={textSettings.textFillEnabled}
         textGlowEnabled={textSettings.textGlowEnabled}
-            textGlowColor={textSettings.textGlowColor}
-            textGlowIntensity={textSettings.textGlowIntensity}
-            textGlowBlur={textSettings.textGlowBlur}
+        textGlowColor={textSettings.textGlowColor}
+        textGlowIntensity={textSettings.textGlowIntensity}
+        textGlowBlur={textSettings.textGlowBlur}
       />
       <EdgeBlurEffect
         className="pointer-events-none fixed inset-0 z-30"
@@ -106,26 +103,11 @@ export default function SignFrame({ className }: SignFrameProps) {
       />
       <OnboardingModal />
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
-        <div
-          className={cn(
-            "activity-opacity",
-            isActive ? "active" : "inactive"
-          )}
-        >
-          <ResetDialog>
-            <Button
-              variant="ghost"
-              className="hover:bg-[#080808]"
-              aria-label="重置设置"
-            >
-              <RefreshCw size={20} color="white" />
-            </Button>
-          </ResetDialog>
-        </div>
+        <ResetButton />
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
       </div>
-      <div className="fixed bottom-4 right-4 z-[60]">
+      <div className="fixed left-4 bottom-4 z-999 scale-80 xl:scale-100">
         <div
           className={cn(
             "activity-opacity",

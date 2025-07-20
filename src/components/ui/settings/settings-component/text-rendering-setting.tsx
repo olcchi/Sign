@@ -5,7 +5,7 @@ import { FontWeightSetting } from "./font-weight-setting";
 import { FontItalicSetting } from "./font-italic-setting";
 import { TextFillSetting } from "./text-fill-setting";
 import { TextStrokeSetting } from "./text-stroke-setting";
-import { TextGlowSetting } from "./text-glow-setting";
+import { TextShadowSetting } from "./text-shadow-setting";
 
 interface TextRenderingSettingProps {
   colorOptions: Array<{
@@ -42,7 +42,7 @@ export function TextRenderingSetting({
         </div>
         <TextFillSetting colorOptions={colorOptions} />
         <TextStrokeSetting colorOptions={colorOptions} />
-        <TextGlowSetting colorOptions={colorOptions} />
+        <TextShadowSetting colorOptions={colorOptions} />
       </div>
     ),
   };

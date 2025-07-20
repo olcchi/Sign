@@ -15,9 +15,10 @@ export { default as ImportDialog } from "./share/import-dialog";
 
 // Reset components
 export { default as ResetDialog } from "./reset-dialog";
+export { default as ResetButton } from "./reset-button";
 
 // Tool bar components
 export { default as ToolBar } from "./tool-bar/tool-bar";
 
 // Settings components
-export * from "./settings-component"; 
+export * from "./settings-component";
