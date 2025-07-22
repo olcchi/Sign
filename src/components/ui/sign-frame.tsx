@@ -107,7 +107,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         <FullScreen asButton={true} />
         <ToolBar className="relative pointer-events-none" />
       </div>
-      <div className="fixed left-4 bottom-4 z-999 scale-80 xl:scale-100">
+      {/* <div className="fixed left-4 bottom-4 z-999 scale-80 xl:scale-100">
         <div
           className={cn(
             "activity-opacity",
@@ -116,7 +116,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         >
           <Olcchi />
         </div>
-      </div>
+      </div> */}
     </main>
   );
 }
