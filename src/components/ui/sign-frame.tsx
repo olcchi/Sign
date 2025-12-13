@@ -9,7 +9,7 @@ import Image from "next/image";
 import {cn} from '@/lib/utils'
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
-import { OnboardingModal } from "@/components/ui/onboarding";
+// import { OnboardingModal } from "@/components/ui/onboarding";
 import {useUserActivityTracking} from '@/lib/hooks/useUserActivityTracking'
 import { Olcchi } from "@/components/ui/icon";
 // import { ViewportMonitor } from "@/components/ui/widgets";
@@ -101,7 +101,7 @@ export default function SignFrame({ className }: SignFrameProps) {
         enabled={effectsSettings.edgeBlurEnabled}
         intensity={effectsSettings.edgeBlurIntensity}
       />
-      <OnboardingModal />
+      {/* <OnboardingModal /> */}
       <div className="fixed top-4 right-4 z-[999] flex items-center gap-2">
         <ResetButton />
         <FullScreen asButton={true} />

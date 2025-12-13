@@ -1,7 +1,7 @@
 
 // Main components
-export { WelcomeModal as OnboardingModal } from "./onboarding-modal";
-export { VersionFooter } from "./version-footer";
+// export { WelcomeModal as OnboardingModal } from "./onboarding-modal";
+// export { VersionFooter } from "./version-footer";
 
 // Card swap components
 export { default as CardSwap, Card } from "./onboarding-card-swap/card-swap";

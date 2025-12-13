@@ -1,3 +1,4 @@
+/*
 import React, { useState } from "react";
 import {
   Dialog,
@@ -246,3 +247,4 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
     </div>
   );
 }
+*/
