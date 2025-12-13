@@ -92,7 +92,6 @@ const DialogContent = React.forwardRef<
           transform: "translateZ(0)",
         }}
       />
-      {/* Content */}
       <div className="relative z-10 h-full w-full overflow-hidden">
         {children}
       </div>
@@ -157,7 +156,6 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
 
   return (
     <div className="w-full h-full">
-      {/* SignHeroTitle trigger */}
       <div
         className={cn(
           "fixed top-4 left-4 z-[999] activity-opacity cursor-pointer",
@@ -181,7 +179,6 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
         />
       </div>
 
-      {/* Welcome Modal Dialog */}
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className={className}>
           <VisuallyHidden>
@@ -189,7 +186,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
             <DialogDescription>快速创建 & 分享美丽应援牌</DialogDescription>
           </VisuallyHidden>
           <div className="h-full flex flex-col md:flex-row">
-            {/* Left Content Area */}
+    
             <div className="relative p-5 flex w-full h-full flex-col gap-5 justify-center items-center ">
               <div className="space-y-6 ">
                 <div className="space-y-3 flex flex-col">
@@ -217,7 +214,7 @@ export function WelcomeModal({ className }: WelcomeModalProps) {
                 />
               </div>
             </div>
-            {/* Right CardSwap Area */}
+       
             <div className="w-full h-full">
               <CardSwap
                 cardDistance={30}
