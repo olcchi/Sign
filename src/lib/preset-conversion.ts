@@ -3,16 +3,7 @@ import { textShadowConfig } from "@/lib/settings-config";
 
 // Font mapping for backward compatibility with old presets
 // Maps old font values (including DM Serif Display) to current Noto Serif font
-const FONT_MAPPING = {
-  "var(--font-noto-serif)": "var(--font-serif)",
-  "var(--font-dm-serif-display)": "var(--font-serif)",
-  "Noto Serif": "var(--font-serif)",
-} as const;
 
-// Map old font values to new ones for backward compatibility
-function mapFontFamily(fontFamily: string): string {
-  return FONT_MAPPING[fontFamily as keyof typeof FONT_MAPPING] || fontFamily;
-}
 
 // Default values for preset properties to ensure consistency
 const DEFAULT_PRESET_VALUES = { 
@@ -52,7 +43,7 @@ export function normalizePreset(preset: Partial<PresetType>): PresetType {
     name: preset.name || '',
     text: preset.text || '',
     textColor: preset.textColor || '#FFFFFF',
-    fontFamily: mapFontFamily(preset.fontFamily || 'var(--font-serif)'),
+    fontFamily: preset.fontFamily || 'var(--font-noto-serif)',
     fontSize: preset.fontSize || '2xl',
     fontWeight: preset.fontWeight || '400',
     fontItalic: preset.fontItalic ?? false,

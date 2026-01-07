@@ -53,8 +53,8 @@ export const fontOptions = [
   },
   {
     name: "Noto Serif",
-    value: "var(--font-serif)",
-    fontFamily: "text-[var(--font-serif)]",
+    value: "var(--font-noto-serif)",
+    fontFamily: "text-[var(--font-noto-serif)]",
   },
   {
     name: "Noto Sans Mono",
