@@ -1,5 +1,4 @@
 import { TextPressureEffect, TextLoop, GradientText } from "@/components/ui/onboarding";
-import { tree } from "next/dist/build/templates/app-page";
 export default function Share() {
   return (
     <div className="relative w-full h-full p-5 flex-center">
