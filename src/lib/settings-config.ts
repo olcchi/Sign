@@ -44,7 +44,7 @@ export const colorOptions = [
   },
 ];
 
-// Typography options - Updated to use DM Serif Display font family
+// Typography options - Updated to use Noto Serif font family
 export const fontOptions = [
   {
     name: "Noto Sans",
@@ -52,7 +52,7 @@ export const fontOptions = [
     fontFamily: "text-[var(--font-noto-sans)]",
   },
   {
-    name: "DM Serif Display",
+    name: "Noto Serif",
     value: "var(--font-serif)",
     fontFamily: "text-[var(--font-serif)]",
   },

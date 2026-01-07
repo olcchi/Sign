@@ -2,6 +2,7 @@ import { PresetType } from "@/types";
 import { textShadowConfig } from "@/lib/settings-config";
 
 // Font mapping for backward compatibility with old presets
+// Maps old font values (including DM Serif Display) to current Noto Serif font
 const FONT_MAPPING = {
   "var(--font-noto-serif)": "var(--font-serif)",
   "var(--font-dm-serif-display)": "var(--font-serif)",

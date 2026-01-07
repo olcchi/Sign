@@ -38,7 +38,7 @@ const SettingsContext = createContext<SettingsContextType | undefined>(
 const defaultTextSettings: TextSettings = {
   text: "Sign",
   textColor: colorOptions[0].value, // Use first color option
-  fontFamily: fontOptions[1].value, // Use second font option (DM Serif Display)
+  fontFamily: fontOptions[1].value, // Use second font option (Noto Serif)
   fontSize: fontSizeOptions[3].value, // Use "XL" size (10rem)
   fontWeight: "400",
   fontItalic: false,
