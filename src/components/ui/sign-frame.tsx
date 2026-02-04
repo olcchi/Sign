@@ -1,16 +1,47 @@
 "use client";
 import { useRef } from "react";
-import { ToolBar, ResetButton } from "@/components/ui/settings";
+import { SlidersHorizontal, RefreshCw } from "lucide-react";
+import dynamic from "next/dynamic";
+
+const ToolBar = dynamic(() => import("@/components/ui/settings").then(mod => mod.ToolBar), {
+  ssr: false,
+  loading: () => (
+    <div className="relative pointer-events-none">
+      <div className="pointer-events-auto w-10 h-10 flex justify-center items-center">
+        <Button variant="ghost" className="w-full h-full flex hover:bg-[#080808] select-none appearance-none items-center justify-center">
+          <SlidersHorizontal color="#FFFFFB" />
+        </Button>
+      </div>
+    </div>
+  )
+});
+
+const ResetButton = dynamic(() => import("@/components/ui/settings").then(mod => mod.ResetButton), {
+  ssr: false,
+  loading: () => (
+    <div className="activity-opacity active">
+      <div className="w-10 h-10 flex justify-center items-center">
+        <Button
+          variant="ghost"
+          className="hover:bg-[#080808]"
+          aria-label="重置设置"
+        >
+          <RefreshCw size={20} color="white" />
+        </Button>
+      </div>
+    </div>
+  )
+});
 import { ScrollingText } from "@/components/ui/widgets";
 import { EdgeBlurEffect, Noise, StarField } from "@/components/ui/filter";
 import { FullScreen } from "@/components/ui/layout";
 import { Button } from "@/components/ui/layout";
 import Image from "next/image";
-import {cn} from '@/lib/utils'
+import { cn } from '@/lib/utils'
 import "@/components/ui/widgets/shiny-text/shiny-text.css";
 import { useSettings } from "@/lib/contexts/settings-context";
 // import { OnboardingModal } from "@/components/ui/onboarding";
-import {useUserActivityTracking} from '@/lib/hooks/useUserActivityTracking'
+import { useUserActivityTracking } from '@/lib/hooks/useUserActivityTracking'
 import { Olcchi } from "@/components/ui/icon";
 // import { ViewportMonitor } from "@/components/ui/widgets";
 
@@ -26,7 +57,7 @@ export default function SignFrame({ className }: SignFrameProps) {
     effectsSettings,
     setIsTextScrolling,
   } = useSettings();
- const isActive = useUserActivityTracking(3000);
+  const isActive = useUserActivityTracking(3000);
   // Background style based on settings
   const backgroundStyle = {
     backgroundColor: backgroundSettings.backgroundColor,

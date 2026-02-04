@@ -16,11 +16,13 @@ const notoSans = Noto_Sans({
   subsets: ["latin"],
   weight: "variable",
   axes: ["wdth"],
+  display: "swap",
 });
 const notoSansMono = Noto_Sans_Mono({
   variable: "--font-noto-sans-mono",
   subsets: ["latin"],
   weight: ["400", "500", "600", "700"],
+  display: "swap",
 });
 
 // Chinese font configuration for consistent Chinese text rendering
@@ -28,12 +30,14 @@ const notoSansSC = Noto_Sans_SC({
   weight: ["300", "400", "500", "700"],
   variable: "--font-noto-sans-sc",
   subsets: ["latin"],
+  display: "swap",
 });
 
 const notoSerif = Noto_Serif({
   variable: "--font-noto-serif",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
+  display: "swap",
 });
 
 // Chinese serif font configuration for consistent Chinese text rendering
@@ -41,6 +45,7 @@ const notoSerifSC = Noto_Serif_SC({
   variable: "--font-noto-serif-sc",
   subsets: ["latin"],
   weight: ["400", "600", "700"],
+  display: "swap",
 });
 
 // SEO and site metadata configuration
@@ -105,9 +110,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <Script 
-          defer 
-          src="https://cloud.umami.is/script.js" 
+        <Script
+          defer
+          src="https://cloud.umami.is/script.js"
           data-website-id="f1688c5b-abb3-420c-aa08-42b6f9c61724"
           strategy="afterInteractive"
         />
